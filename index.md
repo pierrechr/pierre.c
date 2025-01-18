@@ -1,6 +1,6 @@
-# Pierre C.
+# Crypto - Pierre C.
 
-## Intro
+## Introduction 
 
 ***
 
