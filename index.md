@@ -1,5 +1,3 @@
-# Crypto - Pierre C.
-
 ## Introduction 
 
 ***
