@@ -4,7 +4,7 @@
 
 ***
 
-Introducting paragraph
+Try improving the introductory paragraph
 
 ***
 
