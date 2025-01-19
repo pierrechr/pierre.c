@@ -12,7 +12,7 @@ Topics of interest :
 
 [cryptohack](https://cryptohack.org/user/pierre_c/)
 
-See [my repository] (https://github.com/pierrechr/cryptohack)
+See [my repository](https://github.com/pierrechr/cryptohack)
 
 ## Articles and Preprints
 
