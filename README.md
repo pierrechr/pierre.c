@@ -1,6 +1,4 @@
-## Introduction 
 
-***
 _Mathematics, cryptography  mathematics and teaching._ 
 
 ***
