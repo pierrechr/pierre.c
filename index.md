@@ -1,7 +1,7 @@
 # Introduction 
 
 ***
-_ Mathematics, cryptography  mathematics and teacher.  
+_Mathematics, cryptography  mathematics and teacher.  
 
 ***
 
