@@ -6,8 +6,6 @@ _Mathematics, cryptography  mathematics and teaching._
 
 ***
 
-[cryptohack]<https://cryptohack.org/user/pierre_c/>
-
 ## Education and professional background
 
 + _PhD._ "Jacobian Varietes and Inertia Groups".
