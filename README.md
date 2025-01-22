@@ -10,10 +10,6 @@ Topics of interest :
 
 ***
 
-[cryptohack profile](https://cryptohack.org/user/pierre_c/)
-
-See my [cryptohack repository](https://github.com/pierrechr/cryptohack)
-
 ## Articles and Preprints
 
 
