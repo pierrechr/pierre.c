@@ -5,14 +5,18 @@
 _Mathematics, cryptography  mathematics and teaching._ 
 
 ***
+
+I am currently teaching Mathematics in CPGE (undegraduate students) since 2015.
+
 ## Main topics of interest 
 
 + Elliptic Curve Cryptography
     + Pairings
-    + Isogeny graphs.
+    + Isogeny graphs
     + Safe curves
 + Algebraic and Algorithmic Number Theory
-  
++ Algebraic Geometry
+   
 ## Education 
 
 + _PhD._ "Jacobian Varietes and Inertia Groups" defended June 2013 at the University of Bordeaux.
