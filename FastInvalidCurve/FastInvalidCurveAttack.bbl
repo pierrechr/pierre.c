@@ -1,8 +1,21 @@
 \begin{thebibliography}{1}
 
-\bibitem{reference}
-Donald~E. Knuth.
-\newblock {\em The {\TeX} Book}.
-\newblock Addison-Wesley Professional, 2024.
+\bibitem{cryptoeprint:2024/1265}
+Daniel~J. Bernstein and Tanja Lange.
+\newblock Safe curves for elliptic-curve cryptography.
+\newblock Cryptology {ePrint} Archive, Paper 2024/1265, 2024.
+
+\bibitem{cryptoeprint:2019/1043}
+Eli Biham and Lior Neumann.
+\newblock Breaking the bluetooth pairing – the fixed coordinate invalid curve
+  attack.
+\newblock Cryptology {ePrint} Archive, Paper 2019/1043, 2019.
+
+\bibitem{FLRV08}
+P.-A. Fouque, R.~Lercier, D.~R{\'e}al, and F.~Valette.
+\newblock {Fault Attack on Elliptic Curve with Montgomery Ladder
+  Implementation}.
+\newblock In {\em FDTC '08. 5th Workshop on Fault Diagnosis and Tolerance in
+  Cryptography}, pages 92--98. IEEE-CS Press, August 2008.
 
 \end{thebibliography}

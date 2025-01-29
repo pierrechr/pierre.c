@@ -13,26 +13,25 @@
 \reversemarginpar
 \newtheorem{thm}{Theorem}
 \theoremstyle{definition}
-\newtheorem{defi}{Definition}
-\newtheorem{prop}{Proposition}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Symbols
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\newcommand{\og}{\textrm{"}}
-\newcommand{\fg}{\textrm{"}}
 \newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathbb{F}}
+\renewcommand{\L}{\mathbb{L}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\D}{\mathbb{D}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\K}{\mathbb{K}}
-\newcommand{\FI}{\textrm{FI}}
-\newcommand{\Pp}{$\mathcal{P}$}
 \renewcommand{\P}{\mathbb{P}}
+\newcommand{\Pp}{$\mathcal{P}$}
 \newcommand{\ch}{\textrm{ch}}
 \newcommand{\sh}{\textrm{sh}}
 \newcommand{\id}{\textrm{Id}}
@@ -70,19 +69,101 @@ This paper has primarily an expository role.
 
 \section{Introduction}
 
+The so called \textsl{Invalid curve attack} is a real threat for cryptographic protocols based on elliptic curves.
+The attack has first been presented in cite{BMM00} and the use of twists described in \cite{FLRV08}.
+OpenPGP.js prior to 4.2.0 was found to be vulnerable\footnote{https://www.cve.org/CVERecord?id=CVE-2019-9155}. 
+Bluetooth has been proven to be vulnerable to a "Fixed Coordinate" variant  \cite{cryptoeprint:2019/1043}.
+The SafeCurves website and the associated paper \cite{cryptoeprint:2024/1265} point out as 
+\begin{quote}
+An ECC implementor can stop an invalid-curve attack by checking whether the input point Q satisfies the correct curve equation; [...]
+But this creates a conflict between simplicity and security. An implementation that does not include this check is simpler and more likely to be produced, and will pass typical functionality tests. 
+\end{quote}
+
+\noindent It is also at heart of many Capture The Flag and cryptographic challenges on dedicated platforms.
+
+
+\noindent The rest of the paper is organized as follows.
+Section 2 recalls the basics mathematical concepts used  in the sequel, we recall basics facts about discrete logarithm problem (DLP) and twists of elliptic curves.	
+Section 3 presents the general setting of the attack and ways to exploit poor implementation and weak curves.
+
 This paper has primarily an expository role.
 
 \section{Background Material}
 
+\textbf{Notations :}
+We will denote by $\F_q$ the finite field with $q = p^n$ elements where $p \geq 5$ and $n \in \N - \lbrace 0 \rbrace$.
+We will denote by $E/\F_q$ an elliptic curve defined over $\F_q$. 
+The reader is assumed to be familiar with basic theory of elliptic curves.
+
+\vspace*{.5cm}
+
+\noindent The characteristic $p$ being different from $2$ and $3$, every elliptic curve $E/\F_q$ may be written as
+\[ E : y^2 = x^3 + ax + b, \; \; a,b \in \F_q. \]
+This is a so called \textsl{short Weierstrass form} of E.
+
+\vspace*{.5cm}
+
+\noindent \textbf{Remarks :} 
+\begin{itemize}
+\item The characteristic $p$ being greater than $5$ is not a restriction in our context since $p$ will usually be a large prime number.
+\item The short Weierstrass form is not unique.
+
+\begin{verbatim}
+k = GF(11**2)
+u = k(2)
+E = EllipticCurve(k,[1,1])
+E_ = EllipticCurve(k,[u**(-4),u**(-6)])
+E.is_isomorphic(E_)
+E.isomorphism_to(E_)
+\end{verbatim}
+\end{itemize}
+
 \subsection{Twists of Elliptic Curves}
+
+\begin{itemize}
+\item Automorphismes d'une courbe elliptique. 
+\item Cas particulier de l'équation short p > 3.
+\item Description des twists, expliquer pourquoi j différent de 0 et 1728 n'est pas un problème, donc seulement le twist quadratique à considérer en général, écriture des morphismes
+\item exemples
+\end{itemize}
 
 \subsection{Discrete Logarithm Problem}
 
-\section{Invalid Curve Attack}
+\begin{definition}
+Let $G$ be a group in multiplicative notation.
+The \textbf{Discrete Logarithm Problem} (DLP) is : given $g,h \in G$ find $a \in \Z$ such that $h = g^a$.
+\end{definition}
 
+\noindent \textbf{Remarks :}
+\begin{enumerate}
+\item Let $\L/\F_q$ be a field extension and $E/\F_q$ an elliptic curve.
+The group of $\L$-rationnal points of $E$ denoted $E(\L)$ (that is the solutions $(x,y) \in \L^2$ of the Weierstrass equation defining $E$) is usually written with an additive law. 
+So the DLP for elliptic curves may be rephrased : given $P,G \in E(\L)$ find $a \in \Z$ such that $P = aG$.
+\end{enumerate}
+
+\textbf{Solving the DLP}
+\begin{itemize}
+\item Polhig Helman, BSGS, Rho.
+\item Sage Discretelog vs Q.log(P)
+\end{itemize}
+
+
+\section{Invalid Curve Attack}
 \subsection{General Setting}
-test \cite{reference}
+Position du problème : les algo de multiplication d*P n'utilisent que le coeff a de E, on peut passer (x,y) n'étant pas sur E.
+
+\begin{itemize}
+\item DLP peut etre trop dur sur E à cause de d'un ordre pas assez smooth.
+\item Si on peut faire calculer k*T pour T sur une autre courbe E' on peut trouver T modulo les premiers de l'ordre de E'.
+\item si le twist a un ordre avec d'autres facteurs premier que E alors on connait k modulo de nouveaux premiers. 
+\item cela peut suffire à retrouver k (CRT)
+\end{itemize}
+
 \subsection{Exploiting Ladders and twists}
+\begin{itemize}
+\item L'importance des ladders cf Safe Curves
+\item L'importance des multiplications où on ne passe que le x.
+\end{itemize}
 
 
 \bibliographystyle{plain}
