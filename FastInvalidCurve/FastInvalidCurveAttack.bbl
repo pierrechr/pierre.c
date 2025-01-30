@@ -5,6 +5,12 @@ Daniel~J. Bernstein and Tanja Lange.
 \newblock Safe curves for elliptic-curve cryptography.
 \newblock Cryptology {ePrint} Archive, Paper 2024/1265, 2024.
 
+\bibitem{BMM00}
+Ingrid Biehl, Bernd Meyer, and Volker M{\"u}ller.
+\newblock Differential fault attacks on elliptic curve cryptosystems.
+\newblock In Mihir Bellare, editor, {\em Advances in Cryptology --- CRYPTO
+  2000}, pages 131--146, Berlin, Heidelberg, 2000. Springer Berlin Heidelberg.
+
 \bibitem{cryptoeprint:2019/1043}
 Eli Biham and Lior Neumann.
 \newblock Breaking the bluetooth pairing – the fixed coordinate invalid curve

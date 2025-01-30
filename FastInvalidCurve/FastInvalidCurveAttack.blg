@@ -3,44 +3,44 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: FastInvalidCurveAttack.aux
 The style file: plain.bst
 Database file #1: refs.bib
-You've used 3 entries,
+You've used 4 entries,
             2118 wiz_defined-function locations,
-            515 strings with 4579 characters,
-and the built_in function-call counts, 999 in all, are:
-= -- 97
-> -- 49
-< -- 1
-+ -- 19
-- -- 16
-* -- 56
-:= -- 164
-add.period$ -- 10
-call.type$ -- 3
-change.case$ -- 17
+            525 strings with 4808 characters,
+and the built_in function-call counts, 1518 in all, are:
+= -- 152
+> -- 71
+< -- 2
++ -- 27
+- -- 23
+* -- 90
+:= -- 242
+add.period$ -- 14
+call.type$ -- 4
+change.case$ -- 23
 chr.to.int$ -- 0
-cite$ -- 3
-duplicate$ -- 35
-empty$ -- 83
-format.name$ -- 16
-if$ -- 218
+cite$ -- 4
+duplicate$ -- 58
+empty$ -- 123
+format.name$ -- 23
+if$ -- 336
 int.to.chr$ -- 0
-int.to.str$ -- 3
-missing$ -- 1
-newline$ -- 18
-num.names$ -- 6
-pop$ -- 27
+int.to.str$ -- 4
+missing$ -- 2
+newline$ -- 23
+num.names$ -- 10
+pop$ -- 35
 preamble$ -- 1
-purify$ -- 14
+purify$ -- 19
 quote$ -- 0
-skip$ -- 32
+skip$ -- 50
 stack$ -- 0
-substring$ -- 39
-swap$ -- 11
-text.length$ -- 1
+substring$ -- 76
+swap$ -- 21
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 12
+type$ -- 16
 warning$ -- 0
-while$ -- 9
-width$ -- 4
-write$ -- 34
+while$ -- 15
+width$ -- 5
+write$ -- 47

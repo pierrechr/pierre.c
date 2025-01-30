@@ -15,6 +15,7 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
 \newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Symbols
@@ -54,12 +55,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \author{Pierre Chrétien}
-\title{Fast Invalid Curve Attack using twists}
+\title{Practical Invalid Curve Attack Using Quadratic Twist}
 \date{February 2025}
 \maketitle
 \begin{abstract}
-Exploiting Invalid Curve Attack is a recurrent problem in CTF. 
-We present the common structure of the attack and give some insight to speed up the attack. 
+We present the common structure of the attack and give some insight to efficiently exploit quadratic twists. 
 This paper has primarily an expository role.
 \end{abstract}
 
@@ -70,22 +70,22 @@ This paper has primarily an expository role.
 \section{Introduction}
 
 The so called \textsl{Invalid curve attack} is a real threat for cryptographic protocols based on elliptic curves.
-The attack has first been presented in cite{BMM00} and the use of twists described in \cite{FLRV08}.
+The attack has first been presented in \cite{BMM00} and the use of twists was described in\cite{FLRV08}.
 OpenPGP.js prior to 4.2.0 was found to be vulnerable\footnote{https://www.cve.org/CVERecord?id=CVE-2019-9155}. 
-Bluetooth has been proven to be vulnerable to a "Fixed Coordinate" variant  \cite{cryptoeprint:2019/1043}.
+Bluetooth was proved to be vulnerable to a "Fixed Coordinate" variant  \cite{cryptoeprint:2019/1043}.
 The SafeCurves website and the associated paper \cite{cryptoeprint:2024/1265} point out as 
 \begin{quote}
 An ECC implementor can stop an invalid-curve attack by checking whether the input point Q satisfies the correct curve equation; [...]
 But this creates a conflict between simplicity and security. An implementation that does not include this check is simpler and more likely to be produced, and will pass typical functionality tests. 
 \end{quote}
 
-\noindent It is also at heart of many Capture The Flag and cryptographic challenges on dedicated platforms.
+\noindent As a side note, it is also at heart of many Capture The Flag and cryptographic challenges on dedicated platforms.
 
-
+\vspace*{.5cm}
 \noindent The rest of the paper is organized as follows.
 Section 2 recalls the basics mathematical concepts used  in the sequel, we recall basics facts about discrete logarithm problem (DLP) and twists of elliptic curves.	
 Section 3 presents the general setting of the attack and ways to exploit poor implementation and weak curves.
-
+Section 4 is a complete walktrhought an example.
 This paper has primarily an expository role.
 
 \section{Background Material}
@@ -97,16 +97,17 @@ The reader is assumed to be familiar with basic theory of elliptic curves.
 
 \vspace*{.5cm}
 
-\noindent The characteristic $p$ being different from $2$ and $3$, every elliptic curve $E/\F_q$ may be written as
+\noindent \textbf{Short Weierstrass equations.} The characteristic $p$ being different from $2$ and $3$, every elliptic curve $E/\F_q$ may be written as
 \[ E : y^2 = x^3 + ax + b, \; \; a,b \in \F_q. \]
-This is a so called \textsl{short Weierstrass form} of E.
+This is a so called \textsl{short Weierstrass form} of the curve $E$ \textsl{defined over $\F_q$}.
 
 \vspace*{.5cm}
 
-\noindent \textbf{Remarks :} 
-\begin{itemize}
-\item The characteristic $p$ being greater than $5$ is not a restriction in our context since $p$ will usually be a large prime number.
-\item The short Weierstrass form is not unique.
+\noindent \begin{remark} 
+\begin{enumerate}
+\item The characteristic $p$ being greater than $5$ is not a restriction in our context since $p$ will usually be a large prime.
+\item A short Weierstrass form is not unique.
+This will be completed in the subsection about twists.
 
 \begin{verbatim}
 k = GF(11**2)
@@ -116,15 +117,166 @@ E_ = EllipticCurve(k,[u**(-4),u**(-6)])
 E.is_isomorphic(E_)
 E.isomorphism_to(E_)
 \end{verbatim}
-\end{itemize}
+\end{enumerate}
+\end{remark}
+
+\noindent \textbf{Automorphisms.} Let $E_1/\F_q$ and $E_2/\F_q$ be elliptic curves. 
+These curves may be seen over $\overline{\F_q}$ that is, the coefficients of their equation may be seen as lying in $\overline{\F_q}$ instead of in $\F_q$.
+Every geometric isomorphism of elliptic curve $\phi$ from $E_1/\overline{\F_q}$ to $E_2/\overline{\F_q}$ has an  affine part of the form 
+\begin{equation}\label{morphism}
+ \phi(x,y) = (u^{\mkern1mu 2}x + r, u^{\mkern1mu 3}y + su^{\mkern1mu 2}x + t).
+\end{equation}
+for $u \in \overline{\F_q}^{\mkern1mu *}$, $r,s,t \in \overline{\F_q}$.
+We will denote geometric isomorphism as $\phi/\overline{\F_q}$.
+The isomorphism $\psi$ is said to be \textsl{defined over $\F_q$} or \textsl{rational} if $u,r,s,t \in \F_q$, we will denote it by $\psi/\F_q$.
+
+For a sake of clarity we will stick to the notation $\phi$ for geometric isomorphism and $\psi$ for rational isomorphisms.
+
+\begin{proposition}\label{prop:auto}
+Let $E_i/\F_q$, $i \in \lbrace 1; 2 \rbrace$ be elliptic curves given by short Weierstrass equations.
+\[ E_i : y^2 = x^3 + a_ix + b_i, \; \; a_i,b_i \in \F_q. \]
+A geometric isomorphism $\phi$ has the form 
+\[ \phi(x,y) = (u^{\mkern1mu 2}x, u^{\mkern1mu 3}y).\]  
+\end{proposition}
+\begin{proof}
+This is included as a first step to fully understand isomorphisms in the quadratic twist case.
+
+\noindent Let $(x,y) \in E_1$ and $\phi$ as given by (\ref{morphism}).
+Applying $\phi$ to the equation of $E_1$ and expanding yields 
+\begin{align*}
+&y^2 = x^3 + a_1x + b_1\\
+ & \Leftrightarrow ( u^{\mkern1mu 3}y + su^{\mkern1mu 2}x + t)^{\mkern1mu 2} =  (u^{\mkern1mu 2}x +r)^{\mkern1mu 3} +a_1(u^{\mkern1mu 2}x +r) +b_1 \\
+& \Leftrightarrow  u^{\mkern1mu 6}y^2 + s^2u^{\mkern1mu 4}x^2 + t^2 + 2u^{\mkern1mu 5}sxy + 2u^{\mkern1mu 3}ty + 2tsu^{\mkern1mu 2}x  
+=  u^{\mkern1mu 6}x^3 + 3ru^{\mkern1mu 4}x^2 + 3r^2 u^{\mkern1mu 2}x +r^{\mkern1mu 3} +a_1u^{\mkern1mu 2}x +a_1r +b_1 (*)\\
+\end{align*} 
+Identifying coefficients of $xy$ and $y$ with those of $y^2 = x^3 + a_2x + b_2$ yields $s=0, t= 0$ (recall that $u \neq 0$ and $ p \neq 2$).
+\begin{align*}
+(*) & \Leftrightarrow  u^{\mkern1mu 6}y^2   
+=  u^{\mkern1mu 6}x^3 + 3ru^{\mkern1mu 4}x^2 + 3r^2 u^{\mkern1mu 2}x +r^{\mkern1mu 3} +a_1u^{\mkern1mu 2}x +a_1r +b_1 
+\end{align*}
+Then, identifying the coefficient of $x^2$ with the short equation of $E_2$ yields $r=0$ (here we use $p \neq 3$).
+Thus $\phi(x,y) = (u^2x,u^3y)$.
+We conclude with the following computations that will be used in the sequel.
+\begin{align*}
+ &u^{\mkern1mu 6}y^2   
+=  u^{\mkern1mu 6}x^3 +a_1u^{\mkern1mu 2}x  +b_1 \\
+& \Leftrightarrow  y^2   
+=  x^3 +\frac{a_1}{u^{\mkern1mu 4}}x  + \frac{b_1}{u^6} \\
+& \Leftrightarrow
+\frac{a_1}{u^{\mkern1mu 4}} = a_2 , \; \;  \frac{b_1}{u^6}=b_2 (**)
+\end{align*}
+\end{proof}
+
+
+\begin{proposition}
+Assume $p \geq 5$.
+Let $E/\F_q$ be an elliptic curves given by short Weierstrass equations.
+\[ E_i : y^2 = x^3 + ax + b, \; \; a, b \in \F_q. \]
+The \textsl{$j$-invariant of E} is defined to be 
+\[j(E) = 1728 \frac{4a^3}{4a^3+27b^2}.\]
+
+Given two elliptic curves $E_1, E_2$ defined over $\F_q$, there exists a geometric isomorphism $\phi / \overline{\F_q}$ from $E_1$ to $E_2$ if and only if $j(E_1) = j(E_2)$. 
+\end{proposition}
+
+\noindent \begin{remark}
+\begin{enumerate}
+\item We insist that the $j$-invariant classifies \textbf{geometric} isomorphism classes of elliptic curves over $\F_q$. 
+\item Since $p \geq 5$, $j(E) \notin \lbrace 0, 1728 \rbrace $ is equivalent to $a,b \in \F_q^{*}$.
+\item !!! Revoir définie sur k et à coeff dans k
+\end{enumerate}
+\end{remark}
 
 \subsection{Twists of Elliptic Curves}
 
+\noindent \textbf{Twists.} Non trivial twists of $E/\F_q$ are elliptic curves $E'/\F_q$ being isomorphic to $E$ when viewed over $\overline{\F_q}$ but not isomorphic to $E$ when viewed over $\F_q$.
+
+\begin{definition}
+Le $E/\F_q$ be an elliptic curve.
+A \textsl{twist of $E$} is an elliptic curve $E_t/\F_q$ such that there is a geometric isomorphism $\phi/\overline{\F_q}$ of elliptic curves $\phi : E \simeq E_t$.
+A twist $E_t$ of $E$ is \textsl{trivial} if there exists an isomorphism $\psi$ of elliptic curve \textbf{defined over} $\F_q$.
+\end{definition}
+
+\vspace*{.5cm}
+\noindent \textbf{Quadratic Twists.} Let $E/\F_q$ be an elliptic curve in short Weierstrass equation $y^2 = x^3+ax+b$.
+Recall that $q = p^n$ and $p \geq 5$, so it is possible to write such an equation for $E$. 
+
+\begin{definition}
+Let $d \in \F_q^*$.
+The \textsl{twist $E_d$ of $E$ by d} is the elliptic curve given in short Weierstrass equation
+\[ E_d : y^2 = x^3 + d^{\mkern1mu 2}ax + d^{\mkern1mu 3}b.\]
+\end{definition}
+
+\begin{remark}
+We did not specify that $E_d$ is a non trivial twist of $E$.
+Actually, let $\delta$ be a square root of $d$ in $\overline{\F_q}$ i.e. $\delta^2 = d$, then
+\begin{align*}
+\phi : E & \to E_d\\
+      (x,y)& \mapsto \big(\frac{x}{d},\frac{y}{d\delta}\big)
+\end{align*}
+is a geometric isomorphism from $E$ to $E_d$.
+It matches the relations (**) concluding proof of Proposition \ref{prop:auto} with $a_1=a, b_1=b, a_2 = ad^2, b_2=bd^3$ and $d = \frac1u$.
+\end{remark}
+
+\begin{proposition}\label{prop:trivialtwist}
+Assume that $j(E) \neq 0,1728$.
+The twist $E_d$ is trivial if and only if $d \in (\F_q^*)^2$.
+\end{proposition}
+
+\begin{proof}
+$(\Rightarrow)$ Assume that there exists a rational isomorphism $\psi$ from $E$ to $E_d$.
+According to Proposition \ref{prop:auto}, there exists $u \in \F_q^*$
+\[ \psi(x,y) = (u^2x,u^3y) \]
+
+According to (**), $\frac{a}{u^4} = ad^2$ and $\frac{b}{u^6} = bd^3$.
+Recall that since $ p \geq 5$, the assumption about $j(E)$ is equivalent to $a,b \neq 0$.
+Thus $\frac{1}{u^4} = d^2$, $\frac{1}{u^6} = d^3$ and $d = \frac{d^3}{d^2} = \frac{1}{u^2} \in (\F_q^*)^2$.
+
+$(\Leftarrow)$ Conversely, let $\delta \in \F_q^*$ such that $\delta^2 = d$.
+Then 
+\[ \psi(x,y) = \big(\frac{x}{d},\frac{y}{d\delta}\big) \]
+is a rational isomorphism from $E$ to $E_d$.
+\end{proof}
+
+
+\begin{proposition}
+Assume that $E/\F_q$ has $j(E) \neq 0, 1728$. 
+Then a twist $E_t/\F_q$ of $E/\F_q$ is either trivial or $E_d$ for some $d \in (\F_q^*) \backslash (\F_q^*)^2$.
+\end{proposition}
+\begin{proof}
+Assume that $E_t/\F_q$ is a non trivial twist of $E/\F_q$ with isomorphism $\phi : E \to E_t$ given by $\phi(x,y) = (u^2x,u^3y)$, $u \in \overline{\F_q}$, $u \notin \F_q$.
+Let $E_t : y^2 = x^3 +a_tx+b_t$, $a_t,b_t \in \F_q$, thus (**) yields
+\[ a_t = \frac{a}{u^4}, b_t = \frac{b}{u^6} \]
+Then $u^2 = \frac{ba_t}{ab_t} \in \F_q$, i.e. $u \notin \F_q$ but $u^2 \in \F_q$.
+This means that $u \in \F_{q^2} \backslash \F_q$.
+Let $d := \frac{1}{u^2}$, then $a_t = d^2a, b_t = d^3b$ and $\phi(x,y) = \big(\frac{x}{d},\frac{uy}{d} \big)$.
+\end{proof}
+
+
+\noindent \begin{remark}
+\begin{enumerate}
+\item Proposition \ref{prop:trivialtwist} is wrong if $p < 5$.
+\begin{verbatim}
+example de courbe envoye a Steven sur F3
+\end{verbatim}
+\item Since $p \geq 5$, $j(E) \notin \lbrace 0, 1728 \rbrace $ is equivalent to $a,b \in \F_q^{*}$.
+The reader may ask in what extend this is a restriction.
+\end{enumerate}
+\end{remark}
+
+\noindent \textbf{Order of group of rational points.} The group of rational points $E(\F_q)$ has order $\sharp E(\F_q) = q + 1 -t$ where $t$ is the \textsl{Trace of Frobenius}.
+An extensive description of the Frobenius endomorphism is out scope for this paper, we only need some basics facts we recall below.
+
+\begin{proposition}
+\begin{enumerate}
+\item \textbf{(Hasse Bound)} One has $|t|  \leq 2 \sqrt{q}$.
+\item One has $\sharp E_d(\F_q) = q+1+t$.
+\end{enumerate}
+\end{proposition}
+
+\vspace*{.5cm}
 \begin{itemize}
-\item Automorphismes d'une courbe elliptique. 
-\item Cas particulier de l'équation short p > 3.
-\item Description des twists, expliquer pourquoi j différent de 0 et 1728 n'est pas un problème, donc seulement le twist quadratique à considérer en général, écriture des morphismes
-\item exemples
+\item Donner exemple avec E smooth Et aussi et écrire le morphism
+\item dans la remarque sur j différent de 0,1728. Dire que a ou b = 0 est peut commun pour l'usage crypto (courbes anormales ou supersing)
 \end{itemize}
 
 \subsection{Discrete Logarithm Problem}
@@ -134,16 +286,17 @@ Let $G$ be a group in multiplicative notation.
 The \textbf{Discrete Logarithm Problem} (DLP) is : given $g,h \in G$ find $a \in \Z$ such that $h = g^a$.
 \end{definition}
 
-\noindent \textbf{Remarks :}
+\noindent \begin{remark}
 \begin{enumerate}
-\item Let $\L/\F_q$ be a field extension and $E/\F_q$ an elliptic curve.
-The group of $\L$-rationnal points of $E$ denoted $E(\L)$ (that is the solutions $(x,y) \in \L^2$ of the Weierstrass equation defining $E$) is usually written with an additive law. 
-So the DLP for elliptic curves may be rephrased : given $P,G \in E(\L)$ find $a \in \Z$ such that $P = aG$.
+\item The group law on an elliptic curve is usually written in additive notation.
+So the DLP for elliptic curves may be rephrased : given $P,G \in E(\F_q)$ find $a \in \Z$ such that $P = aG$.
 \end{enumerate}
+\end{remark}
 
-\textbf{Solving the DLP}
+\noindent \textbf{Solving the DLP}
 \begin{itemize}
 \item Polhig Helman, BSGS, Rho.
+\item Expliquer que connaitre d modulo "suffisament" de premiers peut suffire, pas modulo "tous" les premiers.
 \item Sage Discretelog vs Q.log(P)
 \end{itemize}
 
