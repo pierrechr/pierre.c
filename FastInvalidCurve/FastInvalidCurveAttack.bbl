@@ -24,4 +24,9 @@ P.-A. Fouque, R.~Lercier, D.~R{\'e}al, and F.~Valette.
 \newblock In {\em FDTC '08. 5th Workshop on Fault Diagnosis and Tolerance in
   Cryptography}, pages 92--98. IEEE-CS Press, August 2008.
 
+\bibitem{NT15}
+Samuel Neves and Mehdi Tibouchi.
+\newblock Degenerate curve attacks.
+\newblock Cryptology {ePrint} Archive, Paper 2015/1233, 2015.
+
 \end{thebibliography}

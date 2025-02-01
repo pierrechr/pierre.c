@@ -73,6 +73,7 @@ The so called \textsl{Invalid curve attack} is a real threat for cryptographic p
 The attack has first been presented in \cite{BMM00} and the use of twists was described in\cite{FLRV08}.
 OpenPGP.js prior to 4.2.0 was found to be vulnerable\footnote{https://www.cve.org/CVERecord?id=CVE-2019-9155}. 
 Bluetooth was proved to be vulnerable to a "Fixed Coordinate" variant  \cite{cryptoeprint:2019/1043}.
+Edwards model has also been examined in \cite{NT15}.
 The SafeCurves website and the associated paper \cite{cryptoeprint:2024/1265} point out as 
 \begin{quote}
 An ECC implementor can stop an invalid-curve attack by checking whether the input point Q satisfies the correct curve equation; [...]
@@ -169,7 +170,6 @@ We conclude with the following computations that will be used in the sequel.
 
 
 \begin{proposition}
-Assume $p \geq 5$.
 Let $E/\F_q$ be an elliptic curves given by short Weierstrass equations.
 \[ E_i : y^2 = x^3 + ax + b, \; \; a, b \in \F_q. \]
 The \textsl{$j$-invariant of E} is defined to be 
@@ -181,8 +181,8 @@ Given two elliptic curves $E_1, E_2$ defined over $\F_q$, there exists a geometr
 \noindent \begin{remark}
 \begin{enumerate}
 \item We insist that the $j$-invariant classifies \textbf{geometric} isomorphism classes of elliptic curves over $\F_q$. 
-\item Since $p \geq 5$, $j(E) \notin \lbrace 0, 1728 \rbrace $ is equivalent to $a,b \in \F_q^{*}$.
-\item !!! Revoir définie sur k et à coeff dans k
+\item Thanks to $p \geq 5$, $E$ has a short equation and $j(E)$ a special form in this case.
+Thus $j(E) \notin \lbrace 0, 1728 \rbrace \Leftrightarrow a,b \in \F_q^{*}$.
 \end{enumerate}
 \end{remark}
 
@@ -208,6 +208,7 @@ The \textsl{twist $E_d$ of $E$ by d} is the elliptic curve given in short Weiers
 
 \begin{remark}
 We did not specify that $E_d$ is a non trivial twist of $E$.
+Proposition \ref{prop:trivialtwist} recalls when $E_d$ is trivial.
 Actually, let $\delta$ be a square root of $d$ in $\overline{\F_q}$ i.e. $\delta^2 = d$, then
 \begin{align*}
 \phi : E & \to E_d\\
@@ -253,14 +254,11 @@ Let $d := \frac{1}{u^2}$, then $a_t = d^2a, b_t = d^3b$ and $\phi(x,y) = \big(\f
 
 
 \noindent \begin{remark}
-\begin{enumerate}
-\item Proposition \ref{prop:trivialtwist} is wrong if $p < 5$.
-\begin{verbatim}
-example de courbe envoye a Steven sur F3
-\end{verbatim}
-\item Since $p \geq 5$, $j(E) \notin \lbrace 0, 1728 \rbrace $ is equivalent to $a,b \in \F_q^{*}$.
-The reader may ask in what extend this is a restriction.
-\end{enumerate}
+Proposition \ref{prop:trivialtwist} is wrong if $p < 5$.
+For example, let $p=q=3$, $E : y^2 = x^3 + x + 1$ and $d = 2$.
+In this case, $E$ is isomorphic to $E_d : y^2 = x^3+x+2$  with $\psi$ given by constants $(u,r,s,t) = (2,2,0,0)$.
+So $E_d$ is a trivial twist of $E$ but $d$ is non square modulo $3$.
+Note that the definition for the $j$-invariant when $p=3$ gives here $j(E) = 0$.
 \end{remark}
 
 \noindent \textbf{Order of group of rational points.} The group of rational points $E(\F_q)$ has order $\sharp E(\F_q) = q + 1 -t$ where $t$ is the \textsl{Trace of Frobenius}.
@@ -273,9 +271,33 @@ An extensive description of the Frobenius endomorphism is out scope for this pap
 \end{enumerate}
 \end{proposition}
 
+\begin{remark}
+\begin{enumerate}
+\item The previous Proposition implies that $|\sharp(E_d(\F_q)) - \sharp(E(F_q))| \leq 4\sqrt{q}$, so $\sharp(E_d(\F_q))$ and $\sharp(E(F_q))$ are in the same order of magnitude.
+But even if $\sharp(E(\F_q)) = hp$ with $p$ prime and $h$ a small cofactor (a classical situation in cryptographic applications) then $\sharp(E_d(\F_q))$ might have a factorization many small primes (such numbers are called \textsl{smooth}).
+
+For example \textbf{brainpoolP256t1} 
+
+\begin{verbatim}
+p	0xa9fb57dba1eea9bc3e660a909d838d726e3bf623d52620282013481d1f6e5377
+a	0xa9fb57dba1eea9bc3e660a909d838d726e3bf623d52620282013481d1f6e5374
+b	0x662c61c430d84ea4fe66a7733d0b76b7bf93ebc4af2f49256ae58101fee92b04
+G	(0xa3e8eb3cc1cfe7b7732213b23a656149afa142c47aafbc2b79a191562e1305f4, 0x2d996c823439c56d7f7b22e14644417e69bcb6de39d027001dabe8f35b25c9be)
+n	0xa9fb57dba1eea9bc3e660a909d838d718c397aa3b561a6f7901e0e82974856a7
+h
+0x1
+Ecrire brain pool,
+ses twists
+trouver d
+comparer avec l'iso donne par Sage
+Calculer le j
+\end{verbatim}
+
+\end{enumerate}
+\end{remark}
+
 \vspace*{.5cm}
 \begin{itemize}
-\item Donner exemple avec E smooth Et aussi et écrire le morphism
 \item dans la remarque sur j différent de 0,1728. Dire que a ou b = 0 est peut commun pour l'usage crypto (courbes anormales ou supersing)
 \end{itemize}
 
@@ -283,23 +305,42 @@ An extensive description of the Frobenius endomorphism is out scope for this pap
 
 \begin{definition}
 Let $G$ be a group in multiplicative notation.
-The \textbf{Discrete Logarithm Problem} (DLP) is : given $g,h \in G$ find $a \in \Z$ such that $h = g^a$.
+The \textbf{Discrete Logarithm Problem} (DLP) is : given $b,h \in G$ find $a \in \Z$ such that $h = b^a$.
 \end{definition}
 
 \noindent \begin{remark}
 \begin{enumerate}
 \item The group law on an elliptic curve is usually written in additive notation.
-So the DLP for elliptic curves may be rephrased : given $P,G \in E(\F_q)$ find $a \in \Z$ such that $P = aG$.
+So the DLP for elliptic curves order of may be rephrased : given $P,B \in E(\F_q)$ find $a \in \Z$ such that $P = aB$.
+We will stick to this setting.
+\item The DLP has a solution if and only if $P$ is in the subgroup \textless$B$\textgreater~generated by $B$.
 \end{enumerate}
 \end{remark}
 
-\noindent \textbf{Solving the DLP}
-\begin{itemize}
-\item Polhig Helman, BSGS, Rho.
-\item Expliquer que connaitre d modulo "suffisament" de premiers peut suffire, pas modulo "tous" les premiers.
-\item Sage Discretelog vs Q.log(P)
-\end{itemize}
+%The DLP is a deep problem, we will even not give an overview but roughtly speaking there are two kinds of methods for solving DLP.
+%One the one hand, general algorithms that do not make use of any particular structure of $G$.
+%Such algorithms are Baby Step Giant Step, Pollard Rho, Lambda and Pseudorandom walks.
+%They are based on collision findings.
+%One the other hand, specific algorithms that make use of knowledge about $G$.
+%Quadratic sieve, Number field sieve, Index Calculus, Coppersmith's method. 
+%These lasts algorithms are way faster but need much more advanced mathematics and pre-computation.
 
+
+
+The following discussion gives the necessaries notions when dealing with generic methods to solve the DLP that will be used in the last section.
+The generic \verb|discrete_log| method from Sage uses a combination of Pohlig-Hellman, Baby step giant step, Pollard’s kangaroo (i.e. Pollard's Lambda), and Pollard’s Rho. 
+
+\begin{itemize}
+\item The Pohlig-Helmann method.
+Let $n$ be the order of a point $B \in E/\F_q$ and assume that $n = \prod_{i = 1}^m p_i^{n_i}$ be its prime factorization.
+The subgroup $H$ generated by $B$ is cyclic of order $n$, thus has a unique cyclic subgroup $H_i$ of order $p_i^{n_i}$ for each $i \in [| 1; m|]$.
+By means of the Chinese Remainder Theorem, solving the DLP in $H$ boils down to solve it in each $H_i$. 
+The subgroups $H_i$ have order a prime power, which may still be quite large. 
+One can reduce the DLP from $H_i$ to subgroups of order \textbf{exactly} $p_i$.
+\item BSGS method is a collision finding algorithm that requires $\mathcal{O}(\sqrt{p_i})$ running time and $\mathcal{O}(\sqrt{p_i})$ storage.
+This gives an bound on the size of the $p_i$'s for which we can hope to solve the DLP with this method.
+\item Pollard's Rho (resp. Lambda) algorithm has $\mathcal{O}(\sqrt{p_i})$ (resp. $\mathcal{O}(\sqrt{p_i})$) time complexity but $\mathcal{O}(1)$ ) (resp. $\mathcal{O}(\ln{p_i})$) space complexity.
+\end{itemize}
 
 \section{Invalid Curve Attack}
 \subsection{General Setting}
@@ -310,6 +351,7 @@ Position du problème : les algo de multiplication d*P n'utilisent que le coeff 
 \item Si on peut faire calculer k*T pour T sur une autre courbe E' on peut trouver T modulo les premiers de l'ordre de E'.
 \item si le twist a un ordre avec d'autres facteurs premier que E alors on connait k modulo de nouveaux premiers. 
 \item cela peut suffire à retrouver k (CRT)
+\item Expliquer que connaitre d modulo "suffisament" de premiers peut suffire, pas modulo "tous" les premiers.
 \end{itemize}
 
 \subsection{Exploiting Ladders and twists}
