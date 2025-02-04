@@ -66,18 +66,17 @@
 \section{Introduction}
 
 The so called \textsl{Invalid curve attack} is a real threat for cryptographic protocols based on elliptic curves.
-The attack has first been presented in \cite{BMM00} and the use of twists was described in\cite{FLRV08}.
+The attack has first been presented in \cite{BMM00} and the use of twists was described in \cite{FLRV08}.
 OpenPGP.js prior to 4.2.0 was found to be vulnerable\footnote{https://www.cve.org/CVERecord?id=CVE-2019-9155}. 
+The Node.js secp256k1-node allows bindings to the  "Bitcoin curve" \verb|secp256k1| and was found to be vulnerable\footnote{https://nvd.nist.gov/vuln/detail/CVE-2024-48930} to small subgroup attacks.
 Bluetooth was proved to be vulnerable to a "Fixed Coordinate" variant  \cite{cryptoeprint:2019/1043}.
 Edwards model has also been examined in \cite{NT15}.
 The SafeCurves website and the associated paper \cite{cryptoeprint:2024/1265} point out as 
 \textsl{"An ECC implementor can stop an invalid-curve attack by checking whether the input point Q satisfies the correct curve equation; [...]
 But this creates a conflict between simplicity and security. An implementation that does not include this check is simpler and more likely to be produced, and will pass typical functionality tests."}
-The Node.js secp256k1-node allows bindings to the  "Bitcoin curve" \verb|secp256k1| and was found to be vulnerable\footnote{https://nvd.nist.gov/vuln/detail/CVE-2024-48930} to small subgroup attacks.
 
 
-\vspace*{.5cm}
-\noindent The rest of the paper is organized as follows.
+The rest of the paper is organized as follows.
 Section 2 recalls the basics mathematical concepts used  in the sequel, we recall basics facts about discrete logarithm problem (DLP) and twists of elliptic curves.	
 Section 3 presents the general setting of the attack and ways to exploit poor implementation and weak curves.
 Section 4 is a complete walktrhought an example.
@@ -90,13 +89,11 @@ We will denote by $\F_q$ the finite field with $q = p^n$ elements where $p \geq 
 We will denote by $E/\F_q$ an elliptic curve defined over $\F_q$. 
 The reader is assumed to be familiar with basic theory of elliptic curves.
 
-\vspace*{.5cm}
 
 \noindent \textbf{Short Weierstrass equations.}  Since $p\geq 5$, every elliptic curve $E/\F_q$ may be written as
 \[ E : y^2 = x^3 + ax + b, \; \; a,b \in \F_q. \]
 This is a so called \textsl{short Weierstrass form} of the curve $E$ \textsl{defined over $\F_q$}.
 
-\vspace*{.5cm}
 
 \noindent \begin{remark} 
 \begin{enumerate}
@@ -153,8 +150,7 @@ We conclude with the following computations that will be used in the sequel.
 
 
 \begin{proposition}
-Let $E/\F_q$ be an elliptic curves given by short Weierstrass equations.
-\[ E_i : y^2 = x^3 + ax + b, \; \; a, b \in \F_q. \]
+Let $E/\F_q$ be an elliptic curves given by short Weierstrass equation $ E : y^2 = x^3 + ax + b, \; \; a, b \in \F_q$.
 The \textsl{$j$-invariant of E} is defined to be 
 \[j(E) = 1728 \frac{4a^3}{4a^3+27b^2}.\]
 
@@ -172,16 +168,14 @@ Thus $j(E) \notin \lbrace 0, 1728 \rbrace \Leftrightarrow a,b \in \F_q^{*}$.
 \subsection{Twists of Elliptic Curves}
 
 \noindent \textbf{Twists.} Non trivial twists of $E/\F_q$ are elliptic curves $E'/\F_q$ being isomorphic to $E$ when viewed over $\overline{\F_q}$ but not isomorphic to $E$ when viewed over $\F_q$.
+Let $E/\F_q$ be an elliptic curve in short Weierstrass equation $y^2 = x^3+ax+b$.
+Recall that $q = p^n$ and $p \geq 5$, so it is possible to write such an equation for $E$. 
 
 \begin{definition}
 Le $E/\F_q$ be an elliptic curve.
 A \textsl{twist of $E$} is an elliptic curve $E_t/\F_q$ such that there is a geometric isomorphism $\phi/\overline{\F_q}$ of elliptic curves $\phi : E \simeq E_t$.
-A twist $E_t$ of $E$ is \textsl{trivial} if there exists an isomorphism $\psi$ of elliptic curve \textbf{defined over} $\F_q$.
+A twist $E_t$ of $E$ is \textsl{trivial} if there exists an isomorphism $\psi$ of elliptic curve defined over $\F_q$.
 \end{definition}
-
-\vspace*{.5cm}
-\noindent \textbf{Quadratic Twists.} Let $E/\F_q$ be an elliptic curve in short Weierstrass equation $y^2 = x^3+ax+b$.
-Recall that $q = p^n$ and $p \geq 5$, so it is possible to write such an equation for $E$. 
 
 \begin{definition}
 Let $d \in \F_q^*$.
@@ -190,8 +184,7 @@ The \textsl{twist $E_d$ of $E$ by d} is the elliptic curve given in short Weiers
 \end{definition}
 
 \begin{remark}
-We did not specify that $E_d$ is a non trivial twist of $E$.
-Proposition \ref{prop:trivialtwist} recalls when $E_d$ is trivial.
+We did not specify that $E_d$ is a non trivial.
 Actually, let $\delta$ be a square root of $d$ in $\overline{\F_q}$ i.e. $\delta^2 = d$, then
 \begin{align*}
 \phi : E & \to E_d\\
@@ -208,17 +201,16 @@ The twist $E_d$ is trivial if and only if $d \in (\F_q^*)^2$.
 
 \begin{proof}
 $(\Rightarrow)$ Assume that there exists a rational isomorphism $\psi$ from $E$ to $E_d$.
-According to Proposition \ref{prop:auto}, there exists $u \in \F_q^*$
-\[ \psi(x,y) = (u^2x,u^3y) \]
+According to Proposition \ref{prop:auto}
+\[ \exists u \in \F_q^*, \mkern4mu \psi(x,y) = (u^2x,u^3y) \]
 
 According to (**), $\frac{a}{u^4} = ad^2$ and $\frac{b}{u^6} = bd^3$.
 Recall that since $ p \geq 5$, the assumption about $j(E)$ is equivalent to $a,b \neq 0$.
 Thus $\frac{1}{u^4} = d^2$, $\frac{1}{u^6} = d^3$ and $d = \frac{d^3}{d^2} = \frac{1}{u^2} \in (\F_q^*)^2$.
 
 $(\Leftarrow)$ Conversely, let $\delta \in \F_q^*$ such that $\delta^2 = d$.
-Then 
+Then  a rational isomorphism from $E$ to $E_d$ is
 \[ \psi(x,y) = \big(\frac{x}{d},\frac{y}{d\delta}\big) \]
-is a rational isomorphism from $E$ to $E_d$.
 \end{proof}
 
 
@@ -250,20 +242,37 @@ An extensive description of the Frobenius endomorphism is out scope for this pap
 \begin{proposition}
 \begin{enumerate}
 \item \textbf{(Hasse Bound)} One has $|t|  \leq 2 \sqrt{q}$.
-\item One has $\sharp{} E_d(\F_q) = q+1+t$, thus $|\sharp{} E_d(\F_q) - \sharp{}E(F_q)| = |2t|  \leq 4\sqrt{q}$.
+\item One has $\sharp{} E_d(\F_q) = q+1+t$, thus $|\sharp{} E_d(\F_q) - \sharp{}E(\F_q)| = |2t|  \leq 4\sqrt{q}$.
 \end{enumerate}
 \end{proposition}
 \begin{proof}
 \begin{enumerate}
 \item The proof of Hasse Bound is technical, the interessted reader may refer to V Theorem 1.1 from \cite{Silverman:EC} 
-\item We include this proof to give some insight into how points distribute over $E(\F_q)$, $E_d(\F_q)$ and $E(\F_{q^2})$.
+\item We include this proof to give some insight into how points distribute over $E(\F_q)$, $E_d(\F_q)$.
+We will prove that 
+\[  \sharp{}E(\F_q) + \sharp{}E_d(\F_q) = 2q+2 \mkern20mu (\dagger)\]
+substituting $\sharp E(\F_q) = q + 1 -t$ gives the result.
+
+Let $f(x) = x^3+ax+b$, $d \in \F_q^*$ be non square in $\F_q$ and $E_d : Y^2 = X^3+d^2aX+d^3b$.
+The following change of variables on $E_d$ (take care, this is not an isomorphism of $E_d$)
+\[ X = dx, \mkern2mu Y = dy \]
+yields $ Y^2 = X^3+d^2aX+d^3b \Leftrightarrow d^2y^2 = d^3x^3+d^3ax+d^3b \Leftrightarrow y^2 = df(x)$. 
+
+\begin{itemize}
+\item Let $x \in \F_q$ such that $f(x) = 0$, then $(x,0) \in E(\F_q)$ and $(dx,0) \in E_d(\F_q)$.
+Each curve gets one point.
+\item Let $x \in \F_q$ such that $f(x) \in (\F_q^*)^2$.
+Then $y^2 = f(x)$ has two solutions.
+Since $d$ is non square, $df(x)$ is non square and $y^2 = df(x)$ has no solution in $\F_q$.
+So $E$ gets two points and $E_d$ zero.
+\item  Let $x \in \F_q$ such that $f(x) \notin (\F_q^*)^2$.
+Then $df(x) \in (\F_q^*)^2$ and $y^2 = df(x)$ has two solution giving rise to two points on $E_d$.
+Here, $E$ gets zero point.
+\item Count the point at infinty once for each curve.
+\end{itemize}
+Thus each $x \in \F_q$ contributes for $2$ points in $E(\F_q) \cup E_d(\F_q)$ plus the points at infinity, yielding $(\dagger)$.
 \end{enumerate}
 \end{proof}
-
-\begin{remark}
-Even if $\sharp{} E(\F_q) = hp$ with $p$ prime and $h$ a small cofactor (a classical situation in cryptographic applications) then $\sharp{}E_d(\F_q)$ might have a prime factorization with many small primes (such numbers are called \textsl{smooth}).
-For example \textbf{brainpoolP256t1} curve has prime order but its quadratic twist $E_t$ has a somehow smooth order since it factors in a product of $7$ primes of which $6$ have bit length less than $42$ (the last prime factor has bit length $89$).
-\end{remark}
 
 \subsection{Discrete Logarithm Problem}
 
@@ -284,7 +293,7 @@ The generic \verb|discrete_log| method from Sage uses a combination of Pohlig-He
 
 \begin{itemize}
 \item The Pohlig-Helmann method.
-Let $n$ be the order of a point $B \in E/\F_q$ and  $n = \prod_{i = 1}^m p_i^{n_i}$ be its prime factorization.
+Let $n$ be the order of a point $B \in E(\F_q)$ and  $n = \prod_{i = 1}^m p_i^{n_i}$ be its prime factorization.
 The subgroup $H$ generated by $B$ is cyclic of order $n$, thus has a unique cyclic subgroup $H_i$ of order $p_i^{n_i}$ for each $i \in [| 1; m|]$.
 By means of the Chinese Remainder Theorem (CRT), solving the DLP in $H$ boils down to solve it in each $H_i$. 
 The subgroups $H_i$ have order a prime power, which may still be quite large. 
@@ -299,7 +308,18 @@ This gives an bound on the size of the $p_i$'s for which we can hope to solve th
 \subsection{General Setting}
 
 Invalid Cuve Attack is presented in \cite{FLRV08}.
-Position du problème : les algo de multiplication d*P n'utilisent que le coeff a de E, on peut passer (x,y) n'étant pas sur E.
+Let $E/\F_q : y^2 = x^3+ax+b$ be the public curve of the cryptosystem.
+
+\vspace*{.5cm}
+\textbf{Main idea :} The vulnerabilty lies in the fact that a malicious user may send a point that is \textbf{not} on $E/\F_q$ but on a weaker curve, say a quadratic twist, and then exploit it to solve an easier DLP.
+This is mainly due to $b$ not beeing used for scalar multiplication on $E$.
+
+\begin{enumerate}
+\item Mallory may send an honest $P = (x,y)$ point on $E$ and gets back some \verb|k|$.P$ from Bob.
+But Mallory may also send a malicious point $Q = (\tilde{x},\tilde{y})$ on another curve $\tilde{E} : y^2 = x^3+ax+\tilde{b}$ (note that the $a$ coefficient remains unchanged).
+Since formulae for computing \verb|k|$.Q$ do not involve $b, \tilde{b}$, Bob will correctly compute \verb|k|$.Q$, believing he just made a computation on $E$.
+
+\end{enumerate}
 
 \begin{itemize}
 \item DLP peut etre trop dur sur E à cause de d'un ordre pas assez smooth.
@@ -307,13 +327,15 @@ Position du problème : les algo de multiplication d*P n'utilisent que le coeff 
 \item si le twist a un ordre avec d'autres facteurs premier que E alors on connait k modulo de nouveaux premiers. 
 \item cela peut suffire à retrouver k (CRT)
 \item Expliquer que connaitre d modulo "suffisament" de premiers peut suffire, pas modulo "tous" les premiers.
+\item apport de montgomery qui limite le choix de E au twist (according to ...)
 \end{itemize}
 
-\subsection{Exploiting Ladders and twists}
-\begin{itemize}
-\item L'importance des ladders cf Safe Curves
-\item L'importance des multiplications où on ne passe que le x.
-\end{itemize}
+\begin{remark}
+Even if $\sharp{} E(\F_q) = hp$ with $p$ prime and $h$ a small cofactor (a classical situation in cryptographic applications) then $\sharp{}E_d(\F_q)$ might have a prime factorization with many small primes (such numbers are called \textsl{smooth}).
+For example \textbf{brainpoolP256t1} curve has prime order but its quadratic twist $E_t$ has a somehow smooth order since it factors in a product of $7$ primes of which $6$ have bit length less than $42$ (the last prime factor has bit length $89$).
+\end{remark}
+
+\section{Walkthrough example}
 
 
 \bibliographystyle{plain}
