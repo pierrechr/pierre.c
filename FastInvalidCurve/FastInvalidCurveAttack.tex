@@ -5,7 +5,7 @@
 \documentclass[10pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsfonts,amssymb,amsmath,amsthm}
-\usepackage[a4paper, top=15pt, marginparwidth=25pt, textwidth=510pt, textheight=550pt, bottom=50pt]{geometry}
+\usepackage[a4paper, top=50pt, marginparwidth=25pt, textwidth=510pt, textheight=550pt, bottom=50pt]{geometry}
 \usepackage[pdftex]{color,graphicx}
 \usepackage{marginnote}
 
@@ -58,10 +58,6 @@
 \title{Practical Invalid Curve Attack Using Quadratic Twist}
 \date{February 2025}
 \maketitle
-\begin{abstract}
-We present the common structure of the attack and give some insight to efficiently exploit quadratic twists. 
-This paper has primarily an expository role.
-\end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Body
@@ -75,19 +71,17 @@ OpenPGP.js prior to 4.2.0 was found to be vulnerable\footnote{https://www.cve.or
 Bluetooth was proved to be vulnerable to a "Fixed Coordinate" variant  \cite{cryptoeprint:2019/1043}.
 Edwards model has also been examined in \cite{NT15}.
 The SafeCurves website and the associated paper \cite{cryptoeprint:2024/1265} point out as 
-\begin{quote}
-An ECC implementor can stop an invalid-curve attack by checking whether the input point Q satisfies the correct curve equation; [...]
-But this creates a conflict between simplicity and security. An implementation that does not include this check is simpler and more likely to be produced, and will pass typical functionality tests. 
-\end{quote}
+\textsl{"An ECC implementor can stop an invalid-curve attack by checking whether the input point Q satisfies the correct curve equation; [...]
+But this creates a conflict between simplicity and security. An implementation that does not include this check is simpler and more likely to be produced, and will pass typical functionality tests."}
+The Node.js secp256k1-node allows bindings to the  "Bitcoin curve" \verb|secp256k1| and was found to be vulnerable\footnote{https://nvd.nist.gov/vuln/detail/CVE-2024-48930} to small subgroup attacks.
 
-\noindent As a side note, it is also at heart of many Capture The Flag and cryptographic challenges on dedicated platforms.
 
 \vspace*{.5cm}
 \noindent The rest of the paper is organized as follows.
 Section 2 recalls the basics mathematical concepts used  in the sequel, we recall basics facts about discrete logarithm problem (DLP) and twists of elliptic curves.	
 Section 3 presents the general setting of the attack and ways to exploit poor implementation and weak curves.
 Section 4 is a complete walktrhought an example.
-This paper has primarily an expository role.
+This paper has an expository role.
 
 \section{Background Material}
 
@@ -109,15 +103,6 @@ This is a so called \textsl{short Weierstrass form} of the curve $E$ \textsl{def
 \item The condition $p \geq 5$ is not a restriction in our context since $p$ will usually be a large prime.
 \item A short Weierstrass form is not unique.
 This will be completed in the subsection about twists.
-
-%\begin{verbatim}
-%k = GF(11**2)
-%u = k(2)
-%E = EllipticCurve(k,[1,1])
-%E_ = EllipticCurve(k,[u**(-4),u**(-6)])
-%E.is_isomorphic(E_)
-%E.isomorphism_to(E_)
-%\end{verbatim}
 \end{enumerate}
 \end{remark}
 
@@ -131,12 +116,10 @@ for $u \in \overline{\F_q}^{\mkern1mu *}$, $r,s,t \in \overline{\F_q}$.
 We will denote geometric isomorphism as $\phi/\overline{\F_q}$.
 The isomorphism $\psi$ is said to be \textsl{defined over $\F_q$} or \textsl{rational} if $u,r,s,t \in \F_q$, we will denote it by $\psi/\F_q$.
 
-For a sake of clarity we will stick to the notation $\phi$ for geometric isomorphism and $\psi$ for rational isomorphisms.
-
 \begin{proposition}\label{prop:auto}
 Let $E_i/\F_q$, $i \in \lbrace 1; 2 \rbrace$ be elliptic curves given by short Weierstrass equations.
 \[ E_i : y^2 = x^3 + a_ix + b_i, \; \; a_i,b_i \in \F_q. \]
-A geometric isomorphism $\phi$ has the form 
+A geometric isomorphism $\phi$ froom $E_1$ to $E_2$ is of the form 
 \[ \phi(x,y) = (u^{\mkern1mu 2}x, u^{\mkern1mu 3}y).\]  
 \end{proposition}
 \begin{proof}
@@ -267,17 +250,19 @@ An extensive description of the Frobenius endomorphism is out scope for this pap
 \begin{proposition}
 \begin{enumerate}
 \item \textbf{(Hasse Bound)} One has $|t|  \leq 2 \sqrt{q}$.
-\item One has $\sharp{} E_d(\F_q) = q+1+t$.
+\item One has $\sharp{} E_d(\F_q) = q+1+t$, thus $|\sharp{} E_d(\F_q) - \sharp{}E(F_q)| = |2t|  \leq 4\sqrt{q}$.
 \end{enumerate}
 \end{proposition}
+\begin{proof}
+\begin{enumerate}
+\item The proof of Hasse Bound is technical, the interessted reader may refer to V Theorem 1.1 from \cite{Silverman:EC} 
+\item We include this proof to give some insight into how points distribute over $E(\F_q)$, $E_d(\F_q)$ and $E(\F_{q^2})$.
+\end{enumerate}
+\end{proof}
 
 \begin{remark}
-\begin{enumerate}
-\item In particular $|\sharp{} E_d(\F_q) - \sharp{}E(F_q)| \leq 4\sqrt{q}$, so $\sharp{} E_d(\F_q)$ and $\sharp{} E(F_q)$ are of the same order of magnitude.
-But even if $\sharp{} E(\F_q) = hp$ with $p$ prime and $h$ a small cofactor (a classical situation in cryptographic applications) then $\sharp{}E_d(\F_q)$ might have a prime factorization with many small primes (such numbers are called \textsl{smooth}).
+Even if $\sharp{} E(\F_q) = hp$ with $p$ prime and $h$ a small cofactor (a classical situation in cryptographic applications) then $\sharp{}E_d(\F_q)$ might have a prime factorization with many small primes (such numbers are called \textsl{smooth}).
 For example \textbf{brainpoolP256t1} curve has prime order but its quadratic twist $E_t$ has a somehow smooth order since it factors in a product of $7$ primes of which $6$ have bit length less than $42$ (the last prime factor has bit length $89$).
-\item dans la remarque sur j différent de 0,1728. Dire que a ou b = 0 est peut commun pour l'usage crypto (courbes anormales ou supersing)
-\end{enumerate}
 \end{remark}
 
 \subsection{Discrete Logarithm Problem}
@@ -295,7 +280,7 @@ The \textbf{Discrete Logarithm Problem} (DLP) is : given $b,h \in G$ find $a \in
 \end{remark}
 
 The following discussion gives the necessaries notions when dealing with generic methods to solve the DLP that will be used in the last section.
-The generic \verb|discrete_log| method from Sage uses a combination of Pohlig-Hellman, Baby step giant step, Pollard’s kangaroo (i.e. Pollard's Lambda), and Pollard’s Rho. 
+The generic \verb|discrete_log| method from Sage uses a combination of Pohlig-Hellman, Baby Step Giant Step (BSGS) , Pollard’s kangaroo (i.e. Pollard's Lambda), and Pollard’s Rho. 
 
 \begin{itemize}
 \item The Pohlig-Helmann method.
@@ -312,6 +297,8 @@ This gives an bound on the size of the $p_i$'s for which we can hope to solve th
 
 \section{Invalid Curve Attack}
 \subsection{General Setting}
+
+Invalid Cuve Attack is presented in \cite{FLRV08}.
 Position du problème : les algo de multiplication d*P n'utilisent que le coeff a de E, on peut passer (x,y) n'étant pas sur E.
 
 \begin{itemize}

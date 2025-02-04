@@ -29,4 +29,9 @@ Samuel Neves and Mehdi Tibouchi.
 \newblock Degenerate curve attacks.
 \newblock Cryptology {ePrint} Archive, Paper 2015/1233, 2015.
 
+\bibitem{Silverman:EC}
+Joseph~H Silverman.
+\newblock {\em {The Arithmetic of Elliptic Curves}}.
+\newblock Graduate texts in mathematics. Springer, Dordrecht, 2009.
+
 \end{thebibliography}
