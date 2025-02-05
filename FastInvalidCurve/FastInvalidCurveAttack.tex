@@ -340,13 +340,9 @@ f \verb|k| is known to be a, say, $2^{256}$ bits key and the product of the $p_i
 \item Checking that the received point $Q$ acutally lies on $E$ stops the attack.
 \item According to \cite{cryptoeprint:2024/1265}, a curve supporting \textsl{"simple, fast, constant-time single-coordinate single-scalar multiplication [...]drastically limits the power of invalid-curve attacks"} due to the fact that for a given $x \in \F_q$, formulae for single-coordinate ladders work for the original curve and the quadratic twist.
 So if the implementation is based on such ladders (e.g. Montgomery ladders), Mallory has only access to points on $E$ and $E_d$ but on no other curve $\tilde{E}$ as above.
+\item Even if $\sharp{} E(\F_q) = hp$ with $p$ prime and $h$ a small cofactor (a classical setting in cryptographic applications) then $\sharp{}E_d(\F_q)$ might have a prime factorization with many small primes (such numbers are called \textsl{smooth}).
+For example \textbf{brainpoolP256t1} curve has prime order but its quadratic twist $E_t$ has smooth order since it factors in a product of $7$ primes of which $6$ have bit length less than $42$ (the last prime factor has bit length $89$).
 \end{enumerate}
-\end{remark}
-
-
-\begin{remark}
-Even if $\sharp{} E(\F_q) = hp$ with $p$ prime and $h$ a small cofactor (a classical situation in cryptographic applications) then $\sharp{}E_d(\F_q)$ might have a prime factorization with many small primes (such numbers are called \textsl{smooth}).
-For example \textbf{brainpoolP256t1} curve has prime order but its quadratic twist $E_t$ has a somehow smooth order since it factors in a product of $7$ primes of which $6$ have bit length less than $42$ (the last prime factor has bit length $89$).
 \end{remark}
 
 \section{Walkthrough Example}
