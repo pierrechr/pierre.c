@@ -17,7 +17,7 @@ I am currently teaching Mathematics in CPGE (undegraduate students) since 2015.
 + Algebraic and Algorithmic Number Theory
 + Algebraic Geometry
 
-## Writes-ups
+## Write-ups
 
 + _Practical Invalid Curve Attack Using Quadratic Twist_ [Available in the directory FastInvalidCurveAttack](https://github.com/pierrechr/pierre.c/tree/main/FastInvalidCurve)
 
