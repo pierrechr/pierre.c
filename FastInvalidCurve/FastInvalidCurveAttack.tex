@@ -77,9 +77,10 @@ But this creates a conflict between simplicity and security. An implementation t
 
 
 The rest of the paper is organized as follows.
-Section 2 recalls the basics mathematical concepts used  in the sequel, we recall basics facts about discrete logarithm problem (DLP) and twists of elliptic curves.	
+Section 2 recalls the basics mathematical concepts used  in the sequel, we recall basics facts about discrete logarithm problem (DLP) and twists of elliptic curves. 
 Section 3 presents the general setting of the attack and ways to exploit poor implementation and weak curves.
-Section 4 is a complete walktrhought an example.
+Section 4 is a complete walktrhought an example with a toy curve $E$.
+A comprehensive study of morphisms and the quadratic twist $E_d$ allows to solve the challenge DLP not in $E(\F_{q^2})$ and $E_d(\F_{q^2})$ (as usually seen in Ivalid Curve Attack write ups) but instead in $E(\F_{q})$ and $E_d(\F_{q})$. 
 This paper has an expository role.
 
 \section{Background Material}
@@ -93,7 +94,7 @@ The reader is assumed to be familiar with basic theory of elliptic curves.
 \noindent \textbf{Short Weierstrass equations.}  Since $p\geq 5$, every elliptic curve $E/\F_q$ may be written as
 \[ E : y^2 = x^3 + ax + b, \; \; a,b \in \F_q. \]
 This is a so called \textsl{short Weierstrass form} of the curve $E$ \textsl{defined over $\F_q$}.
-
+The point at infinity of $E$ is denoted by $\mathcal{O}_E$.
 
 \noindent \begin{remark} 
 \begin{enumerate}
@@ -251,10 +252,10 @@ An extensive description of the Frobenius endomorphism is out scope for this pap
 \item We include this proof to give some insight into how points distribute over $E(\F_q)$, $E_d(\F_q)$.
 We will prove that 
 \[  \sharp{}E(\F_q) + \sharp{}E_d(\F_q) = 2q+2 \mkern20mu (\dagger)\]
-substituting $\sharp E(\F_q) = q + 1 -t$ gives the result.
+substituting $\sharp E(\F_q) = q + 1 -t$ in $(\dagger)$ gives the result.
 
 Let $f(x) = x^3+ax+b$, $d \in \F_q^*$ be non square in $\F_q$ and $E_d : Y^2 = X^3+d^2aX+d^3b$.
-The following change of variables on $E_d$ (take care, this is not an isomorphism of $E_d$)
+The following change of variables on $E_d$ (take care, this is not an automorphism of $E_d$ but a tool to count points)
 \[ X = dx, \mkern2mu Y = dy \]
 yields $ Y^2 = X^3+d^2aX+d^3b \Leftrightarrow d^2y^2 = d^3x^3+d^3ax+d^3b \Leftrightarrow y^2 = df(x)$. 
 
@@ -268,9 +269,10 @@ So $E$ gets two points and $E_d$ zero.
 \item  Let $x \in \F_q$ such that $f(x) \notin (\F_q^*)^2$.
 Then $df(x) \in (\F_q^*)^2$ and $y^2 = df(x)$ has two solution giving rise to two points on $E_d$.
 Here, $E$ gets zero point.
-\item Count the point at infinty once for each curve.
 \end{itemize}
-Thus each $x \in \F_q$ contributes for $2$ points in $E(\F_q) \cup E_d(\F_q)$ plus the points at infinity, yielding $(\dagger)$.
+Let $E_a(\F_q) = E(\F_q) \backslash \lbrace \mathcal{O}_E \rbrace$ be the affine part of $E$ and $E_{d,a}(\F_q) = E_d(\F_q) \backslash \lbrace \mathcal{O}_{E_d} \rbrace$ be the affine part of $E_d$.
+Each $x \in \F_q$ contributes for $2$ points in the affine part of $E_a(\F_q) \cup E_{d,a}(\F_q)$, note that $E_a(\F_q) \cap E_{a,d}(\F_q) =\emptyset $.
+Counting points at infinity once for each curve yields $(\dagger)$.
 \end{enumerate}
 \end{proof}
 
@@ -332,7 +334,7 @@ Mallory solves this DLP in group of order $p_i$.
 At this point Mallory knows \verb|k| modulo $p_i$. 
 \item Iterating this process over various prime factors $p_i$ of $n_i$, for various $n_i$ on selected $\tilde{E}_i$ gives \verb|k| modulo many primes.
 Then by means of the CRT, Mallory is able to recover \verb|k| modulo \textbf{the product} of the $p_i$'s.
-f \verb|k| is known to be a, say, $2^{256}$ bits key and the product of the $p_i$ is greater than $2^{256}$ then Mallory actually recovered  \verb|k|.
+If \verb|k| is known to be a, say, $2^{256}$ bits key and the product of the $p_i$ is greater than $2^{256}$ then Mallory actually recovered  \verb|k|.
 \end{enumerate}
 
 \begin{remark}
@@ -347,8 +349,56 @@ For example \textbf{brainpoolP256t1} curve has prime order but its quadratic twi
 
 \section{Walkthrough Example}
 
+In this section we give full details to implement the attack on a toy curve in a fake game between Bob and Mallory.
+The full code is available in \verb|FastInvalidAttack.py|, containing some more explanations and comments.
+
+\vspace*{.5cm}
+\textbf{Setting :} First of all, check that the challenge has certain properties.
+\begin{itemize}
+\item You are given some ECDH challenge, assume moreover that the curve $E$ is in short Weierstrass form.
+\item The implementation on Bob's side does not checl whether the user passes a point on $E$.
+\item If the challenge uses two coordinates to compute on $E$, this is probably a Small Subgroup Attack.
+So one may choose $x$ such that it lifts as $Q_i=(x,y)$ of smooth order on a weak curve $E_i$.
+This is not the situation we are considering.
+\item If the challenge uses single coordinate to compute on $E$ (with some sort of Montgomery scalar multiplication) this may be an Invalid Curve Attack restricting the choice of the weak $E_i$ to the quadratic twist $E_d$.
+\end{itemize}
+
+\noindent Assume we are given a challenge where one plays the role of a malicious user Mallory interacting with Bob.
+Mallory sends a point $P$ to Bob who computes \verb|k|$.P$ for some secret key \verb|k|.
+Mallory goal is to recover \verb|k|.
+Assume moreover that Bob uses some sort of single-coordinate scalar multiplication.
+Let's break down the attack in comprehensive blocks.
+
+\begin{enumerate}
+\item Check the prime factorizations of $\sharp{}E(\F_q), \sharp{}E_d(\F_q)$.
+Check that they are smooth enough, i.e. have many prime factors with bit length less than, say, $40$.
+Moreover check that these orders have \textbf{different} small prime factors.
+This implies that sending to Bob a point on $E_d$ yields a DLP on $E_d$ and thus Mallory gets to know the secret key \verb|k| modulo some new prime factors compared to only sending points that lie on $E$.
+\item One chooses a point $G_0 \in \E_d(\F_q)$ by lifting some $x\in \F_q$, this is done by trial and error until one finds $x$ such that $f(x) \notin (\F_q)^2$. 
+\item Since $\sharp{}E_d(\F_q)$ has only one unhandleable big prime factor $p_b$ for DLP, we restrict to the subgroup of order $n_0 = \frac{\sharp{}E_d(\F_q)}{p_b}$ by setting $\hat{G}_0 : = p_b G_0$.
+\item One chooses a point $G_1 \in \E(\F_q)$ by lifting some $x\in \F_q$, this is done by trial and error until one finds $x$ such that $f(x) \in (\F_q)^2$. 
+\item Since $\sharp{}E(\F_q)$ has only one unhandleable big prime factor $p_b'$ for DLP, we restrict to the subgroup of order $n_1 = \frac{\sharp{}E(\F_q)}{p_b'}$ by setting $\hat{G}_1 : = p_b' G_1$.
+\item Mallory sends the $x$-coordinates of $\hat{G}_0$ and $\hat{G}_1$ to Bob and gets back \verb|pubkey0| and \verb|pubkey1|.
+Those are $x$-coordinates of points $P_0 \in E_d(\F_q)$ and $P_1 \in E(\F_q)$ such that 
+\[ P_i = \verb|k|\hat{G}_i \]
+This is where using morphisms between $E$ and $E_d$ allows Mallory to dodge working in $\F_{q^2}$.
+Note that Bob uses a single-coordinate scalar multiplication (and no extra bit to identify $y$), Mallory knows the discrete logs only up to sign. 
+Indeed, $P_i$ and $-P_i$ have the same $x$-coordinate due to the short Weierstrass form, Mallory may have recovered \verb|k| or -\verb|k| (modulo $n_i$).
+\item Mallory solves these two DLP to recover \verb|k| modulo $n_0$  and $n_1$.
+By means of the CRT, Mallory recovers \verb|k| modulo $n_0n_1$ (note that $n_0, n_1$ are coprime).
+Since $n_0 \times n_1 \geq \sharp{}E(\F_q)$, Mallory has actually recovered \verb|k|.
+
+
+\end{enumerate}
+
+\begin{remark}
+Note that points 2. and 3. above are usually done in Invalid Curve Attack write ups in $E_d(\F_{q^2})$, thus the DLP involving $G_0$ is solved over $\F_{q^2}$ implying a significant slow down of the attack.
+If the challenge has to be solved under some time constraints, this could be an hindering.
+\end{remark}
+
 
 \bibliographystyle{plain}
 \bibliography{refs}
+
 
 \end{document}
