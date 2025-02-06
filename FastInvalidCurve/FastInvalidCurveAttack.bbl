@@ -1,0 +1,37 @@
+\begin{thebibliography}{1}
+
+\bibitem{cryptoeprint:2024/1265}
+Daniel~J. Bernstein and Tanja Lange.
+\newblock Safe curves for elliptic-curve cryptography.
+\newblock Cryptology {ePrint} Archive, Paper 2024/1265, 2024.
+
+\bibitem{BMM00}
+Ingrid Biehl, Bernd Meyer, and Volker M{\"u}ller.
+\newblock Differential fault attacks on elliptic curve cryptosystems.
+\newblock In Mihir Bellare, editor, {\em Advances in Cryptology --- CRYPTO
+  2000}, pages 131--146, Berlin, Heidelberg, 2000. Springer Berlin Heidelberg.
+
+\bibitem{cryptoeprint:2019/1043}
+Eli Biham and Lior Neumann.
+\newblock Breaking the bluetooth pairing – the fixed coordinate invalid curve
+  attack.
+\newblock Cryptology {ePrint} Archive, Paper 2019/1043, 2019.
+
+\bibitem{FLRV08}
+P.-A. Fouque, R.~Lercier, D.~R{\'e}al, and F.~Valette.
+\newblock {Fault Attack on Elliptic Curve with Montgomery Ladder
+  Implementation}.
+\newblock In {\em FDTC '08. 5th Workshop on Fault Diagnosis and Tolerance in
+  Cryptography}, pages 92--98. IEEE-CS Press, August 2008.
+
+\bibitem{NT15}
+Samuel Neves and Mehdi Tibouchi.
+\newblock Degenerate curve attacks.
+\newblock Cryptology {ePrint} Archive, Paper 2015/1233, 2015.
+
+\bibitem{Silverman:EC}
+Joseph~H Silverman.
+\newblock {\em {The Arithmetic of Elliptic Curves}}.
+\newblock Graduate texts in mathematics. Springer, Dordrecht, 2009.
+
+\end{thebibliography}

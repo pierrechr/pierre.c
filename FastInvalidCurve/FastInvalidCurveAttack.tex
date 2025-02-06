@@ -90,34 +90,30 @@ We will denote by $\F_q$ the finite field with $q = p^n$ elements where $p \geq 
 We will denote by $E/\F_q$ an elliptic curve defined over $\F_q$. 
 The reader is assumed to be familiar with basic theory of elliptic curves.
 
-
+\vspace*{.1cm}
 \noindent \textbf{Short Weierstrass equations.}  Since $p\geq 5$, every elliptic curve $E/\F_q$ may be written as
 \[ E : y^2 = x^3 + ax + b, \; \; a,b \in \F_q. \]
 This is a so called \textsl{short Weierstrass form} of the curve $E$ \textsl{defined over $\F_q$}.
 The point at infinity of $E$ is denoted by $\mathcal{O}_E$.
 
 \noindent \begin{remark} 
-\begin{enumerate}
-\item The condition $p \geq 5$ is not a restriction in our context since $p$ will usually be a large prime.
-\item A short Weierstrass form is not unique.
-This will be completed in the subsection about twists.
-\end{enumerate}
+The condition $p \geq 5$ is not a restriction in our context since $p$ will usually be a large prime.
 \end{remark}
 
 \noindent \textbf{Automorphisms.} Let $E_1/\F_q$ and $E_2/\F_q$ be elliptic curves. 
-These curves may be seen over $\overline{\F_q}$ that is, the coefficients of their equation may be seen as lying in $\overline{\F_q}$ instead of in $\F_q$.
-Every geometric isomorphism of elliptic curve $\phi$ from $E_1/\overline{\F_q}$ to $E_2/\overline{\F_q}$ has an  affine part of the form 
+These curves may be seen over $\overline{\F_q}$, i.e. coefficients of equations defining $E_i$ may be seen as lying in $\overline{\F_q}$ instead of in $\F_q$.
+Every geometric isomorphism of elliptic curves $\phi/\overline{\F_q}$
+from $E_1/\overline{\F_q}$ to $E_2/\overline{\F_q}$ has an  affine part of the form 
 \begin{equation}\label{morphism}
  \phi(x,y) = (u^{\mkern1mu 2}x + r, u^{\mkern1mu 3}y + su^{\mkern1mu 2}x + t).
 \end{equation}
 for $u \in \overline{\F_q}^{\mkern1mu *}$, $r,s,t \in \overline{\F_q}$.
-We will denote geometric isomorphism as $\phi/\overline{\F_q}$.
-The isomorphism $\psi$ is said to be \textsl{defined over $\F_q$} or \textsl{rational} if $u,r,s,t \in \F_q$, we will denote it by $\psi/\F_q$.
+The isomorphism $\psi/\F_q$ is said to be \textsl{defined over $\F_q$} or \textsl{rational} if $u,r,s,t \in \F_q$.
 
 \begin{proposition}\label{prop:auto}
-Let $E_i/\F_q$, $i \in \lbrace 1; 2 \rbrace$ be elliptic curves given by short Weierstrass equations.
+Let $E_i/\F_q$, $i \in \lbrace 1; 2 \rbrace$ be elliptic curves given by short Weierstrass equations
 \[ E_i : y^2 = x^3 + a_ix + b_i, \; \; a_i,b_i \in \F_q. \]
-A geometric isomorphism $\phi$ froom $E_1$ to $E_2$ is of the form 
+A geometric isomorphism $\phi$ from $E_1$ to $E_2$ is of the form 
 \[ \phi(x,y) = (u^{\mkern1mu 2}x, u^{\mkern1mu 3}y).\]  
 \end{proposition}
 \begin{proof}
@@ -145,13 +141,13 @@ We conclude with the following computations that will be used in the sequel.
 & \Leftrightarrow  y^2   
 =  x^3 +\frac{a_1}{u^{\mkern1mu 4}}x  + \frac{b_1}{u^6} \\
 & \Leftrightarrow
-\frac{a_1}{u^{\mkern1mu 4}} = a_2 , \; \;  \frac{b_1}{u^6}=b_2 (**)
+\frac{a_1}{u^{\mkern1mu 4}} = a_2 , \; \;  \frac{b_1}{u^6}=b_2 \mkern50mu(**)
 \end{align*}
 \end{proof}
 
 
 \begin{proposition}
-Let $E/\F_q$ be an elliptic curves given by short Weierstrass equation $ E : y^2 = x^3 + ax + b, \; \; a, b \in \F_q$.
+Let $p \geq 5$ and $E$ be an elliptic curve given by short Weierstrass equation $ {E : y^2 = x^3 + ax + b, \; \; a, b \in \F_q}$.
 The \textsl{$j$-invariant of E} is defined to be 
 \[j(E) = 1728 \frac{4a^3}{4a^3+27b^2}.\]
 
@@ -161,7 +157,7 @@ The \textsl{$j$-invariant of E} is defined to be
 \noindent \begin{remark}
 \begin{enumerate}
 \item We insist that the $j$-invariant classifies \textbf{geometric} isomorphism classes of elliptic curves over $\F_q$. 
-\item Thanks to $p \geq 5$, $E$ has a short equation and $j(E)$ a special form in this case.
+\item Since $E$ has a short equation, $j(E)$ has the special form given above.
 Thus $j(E) \notin \lbrace 0, 1728 \rbrace \Leftrightarrow a,b \in \F_q^{*}$.
 \end{enumerate}
 \end{remark}
@@ -185,14 +181,14 @@ The \textsl{twist $E_d$ of $E$ by d} is the elliptic curve given in short Weiers
 \end{definition}
 
 \begin{remark}
-We did not specify that $E_d$ is a non trivial.
+We did not specify that $E_d$ is non trivial.
 Actually, let $\delta$ be a square root of $d$ in $\overline{\F_q}$ i.e. $\delta^2 = d$, then
 \begin{align*}
 \phi : E & \to E_d\\
       (x,y)& \mapsto \big(\frac{x}{d},\frac{y}{d\delta}\big)
 \end{align*}
-is a geometric isomorphism from $E$ to $E_d$.
-It matches the relations (**) concluding proof of Proposition \ref{prop:auto} with $a_1=a, b_1=b, a_2 = ad^2, b_2=bd^3$ and $d = \frac1u$.
+is a geometric isomorphism. 
+It matches relations (**) with $a_1=a, b_1=b, a_2 = ad^2, b_2=bd^3$ and $d = \frac1u$.
 \end{remark}
 
 \begin{proposition}\label{prop:trivialtwist}
@@ -206,7 +202,7 @@ According to Proposition \ref{prop:auto}
 \[ \exists u \in \F_q^*, \mkern4mu \psi(x,y) = (u^2x,u^3y) \]
 
 According to (**), $\frac{a}{u^4} = ad^2$ and $\frac{b}{u^6} = bd^3$.
-Recall that since $ p \geq 5$, the assumption about $j(E)$ is equivalent to $a,b \neq 0$.
+The assumption about $j(E)$ is equivalent to $a,b \neq 0$.
 Thus $\frac{1}{u^4} = d^2$, $\frac{1}{u^6} = d^3$ and $d = \frac{d^3}{d^2} = \frac{1}{u^2} \in (\F_q^*)^2$.
 
 $(\Leftarrow)$ Conversely, let $\delta \in \F_q^*$ such that $\delta^2 = d$.
@@ -216,8 +212,8 @@ Then  a rational isomorphism from $E$ to $E_d$ is
 
 
 \begin{proposition}
-Assume that $E/\F_q$ has $j(E) \neq 0, 1728$. 
-Then a twist $E_t/\F_q$ of $E/\F_q$ is either trivial or $E_d$ for some $d \in (\F_q^*) \backslash (\F_q^*)^2$.
+Assume that $j(E) \neq 0, 1728$. 
+Then a twist $E_t/\F_q$ of $E/\F_q$ is either trivial or isomorphic over $\F_q$ to $E_d/\F_q$ for some $d \in (\F_q^*) \backslash (\F_q^*)^2$.
 \end{proposition}
 \begin{proof}
 Assume that $E_t/\F_q$ is a non trivial twist of $E/\F_q$ with isomorphism $\phi : E \to E_t$ given by $\phi(x,y) = (u^2x,u^3y)$, $u \in \overline{\F_q}$, $u \notin \F_q$.
@@ -225,7 +221,7 @@ Let $E_t : y^2 = x^3 +a_tx+b_t$, $a_t,b_t \in \F_q$, thus (**) yields
 \[ a_t = \frac{a}{u^4}, b_t = \frac{b}{u^6} \]
 Then $u^2 = \frac{ba_t}{ab_t} \in \F_q$, i.e. $u \notin \F_q$ but $u^2 \in \F_q$.
 This means that $u \in \F_{q^2} \backslash \F_q$.
-Let $d := \frac{1}{u^2}$, then $a_t = d^2a, b_t = d^3b$ and $\phi(x,y) = \big(\frac{x}{d},\frac{uy}{d} \big)$.
+Let $d := \frac{1}{u^2}$, then $a_t = d^2a, b_t = d^3b$ and $\phi(x,y) = \big(\frac{x}{d},\frac{uy}{d} \big)$ gives an isomorphism.
 \end{proof}
 
 
@@ -234,7 +230,7 @@ Proposition \ref{prop:trivialtwist} is wrong if $p < 5$.
 For example, let $p=q=3$, $E : y^2 = x^3 + x + 1$ and $d = 2$.
 In this case, $E$ is isomorphic to $E_d : y^2 = x^3+x+2$  with $\psi$ given by constants $(u,r,s,t) = (2,2,0,0)$.
 So $E_d$ is a trivial twist of $E$ but $d$ is non square modulo $3$.
-Note that the definition for the $j$-invariant when $p=3$ gives here $j(E) = 0$.
+Note that the general definition of $j(E)$ when $p=3$ gives here $j(E) = 0$.
 \end{remark}
 
 \noindent \textbf{Order of group of rational points.} The group of rational points $E(\F_q)$ has order $\sharp E(\F_q) = q + 1 -t$ where $t$ is the \textsl{Trace of Frobenius}.
@@ -249,7 +245,7 @@ An extensive description of the Frobenius endomorphism is out scope for this pap
 \begin{proof}
 \begin{enumerate}
 \item The proof of Hasse Bound is technical, the interessted reader may refer to V Theorem 1.1 from \cite{Silverman:EC} 
-\item We include this proof to give some insight into how points distribute over $E(\F_q)$, $E_d(\F_q)$.
+\item We include this proof to give some insight into how points distribute over $E(\F_q)$ and $E_d(\F_q)$.
 We will prove that 
 \[  \sharp{}E(\F_q) + \sharp{}E_d(\F_q) = 2q+2 \mkern20mu (\dagger)\]
 substituting $\sharp E(\F_q) = q + 1 -t$ in $(\dagger)$ gives the result.
@@ -260,24 +256,24 @@ The following change of variables on $E_d$ (take care, this is not an automorphi
 yields $ Y^2 = X^3+d^2aX+d^3b \Leftrightarrow d^2y^2 = d^3x^3+d^3ax+d^3b \Leftrightarrow y^2 = df(x)$. 
 
 \begin{itemize}
-\item Let $x \in \F_q$ such that $f(x) = 0$, then $(x,0) \in E(\F_q)$ and $(dx,0) \in E_d(\F_q)$.
+\item Let $x \in \F_q$ such that $f(x) = 0$, then $(x,0) \in E(\F_q)$ and $(xd,0) \in E_d(\F_q)$.
 Each curve gets one point.
 \item Let $x \in \F_q$ such that $f(x) \in (\F_q^*)^2$.
 Then $y^2 = f(x)$ has two solutions.
 Since $d$ is non square, $df(x)$ is non square and $y^2 = df(x)$ has no solution in $\F_q$.
 So $E$ gets two points and $E_d$ zero.
 \item  Let $x \in \F_q$ such that $f(x) \notin (\F_q^*)^2$.
-Then $df(x) \in (\F_q^*)^2$ and $y^2 = df(x)$ has two solution giving rise to two points on $E_d$.
-Here, $E$ gets zero point.
+Then $df(x) \in (\F_q^*)^2$ and $y^2 = df(x)$ has two solution in $\F_q$ giving rise to two points on $E_d$.
+$E$ gets zero point.
 \end{itemize}
 Let $E_a(\F_q) = E(\F_q) \backslash \lbrace \mathcal{O}_E \rbrace$ be the affine part of $E$ and $E_{d,a}(\F_q) = E_d(\F_q) \backslash \lbrace \mathcal{O}_{E_d} \rbrace$ be the affine part of $E_d$.
-Each $x \in \F_q$ contributes for $2$ points in the affine part of $E_a(\F_q) \cup E_{d,a}(\F_q)$, note that $E_a(\F_q) \cap E_{a,d}(\F_q) =\emptyset $.
+Each $x \in \F_q$ contributes for $2$ points in $E_a(\F_q) \cup E_{d,a}(\F_q)$, note that $E_a(\F_q) \cap E_{a,d}(\F_q) =\emptyset $.
 Counting points at infinity once for each curve yields $(\dagger)$.
 \end{enumerate}
 \end{proof}
 
 \begin{remark}
-It is very significant that every $x \in \F_q$ lifts to $E(\F_{q^2})$ but about an half lifts to $E(\F_q)$.
+It is very significant that every $x \in \F_q$ lifts to $E(\F_{q^2})$ but about an half of those $x$ lifts to $E(\F_q)$.
 Tracking the coefficient $d$ as in the proof allows to lift points either in $E(\F_q)$ or in $E_d(\F_q)$, that is avoiding any reference to $\F_{q^2}$.
 The ultimate goal of this section about twist is this remark.
 It allows to solve the DLP not in $E(\F_{q^2})$ but in $E(\F_q)$ or $E_d(\F_q)$, speeding up the attack.
@@ -291,14 +287,12 @@ The \textbf{Discrete Logarithm Problem} (DLP) is : given $b,h \in G$ find $a \in
 \end{definition}
 
 \noindent \begin{remark}
-\begin{enumerate}
-\item The group law on an elliptic curve being usually written in additive notation, DLP for elliptic curves is rephrased as : given $P,B \in E(\F_q)$ find $a \in \Z$ such that $P = aB$.
-\item The DLP has a solution if and only if $P$ is in the subgroup \textless$B$\textgreater~generated by $B$.
-\end{enumerate}
+The group law on an elliptic curve being usually written in additive notation, DLP for elliptic curves is rephrased as : given $P,B \in E(\F_q)$ find $a \in \Z$ such that $P = aB$.
+The DLP has a solution if and only if $P$ is in the subgroup \textless$B$\textgreater~generated by $B$.
 \end{remark}
 
-The following discussion gives the necessaries notions when dealing with generic methods to solve the DLP that will be used in the last section.
-The generic \verb|discrete_log| method from Sage uses a combination of Pohlig-Hellman, Baby Step Giant Step (BSGS) , Pollard’s kangaroo (i.e. Pollard's Lambda), and Pollard’s Rho. 
+The following discussion gives the necessaries notions when dealing with generic methods to solve the DLP and will be used in the last section.
+The generic \verb|discrete_log| method from SageMath uses a combination of Pohlig-Hellman, Baby Step Giant Step (BSGS) , Pollard’s kangaroo (i.e. Pollard's Lambda), and Pollard’s Rho. 
 
 \begin{itemize}
 \item The Pohlig-Helmann method.
@@ -309,14 +303,14 @@ The subgroups $H_i$ have order a prime power, which may still be quite large.
 One can reduce the DLP from $H_i$ to subgroups $\tilde{H}_i$ of order \textbf{exactly} $p_i$.
 We restrict ourselves to solving the DLP in the $\tilde{H}_i$'s.
 \item BSGS method is a collision finding algorithm to solve DLP that requires $\mathcal{O}(\sqrt{p_i})$ running time and $\mathcal{O}(\sqrt{p_i})$ storage.
-This gives an bound on the size of the $p_i$'s for which we can hope to solve the DLP with this method.
-\item Pollard's Rho (resp. Lambda) algorithm is solving the DLP and has $\mathcal{O}(\sqrt{p_i})$ (resp. $\mathcal{O}(\sqrt{p_i})$) time complexity but $\mathcal{O}(1)$ ) (resp. $\mathcal{O}(\ln{p_i})$) space complexity.
+This gives a bound on the size of the $p_i$'s for which we can hope to solve the DLP with this method.
+\item Pollard's Rho (resp. Lambda) algorithm is solving the DLP with $\mathcal{O}(\sqrt{p_i})$ (resp. $\mathcal{O}(\sqrt{p_i})$) time complexity but $\mathcal{O}(1)$ ) (resp. $\mathcal{O}(\ln{p_i})$) space complexity.
 \end{itemize}
 
 \section{Invalid Curve Attack}
 
 Invalid Cuve Attack is presented in \cite{FLRV08}.
-Let $E/\F_q : y^2 = x^3+ax+b$ be the public curve of the cryptosystem on which DLP is (assumed) hard.
+Let $E/\F_q : y^2 = x^3+ax+b$ be the public curve of the cryptosystem on which the DLP is (assumed) hard.
 
 \vspace*{.5cm}
 \textbf{Main idea :} The vulnerabilty lies in the fact that a malicious user may send a point that is \textbf{not} on $E/\F_q$ but on a weaker curve, say a quadratic twist, and then exploit it to solve an easier DLP.
