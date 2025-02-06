@@ -22,7 +22,11 @@
 
 # Logs and databases #
 ######################
-*.log
+.log
+.aux
+.bbl
+.blg
+.todo
 *.sql
 *.sqlite
 
