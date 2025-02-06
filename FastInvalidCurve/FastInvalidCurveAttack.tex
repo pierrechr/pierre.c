@@ -77,10 +77,10 @@ But this creates a conflict between simplicity and security. An implementation t
 
 
 The rest of the paper is organized as follows.
-Section 2 recalls the basics mathematical concepts used  in the sequel, we recall basics facts about discrete logarithm problem (DLP) and twists of elliptic curves. 
+Section 2 recalls the basics mathematical concepts used, in particular about discrete logarithm problem (DLP) and twists of elliptic curves. 
 Section 3 presents the general setting of the attack and ways to exploit poor implementation and weak curves.
-Section 4 is a complete walktrhought an example with a toy curve $E$.
-A comprehensive study of morphisms and the quadratic twist $E_d$ allows to solve the challenge DLP not in $E(\F_{q^2})$ and $E_d(\F_{q^2})$ (as usually seen in Ivalid Curve Attack write ups) but instead in $E(\F_{q})$ and $E_d(\F_{q})$. 
+Section 4 is a complete walkthrough example with a toy curve $E$.
+A comprehensive study of morphisms and the quadratic twist $E_d$ allows to solve the challenge DLP not in $E(\F_{q^2})$ (as usually seen in Invalid Curve Attack write-ups) but instead in $E(\F_{q})$ and $E_d(\F_{q})$. 
 This paper has an expository role.
 
 \section{Background Material}
@@ -276,6 +276,13 @@ Counting points at infinity once for each curve yields $(\dagger)$.
 \end{enumerate}
 \end{proof}
 
+\begin{remark}
+It is very significant that every $x \in \F_q$ lifts to $E(\F_{q^2})$ but about an half lifts to $E(\F_q)$.
+Tracking the coefficient $d$ as in the proof allows to lift points either in $E(\F_q)$ or in $E_d(\F_q)$, that is avoiding any reference to $\F_{q^2}$.
+The ultimate goal of this section about twist is this remark.
+It allows to solve the DLP not in $E(\F_{q^2})$ but in $E(\F_q)$ or $E_d(\F_q)$, speeding up the attack.
+\end{remark}
+
 \subsection{Discrete Logarithm Problem}
 
 \begin{definition}
@@ -307,10 +314,9 @@ This gives an bound on the size of the $p_i$'s for which we can hope to solve th
 \end{itemize}
 
 \section{Invalid Curve Attack}
-\subsection{General Setting}
 
 Invalid Cuve Attack is presented in \cite{FLRV08}.
-Let $E/\F_q : y^2 = x^3+ax+b$ be the secure public curve of the cryptosystem on which DLP is (assumed) hard.
+Let $E/\F_q : y^2 = x^3+ax+b$ be the public curve of the cryptosystem on which DLP is (assumed) hard.
 
 \vspace*{.5cm}
 \textbf{Main idea :} The vulnerabilty lies in the fact that a malicious user may send a point that is \textbf{not} on $E/\F_q$ but on a weaker curve, say a quadratic twist, and then exploit it to solve an easier DLP.
@@ -324,16 +330,14 @@ But Mallory may also send a malicious point $Q = ( \tilde{x},\tilde{y})$
 on another curve $\tilde{E} : y^2 = x^3+ax+\tilde{b}$ (note that the $a$ coefficient remains unchanged).
 Since formulae for computing \verb|k|$.Q$ do not involve $b, \tilde{b}$, Bob will correctly compute \verb|k|$.Q \in \tilde{E}$, believing he just made a computation on $E$.
 \item Varying the curve $\tilde{E}$,  i.e. varying $\tilde{b} \in \F_q$, Mallory collects various \verb|k|$.Q_i$ for $Q_i \in \tilde{E}_i$.
-Chosing wisely the $\tilde{E}_i$'s and $Q_i$'s may produce several easy DLP.
+Choosing wisely the $\tilde{E}_i$'s and $Q_i$'s may produce several easy DLP.
 \item Say that Mallory chooses $\tilde{E}_i$ and  $Q_i \in \tilde{E}_i$ of order $n_i$, let $p_i$ be a prime divisor of $n_i$.
 Sending $Q_i$ to Bob, Mallory receives $B_i:=$\verb|k|$.Q_i$.
 Note that $\hat{Q}_i=\frac{n_i}{p_i}Q_i$ has order $p_i$.
-Thus computing $\hat{B}_i=\frac{n_i}{p_i}B_i$ yields
-\[ \hat{B}_i =  \verb|k|.\hat{Q}_i\]
-Mallory solves this DLP in group of order $p_i$.
-At this point Mallory knows \verb|k| modulo $p_i$. 
+Mallory computes $\hat{B}_i=\frac{n_i}{p_i}B_i$, so that $\hat{B}_i =  \verb|k|.\hat{Q}_i$.
+Mallory solves this DLP in the group \textless$\hat{Q}_i$\textgreater~ of order $p_i$, thus recovers \verb|k| modulo $p_i$. 
 \item Iterating this process over various prime factors $p_i$ of $n_i$, for various $n_i$ on selected $\tilde{E}_i$ gives \verb|k| modulo many primes.
-Then by means of the CRT, Mallory is able to recover \verb|k| modulo \textbf{the product} of the $p_i$'s.
+By means of the CRT, Mallory recovers \verb|k| modulo \textbf{the product} of the $p_i$'s.
 If \verb|k| is known to be a, say, $2^{256}$ bits key and the product of the $p_i$ is greater than $2^{256}$ then Mallory actually recovered  \verb|k|.
 \end{enumerate}
 
@@ -343,7 +347,7 @@ If \verb|k| is known to be a, say, $2^{256}$ bits key and the product of the $p_
 \item According to \cite{cryptoeprint:2024/1265}, a curve supporting \textsl{"simple, fast, constant-time single-coordinate single-scalar multiplication [...]drastically limits the power of invalid-curve attacks"} due to the fact that for a given $x \in \F_q$, formulae for single-coordinate ladders work for the original curve and the quadratic twist.
 So if the implementation is based on such ladders (e.g. Montgomery ladders), Mallory has only access to points on $E$ and $E_d$ but on no other curve $\tilde{E}$ as above.
 \item Even if $\sharp{} E(\F_q) = hp$ with $p$ prime and $h$ a small cofactor (a classical setting in cryptographic applications) then $\sharp{}E_d(\F_q)$ might have a prime factorization with many small primes (such numbers are called \textsl{smooth}).
-For example \textbf{brainpoolP256t1} curve has prime order but its quadratic twist $E_t$ has smooth order since it factors in a product of $7$ primes of which $6$ have bit length less than $42$ (the last prime factor has bit length $89$).
+For example \textbf{brainpoolP256t1} curve has prime order but its quadratic twist has smooth order since it factors in a product of $7$ primes of which $6$ have bit length less than $42$ (the last prime factor has bit length $89$).
 \end{enumerate}
 \end{remark}
 
@@ -353,27 +357,27 @@ In this section we give full details to implement the attack on a toy curve in a
 The full code is available in \verb|FastInvalidAttack.py|, containing some more explanations and comments.
 
 \vspace*{.5cm}
-\textbf{Setting :} First of all, check that the challenge has certain properties.
+\textbf{Setting :} 
 \begin{itemize}
 \item You are given some ECDH challenge, assume moreover that the curve $E$ is in short Weierstrass form.
-\item The implementation on Bob's side does not checl whether the user passes a point on $E$.
-\item If the challenge uses two coordinates to compute on $E$, this is probably a Small Subgroup Attack.
+\item The implementation on Bob's side does not check whether the user passes a point actually on $E$.
+\item If the challenge uses two coordinates to compute on $E$, one may try a Small Subgroup Attack.
 So one may choose $x$ such that it lifts as $Q_i=(x,y)$ of smooth order on a weak curve $E_i$.
-This is not the situation we are considering.
-\item If the challenge uses single coordinate to compute on $E$ (with some sort of Montgomery scalar multiplication) this may be an Invalid Curve Attack restricting the choice of the weak $E_i$ to the quadratic twist $E_d$.
+This is not the situation we are interested in.
+\item If the challenge uses single-coordinate to compute on $E$ (with some sort of Montgomery scalar multiplication) this may be an Invalid Curve Attack restricting the choice of the weak $E_i$ to the quadratic twist $E_d$.
 \end{itemize}
 
 \noindent Assume we are given a challenge where one plays the role of a malicious user Mallory interacting with Bob.
-Mallory sends a point $P$ to Bob who computes \verb|k|$.P$ for some secret key \verb|k|.
-Mallory goal is to recover \verb|k|.
+Mallory sends a point $P$ to Bob who computes $B := $ \verb|k|$.P$ for some secret key \verb|k| and sends back $B$.
+Mallory goal is to recover the secret key \verb|k|.
 Assume moreover that Bob uses some sort of single-coordinate scalar multiplication.
-Let's break down the attack in comprehensive blocks.
 
 \begin{enumerate}
 \item Check the prime factorizations of $\sharp{}E(\F_q), \sharp{}E_d(\F_q)$.
 Check that they are smooth enough, i.e. have many prime factors with bit length less than, say, $40$.
+Each of these orders only have one very large prime factor.
 Moreover check that these orders have \textbf{different} small prime factors.
-This implies that sending to Bob a point on $E_d$ yields a DLP on $E_d$ and thus Mallory gets to know the secret key \verb|k| modulo some new prime factors compared to only sending points that lie on $E$.
+This implies that sending to Bob a point on $E_d$ allows Mallory to recover the secret key \verb|k| modulo some new prime factors compared to only sending points that lie on $E$.
 \item One chooses a point $G_0 \in \E_d(\F_q)$ by lifting some $x\in \F_q$, this is done by trial and error until one finds $x$ such that $f(x) \notin (\F_q)^2$. 
 \item Since $\sharp{}E_d(\F_q)$ has only one unhandleable big prime factor $p_b$ for DLP, we restrict to the subgroup of order $n_0 = \frac{\sharp{}E_d(\F_q)}{p_b}$ by setting $\hat{G}_0 : = p_b G_0$.
 \item One chooses a point $G_1 \in \E(\F_q)$ by lifting some $x\in \F_q$, this is done by trial and error until one finds $x$ such that $f(x) \in (\F_q)^2$. 
@@ -382,17 +386,17 @@ This implies that sending to Bob a point on $E_d$ yields a DLP on $E_d$ and thus
 Those are $x$-coordinates of points $P_0 \in E_d(\F_q)$ and $P_1 \in E(\F_q)$ such that 
 \[ P_i = \verb|k|\hat{G}_i \]
 This is where using morphisms between $E$ and $E_d$ allows Mallory to dodge working in $\F_{q^2}$.
-Note that Bob uses a single-coordinate scalar multiplication (and no extra bit to identify $y$), Mallory knows the discrete logs only up to sign. 
+Note that Bob uses a single-coordinate scalar multiplication (and no extra bit to identify $y$), thus Mallory knows the discrete logs only up to sign. 
 Indeed, $P_i$ and $-P_i$ have the same $x$-coordinate due to the short Weierstrass form, Mallory may have recovered \verb|k| or -\verb|k| (modulo $n_i$).
 \item Mallory solves these two DLP to recover \verb|k| modulo $n_0$  and $n_1$.
 By means of the CRT, Mallory recovers \verb|k| modulo $n_0n_1$ (note that $n_0, n_1$ are coprime).
-Since $n_0 \times n_1 \geq \sharp{}E(\F_q)$, Mallory has actually recovered \verb|k|.
+Since $n_0 \times n_1 \geq \sharp{}E(\F_q)$, Mallory  actually recovered \verb|k|.
 
 
 \end{enumerate}
 
 \begin{remark}
-Note that points 2. and 3. above are usually done in Invalid Curve Attack write ups in $E_d(\F_{q^2})$, thus the DLP involving $G_0$ is solved over $\F_{q^2}$ implying a significant slow down of the attack.
+Note that points 2. and 3. above are usually done in Invalid Curve Attack write-ups in $E_d(\F_{q^2})$, thus the DLP involving $G_0$ is solved over $\F_{q^2}$ implying a significant slow down of the attack.
 If the challenge has to be solved under some time constraints, this could be an hindering.
 \end{remark}
 
