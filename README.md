@@ -10,10 +10,15 @@ Topics of interest :
 
 ***
 
+## Write-ups
+
++ _Practical Invalid Curve Attack Using Quadratic Twist_ [Available in the directory FastInvalidCurveAttack](https://github.com/pierrechr/pierre.c/tree/main/FastInvalidCurve)
+
 ## Articles and Preprints
 
-
-## Writeups
++ _Big actions with non abelian derived subgroup_ with Michel Matignon 
++ _Lifting Artin-Schreier covers with maximal wild monodromy_  in  Manuscripta Mathematica.
++ _Maximal wild monodromy in unequal characteristic_ with Michel Matignon, in Journal of Number Theory.
 
 
 ## Education and professional background
