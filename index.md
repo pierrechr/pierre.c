@@ -19,7 +19,7 @@ I am currently teaching Mathematics in CPGE (undegraduate students) since 2015.
 
 ## Write-ups
 
-+ _Practical Invalid Curve Attack Using Quadratic Twist_ [Available in the directory FastInvalidCurveAttack](https://github.com/pierrechr/pierre.c/tree/main/FastInvalidCurve)
++ _Practical Invalid Curve Attack Using Quadratic Twist_ [Available at FastInvalidCurveAttack](https://github.com/pierrechr/pierre.c/tree/main/FastInvalidCurve)
 
 ## Education 
 
