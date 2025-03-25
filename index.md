@@ -7,6 +7,7 @@ _Mathematics, cryptography  mathematics and teaching._
 ***
 
 I am currently teaching Mathematics in CPGE (undegraduate students) since 2015.
+I enjoy playing CTF, you may check my [CryptoHack profile](https://cryptohack.org/user/pierre_c/)
 
 ## Main topics of interest 
 
