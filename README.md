@@ -26,4 +26,3 @@ Topics of interest :
 + _PhD._ "Jacobian Varietes and Inertia Groups".
 + _MSc._ Algebraic geometry, Elliptic Curves, Number Theory, Algorithmic Number Theory.
 + _Agrégé de Mathématiques._ French competitive high level exam to be teacher for civil service.
-# NonPrimeSmart
