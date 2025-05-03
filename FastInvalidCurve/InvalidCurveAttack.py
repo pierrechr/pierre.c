@@ -66,6 +66,7 @@ if legendre_symbol(d,p) != -1:
     d ,dp = dp ,d
 
 # Checks that the quadratic twist of E by d is isomorphic to the twist E2
+
 print("[+] Computing a non trivial quadratic twist Ed of E by some on square d.")
 Ed = EllipticCurve(k,[a*(d**2),b*(d**3)])
 print("[+] Checking isomorphism classes over GF(p).")
@@ -133,7 +134,7 @@ print("[+] Solving Challenge DLP.")
 rand = int.from_bytes(os.urandom(24),"big")
 privkey = min( rand %order,(order-rand)%order)
 
-# if some method scalarmult implementing single-coordinate scalar multiplication ladder is given
+# if some method scalarmult implementing single-coordinate scalar multiplication ladder is given then set
 #
 # pubkey0, pubkey1 = scalarmult(privkey,x0)),scalarmult(privkey,x1)
 
@@ -147,9 +148,6 @@ t1 = time.time()
 d1 = P1.log(G1_)
 print(" |  time for second DLP, P1 = k*G1_  :", round(time.time()-t1,3),"seconds.")
 for s1,s2 in [(1,1),(1,-1),(-1,1),(-1,-1)]:
-
-# Recall
-
     if CRT_list([s1*d0 ,s2*d1],[g0_,g1_]) % order == privkey:
         print(" |-  \U0001F600 "+ " "+ "Challenge solved, privkey recovered in ", round(time.time() - t0,3)," seconds.")
 
