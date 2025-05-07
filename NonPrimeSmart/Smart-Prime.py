@@ -34,11 +34,8 @@ def check_anomalous(p,D):
     
     if p*P != E.zero() :
         E = E.quadratic_twist()
-        P = E.random_point()
-        if p*P == E.zero() :
-            return E
-        
-    return None
+
+    return E
 
 def generate_challenge(E):
     p = E.base_ring().characteristic()
@@ -78,8 +75,6 @@ E = check_anomalous(p,D)
 assert  E.order() == p 
 P, sk,Q = generate_challenge(E)
 SmartAttack(P,Q) == sk
-
-
 
 
 
