@@ -43,18 +43,18 @@ def check_anomalous(p,D):
 def generate_challenge(E):
     p = E.base_ring().characteristic()
     P = E.random_point()
-    sk = randint(1,q)
+    sk = randint(1,p)
     return (P,sk, sk*P)
     
 def SmartAttack(P,Q):
     E = P.curve()
     p = E.base_ring().characteristic()
     k = GF(p)
-    Eqp = EllipticCurve(Qp(p), [ ZZ(a) + randint(0,p)*p for a in E.a_invariants() ])
+    Eqp = EllipticCurve(Qp(p,2), [ ZZ(a) + randint(0,p)*p for a in E.a_invariants() ])
 
     P_Qps = Eqp.lift_x(ZZ(P.x()), all=True)
     for P_Qp in P_Qps:
-        if k(P_Qp.y()) == P.x():
+        if k(P_Qp.y()) == P.y():
             break
 
     Q_Qps = Eqp.lift_x(ZZ(Q.x()), all=True)
@@ -62,21 +62,20 @@ def SmartAttack(P,Q):
         if k(Q_Qp.y()) == Q.y():
             break
 
-    p_times_P = p*P_Qp
-    p_times_Q = p*Q_Qp
+    pP = p*P_Qp
+    pQ = p*Q_Qp
 
-    x_P,y_P = p_times_P.xy()
-    x_Q,y_Q = p_times_Q.xy()
+    x_P,y_P = pP.xy()
+    x_Q,y_Q = pQ.xy()
 
     phi_P = -(x_P/y_P)
     phi_Q = -(x_Q/y_Q)
     k = phi_Q/phi_P
     return ZZ(k)
 
-
 p,D = get_p_D()
 E = check_anomalous(p,D)
-assert  E != None
+assert  E.order() == p 
 P, sk,Q = generate_challenge(E)
 SmartAttack(P,Q) == sk
 
