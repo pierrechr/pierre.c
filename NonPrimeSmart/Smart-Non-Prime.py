@@ -131,13 +131,24 @@ def Smart_Attack(P,Q):
 # Examples
 ###################
 
-n = 4
-print("Generating Parameters")
+print("| Tiny example with q=p**n, n=4")
+print("|- Generating Parameters")
 p,D = get_p_D_n(3,2**10,2**25,n)
 E = get_curve(p**n,D,n)
-assert E.order() == p**n
-print("Generating Challenge DLP")
-P,sk,Q = challenge_DLP(E)
-print("Secret key recovered with Smart's attack",Smart_Attack(P,Q) == sk)
+# p,D,n = 191 ,99763 , 4 is another example
 
+assert E.order() == p**n
+print("|- Generating Challenge DLP")
+P,sk,Q = challenge_DLP(E)
+print("|-  Secret key recovered with Smart's attack :",Smart_Attack(P,Q) == sk)
+
+
+print("| Tiny example with q=p**n, n=2")
+print("|- Generating Parameters")
+p,D, n = 79998601, 5107, 2
+E = get_curve(p**n,D,n)
+assert E.order() == p**n
+print("|- Generating Challenge DLP")
+P,sk,Q = challenge_DLP(E)
+print("|-  Secret key recovered with Smart's attack :",Smart_Attack(P,Q) == sk)
 
