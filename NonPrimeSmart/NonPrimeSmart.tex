@@ -8,7 +8,7 @@
 \usepackage[a4paper, top=50pt, marginparwidth=25pt, textwidth=510pt, textheight=550pt, bottom=50pt]{geometry}
 \usepackage[pdftex]{color,graphicx}
 \usepackage{marginnote}
-
+\usepackage[multiple]{footmisc}
 
 \reversemarginpar
 \newtheorem{thm}{Theorem}
@@ -66,21 +66,209 @@
 \section{Introduction}
 
 
-We present Smart's attack over non prime field $\F_q$.
-We construct an anomalous curve over a non prime finite field and implement Smart's attack in SageMath.
+Let $p$ be a prime, an elliptic curve $E/\F_p$ is said to be \textsl{anomalous} if $\sharp E(\F_p) = p$, equivalently these are \textsl{trace one curves}.
+Such curves are vulnerable to Smart's attack  \cite{Sma99} which reduces the discrete logarithm problem (DLP) from $E(\F_p)$ to the DLP in $(\F_p;+)$ which is trivial.
+Smart's attack over prime fields is often a key tool to solve some CTF.
+Variations include invalid curve attack after generating anomalous curves\footnote{https://ariana1729.github.io/writeups/2020/DEFCON/notbefoooled/2020-05-16-notbefoooled.html} or applying Smart's attack cautiously in order to avoid canonical lifts of $E/\F_p$ (which makes the attack fail).
+Nonetheless, one might easily generalize Smart's attack to trace one elliptic curves over non prime fields (i.e. $\F_q$ with $q = p^n$, $n \geq 2$), see \cite{Hofman}.
+The rest of this note is organized as follows.
+Section 2 presents standard Smart's attack subtleties and pitfalls.
+Section 3 presents Smart's attack over non prime fields following \cite{Hofman} and fill in some gaps in the theory.
+Section 4 gives implementation details of Smart's attack in SageMath, commenting the code available on GitHub\footnote{https://github.com/pierrechr/pierre.c/tree/main/NonPrimeSmart}.
+
+This note is purely for educational purpose.
+
+\section{Comments about the prime field case}
+
+Comprehensive presentations of Smart's attack may be found in \cite{Hofman}, \cite{LEPREVOST2005225} as well as implementations over $\F_p$\footnote{https://wstein.org/edu/2010/414/projects/novotney.pdf}\footnote{https://crypto.stackexchange.com/questions/70454/why-smarts-attack-doesnt-work-on-this-ecdlp}.
 
 
-\section{Smart's attack over prime field}
 
-
-\cite{LEPREVOST2005225}
-
-
-\section{Constructing anomalous curves over non prime field}
+\begin{enumerate}
+\item Given an instance on the DLP  : $k\overline{P} = \overline{Q}$ in $\overline{E}$, Smart's attack recovers the secret key only modulo $p$, subject to (see below for details) $pP \notin E_2(\Q_p)$.
+This might force us to try another lift of $P$, see below. 
+\item As noted in \cite{Sma99}, the attack might fail in the case one hits a so called canonical lift of $\overline{E}$, which occurs with negligible probabilty. 
+See also StackExchange\footnote{https://math.stackexchange.com/questions/3688569/canonical-lift-of-elliptic-curve-in-smart-attack}.
+This was a flaw to be exploited in, for example, DEF CON CTF Qualifier 2020\footnote{https://ctftime.org/writeup/20698}.
+\item Smart's attack also shows up when dealing with group structure of elliptic curves over $\Z/p^e\Z$ \cite{Sala_2024} (active CTF using this remark are still online at the time of writing, so one do not give any further detail).
+\end{enumerate} 
 
 \section{Smart's attack over non prime field}
 
+\subsection{Backgroung material}
 
+Let $p$ be a prime, $n \in \N - \lbrace 0 \rbrace$ and $q = p^n$.
+Let $f(X) \in \Z_p[X]$ monic of degree $n$ such that $\overline{f}(X) \in \F_p[X] $ is irreducible.
+According to \cite{Serre-CL} Chap I \S 6, $f(X)$ is irreducible in $\Q_p[X]$ and $\L = \Q_p[X]/(f(X))$ is the unramified extension of $\Q_p$ of degree $n$.
+Moreover, the residue field of $\L$ is isomorphic to $\F_q$.
+The valuation $v_p$ of $\Q_p$ extends uniquely to a valuation $v_{\L}$ on $\L$ with ramification index $e_{\L/\Q_p} = 1$, i.e. $p$ is a uniformizer for $\L$ and one still denotes by $v_p$ the valuation on $\L$.
+One denotes by $\mathcal{O}_{\L} = \lbrace x \in \L , v_p(x)  \geq 0 \rbrace$ the ring of integers of $\L$.
+
+
+Let $\overline{E}/\F_q$ be an elliptic curve such that $\sharp \overline{E}(\F_q) = q$.
+Let $E/\L$ be a lift of $\overline{E}/\F_q$ and denote
+\[
+E_1(\L) = \lbrace P \in E(\L), \overline{P} = 0_{\overline{E}} \rbrace 
+\]
+
+One has the exact sequence \cite{Silverman:EC} (VII 2.1)
+\[ 0 \to E_1(\L) \to E(\L) \to \overline{E}(\F_q) \to 0 \]
+which yields $E(\L) / E_1(\L) \simeq \overline{E}(\F_q)$.
+
+Let $\hat{E} / \mathcal{O}_{\L}$ be the formal group associated to $E/\L$.
+As long as $E/ \L$ is a minimal Weierstrass model (that is with coefficients in $\mathcal{O}_{\L}$ and such that $v_p(\Delta_{E})$ is minimal among such equations, see  \cite{Silverman:EC} VII.1), one has the following isomorphism 
+\begin{align*} \theta : E_1(\L) &\xrightarrow{\sim} \hat{E}(p\mathcal{O}_{\L})\\
+                   (x,y)& \mapsto - \frac{x}{y} 
+\end{align*} 
+
+\noindent Let $E_n(\L)= \lbrace (x,y) \in E(\L), v_p(x) \leq -2n, v_p(y) \leq -3n \rbrace \cup \lbrace 0_E \rbrace$.
+The proof of $\theta$ being an isomorphism generalizes to 
+\begin{align*} \theta_n : E_n(\L) &\xrightarrow{\sim} \hat{E}(p^n\mathcal{O}_{\L})\\
+                   (x,y)& \mapsto - \frac{x}{y} 
+\end{align*} 
+
+\begin{proof}
+Following the proof of \cite{Silverman:EC} VII 2.2, one only has to check that the restriction of $\theta$ from $E_1(\L)$ to $E_n(\L)$ has image  $\hat{E}(p^n\mathcal{O}_{\L})$.
+Let $x,y \in E_n(\L)$, then $v_p(x) \leq -2n $ and $2v_p(y) = 3v_p(x)$ thus
+\[ 2v_p\big(\frac{x}{y}\big) = 2 v_p(x) - 2v_p(y) = -v_p(x) \geq 2n  \Rightarrow \frac{x}{y} \in p^n\mathcal{O}_{\L} \]
+Note that, conversely, $ u \in p^n \mathcal{O}_{\L}$ corresponds to $(x(u);y(u)) \in \hat{E}$ with
+\begin{align*}
+w(u) &= u^3(1+A_1u+A_2u^2+ \dots )\\
+x(u) & = \frac{u}{w(u)}= \frac{1}{u^2} - \frac{\alpha_1}{u} - \alpha_2 \dots \\
+y(u) &= -\frac{1}{w(u)} = -\frac{1}{u^3} + \frac{\alpha_1}{u^2} + \frac{ \alpha_2}{u} \dots \\
+\end{align*}
+Then $v_p(x(u)) = -2v_p(u) \leq -2n$, $v_p(y(u)) = -3v_p(u) \leq -3n$, thus $(x(u),y(u)) \in E_n(\L)$.
+\end{proof}
+
+According to \cite{Silverman:EC} IV.6.4., the formal logarithm induces an isomorphism for any non zero integer $r$ (note that, in our discussion, $v(p) =v_p(p)= 1$, thus $r > \frac{v(p)}{p-1}$ holds). 
+\[ \log_{\mathcal{F}} : \hat{E}(p^r\mathcal{O}_{\L}) \xrightarrow{\sim} (p^r\mathcal{O}_{\L},+) \]
+This yields an isomorphism $\psi  : E_n(\L) \xrightarrow{\sim} (p^n\mathcal{O}_{\L},+)$
+
+\begin{remark}
+This is somehow an abuse of notation since $\psi$ depends on $n$, but these isomorphisms are compatible with inclusions $E_{n+1}(\L) \subset E_n(\L)$ and $(p^{n+1}\mathcal{O}_{\L},+) \subset (p^n\mathcal{O}_{\L},+)$ 
+\end{remark}
+
+\subsection{The attack}
+
+\noindent Assume that one is given an instance of the DLP : 
+\[ \overline{P} = k \times \overline{G}, \; \; \;  \overline{P}, \overline{G} \in \overline{E}(\F_q), \; \; k \in \Z \]
+Let $k = \sum_{i = 0}^{n-1} k_i p^i$ be the $p$-adic expansion of $k$ modulo $p^n = q$.
+Let $S := P-kG$ where $P,G \in E(\L)$ are lifts of $\overline{P},\overline{G}$.
+Then $\overline{S} = 0_{\overline{E}}$, thus $S \in E_1(\L)$.
+Since (recall that $p$ is a uniformizer of $\L$, that is $p\mathcal{O}_{\L}$ is the maximal ideal of $\mathcal{O}_{\L}$)
+\[E_1(\L) /E_2(\L) \simeq (p\mathcal{O}_{\L}/ p^2\mathcal{O}_{\L},+) \simeq (\mathcal{O}_{\L}/p\mathcal{O}_{\L},+) \simeq (\F_q,+)\]
+one has $qS \in E_2(\L)$.
+Thus, one has
+\begin{align*} \psi(qS) &= k  \psi(qG) - \psi(qP) \in p^2\mathcal{O}_{\L} \\
+ \Rightarrow k\psi(qG) &= \psi(qP) \mod p^2  \mkern100mu(*) \end{align*}
+One the other hand, $qP, qG \in E_1(\L)$ since $E(\L) / E_1(\L) \simeq \overline{E}(\F_q)$ which has order $q$ by assumption.
+This gives 
+\begin{align*}
+qP \in E_1(\L) \Rightarrow \psi(qP) \in p\mathcal{O}_{\L} &\Rightarrow \psi(qP) = 0 + a_1p+ a_2p^2+ \dots, \; \; a_i \in \mathcal{O}_{\L} \\
+qG \in E_1(\L) \Rightarrow \psi(qG) \in p\mathcal{O}_{\L} &\Rightarrow \psi(qG) = 0 + b_1p+ b_2p^2+ \dots, \; \; b_i \in \mathcal{O}_{\L} \\
+\end{align*}
+
+Then $(*)$ reads, as long as $p$ does not divide $b_1$,
+\[ k\psi(qG) = \psi(qP) \mod p^2 \Rightarrow kb_1p = a_1p \mod p^2 \Rightarrow kb_1 = a_1 \mod p \Rightarrow k = \frac{a_1}{b_1} \mod p \]
+
+\begin{remark}
+This is the exact same pitfall as in the prime field case : if $b_1 = 0 \mod p$, i.e. $qG \in E_2(\L)$, then $qP = qS + qkG \in E_2(\L)$, i.e. $a_1 = 0 \mod p$ and $(*)$ reads $0k = 0 \mod p^2$ giving no information about $k$.
+\end{remark}
+
+That is, one recovered $k_0$ in the $p$-adic expansion of $k$.	
+Next, put $P_1 = P - k_0G, G_1 = pG$ and note that
+\begin{align*}
+\overline{P_1} &=  \overline{P} - k_0 \overline{G}  \\
+               &=  k_1p\overline{G} + k_2p^2\overline{G} + \dots + k_np^n \overline{G}\\
+               &=  k_1\overline{G_1} + k_2p\overline{G_1} + \dots + k_np^{n-1} \overline{G_1}\\
+               &= \Big(\frac{k-k_0}{p}\Big)\overline{G_1}
+\end{align*}
+
+By the above process one recovers $k_1$.
+Iterating yields the secret key $k$.
+
+
+\section{Comments on implementation and pitfalls}
+
+
+\subsection{Finding trace one elliptic curves}
+
+
+First of all, one needs to find an elliptic curve such that $\overline{E}(\F_q) = q$.
+Using standard complex multiplication and Class Field Theory, finding some $\overline{E} /\F_q$ with trace $1$ boils down to find a prime $p$, a integer $n$,  and a discriminant $D$ such that 
+\[ 4p^n = 1 + Dy^2, \]
+has an integer solution $y$ (this is the so called \textsl{norm equation}).
+
+When $n =1$ the are plenty of such primes for a given $D$.
+But when $n > 1$, this is no more the case. 
+It is a work in progress to study in some more details this last situation.
+For now, one only gives a naive brute force search algorithm and somehow direct computation of Hilbert polynomial $H_D$ using SageMath in order to produce trace one elliptic curves of $\F_q$.
+This has also been implemented in C++ using NTL for efficiency reasons.
+\subsection{The attack}
+
+Disclaimer : this implementation if purely for educational purpose and is not intended to be optimized. 
+It has been produced  to give insight into the technical details of the attack.
+Nonetheless, to the best of our knowledge this is the only correct implementation available of the attack over non prime fields.
+
+We will go through some meaningfull steps of the SageMath code available on our GitHub project\footnote{https://github.com/pierrechr/pierre.c/tree/main/NonPrimeSmart}.
+Let \verb|kP = Q| be an instance of the DLP in an anomalous elliptic curve $E/\F_q$.
+\begin{enumerate}
+\item  The first trap is to overlook the meaning of \textsl{ the residue field of } $\mathcal{O}_{\L}$ \textsl{being (isomorphic to)} $\F_q$.
+One first has to retrieve the representation of $\F_q$ used to describe $E/\F_q$, then work it out to the correct representation of $\L$.
+
+\begin{verbatim}
+    E = P.curve()
+    kE = E.base_field()
+    p = kE.characteristic()
+    n = kE.degree()
+    modE = kE.modulus()
+    Qur.<a> = Qp(p,prec=prec).extension(modE,prec=prec)
+    k = Qur.residue_field()
+    mod = k.modulus()
+    assert mod == modE
+\end{verbatim}
+
+\item The fields \verb|k|  and \verb|kE| have the same modulus (with a down-to-earth point of view : multiplication and addition tables are the same) but are not equal, so one may use some way to go from a representation to another, that is switch the primitive element. 
+
+\begin{verbatim}
+    ak = k.gens()[0]
+    akE = kE.gens()[0]
+    phi_kE_to_k =  FiniteFieldHomomorphism_generic(Hom(kE,k))
+    phi_k_to_kE =  FiniteFieldHomomorphism_generic(Hom(k,kE))
+    assert phi_kE_to_k(akE) == ak
+\end{verbatim}
+
+
+\item Next, one has to lift elements from \verb|kE| (or \verb|k| after applying \verb|phi_kE_to_k|) to $\L$ taking care of the precision of the $p$-adic expansion.
+
+\begin{verbatim}
+    f = ResidueLiftingMap._create_(kE,Qur)
+\end{verbatim}
+
+Actually, the above \verb|ResidueLiftingMap| method might be somehow lazy and lift with precision $\mathcal{O}(p)$, which is insufficient for the attack to be successful (which requires precision at least $\mathcal{O}(p^2)$.
+That's why our code uses the method \verb|lift_to_precision()| to get $x$-coordinates in $\L$ with the desired precision before lifting to the elliptic curve.
+
+\item Finally, in order to avoid canonical lifts, one introduces some randomness in the coefficients of the lift.
+In the very unlikely case where one hits such a lift (and the attack fails), one has to run the attack again.
+
+\begin{verbatim}
+EQq =EllipticCurve(Qur,[f(a).lift_to_precision(prec) +randint(0,p)*p for a in E.a_invariants()])
+\end{verbatim}
+\end{enumerate}
+\begin{remark}
+At the time of writing, while checking bibliography, the author found another implementation of the full attack available on GitHub\footnote{https://github.com/jvdsn/crypto-attacks/blob/master/attacks/ecc}.
+Unfortunately, it is subject to the pitfalls described above as shown by the following code.
+\begin{verbatim}
+   E = P.curve()
+   F = E.base_ring()
+   modE = F.modulus()
+   q = F.order()
+   qq = Qq(q, names="g")
+   modqq = qq.residue_field().modulus()
+   assert modE == modqq
+\end{verbatim}
+
+\end{remark}
 
 
 \bibliographystyle{plain}

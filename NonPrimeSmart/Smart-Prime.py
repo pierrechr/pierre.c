@@ -77,15 +77,3 @@ assert  E.order() == p
 print("Generating Challenge DLP")
 P, sk,Q = generate_challenge(E)
 print("Secret key recovered with Smart's attack : ",SmartAttack(P,Q) == sk)
-
-
-
-
-
-
-
-
-
-
-
-

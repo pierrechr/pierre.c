@@ -67,7 +67,7 @@ def challenge_DLP(E):
 
 
 ###################
-# Clean Solve
+# Smart's Attack
 ###################
 
 
@@ -110,10 +110,11 @@ def Smart_Attack(P,Q):
         for Q_Qur in Q_Qurs:
             if phi_k_to_kE(k(Q_Qur.y())) == Q.y():
                 break
-        pP = q*P_Qur
-        pQ = q*Q_Qur
-        x_P,y_P = pP.xy()
-        x_Q,y_Q = pQ.xy()
+            
+        qP = q*P_Qur
+        qQ = q*Q_Qur
+        x_P,y_P = qP.xy()
+        x_Q,y_Q = qQ.xy()
 
         phi_P = -(x_P/y_P)
         phi_Q = -(x_Q/y_Q)
@@ -131,24 +132,24 @@ def Smart_Attack(P,Q):
 # Examples
 ###################
 
-print("| Tiny example with q=p**n, n=4")
+print("* Tiny example with q=p**n, n=4")
 print("|- Generating Parameters")
+n = 4
 p,D = get_p_D_n(3,2**10,2**25,n)
 E = get_curve(p**n,D,n)
 # p,D,n = 191 ,99763 , 4 is another example
-
 assert E.order() == p**n
 print("|- Generating Challenge DLP")
 P,sk,Q = challenge_DLP(E)
-print("|-  Secret key recovered with Smart's attack :",Smart_Attack(P,Q) == sk)
+print("|-Secret key recovered with Smart's attack :",Smart_Attack(P,Q) == sk)
 
 
-print("| Tiny example with q=p**n, n=2")
+print("* Tiny example with q=p**n, n=2")
 print("|- Generating Parameters")
-p,D, n = 79998601, 5107, 2
+p, D, n = 79998601, 5107, 2
 E = get_curve(p**n,D,n)
 assert E.order() == p**n
 print("|- Generating Challenge DLP")
 P,sk,Q = challenge_DLP(E)
-print("|-  Secret key recovered with Smart's attack :",Smart_Attack(P,Q) == sk)
+print("|- Secret key recovered with Smart's attack : ",Smart_Attack(P,Q) == sk)
 
