@@ -1,5 +1,4 @@
-Example of Smart's Attack for anomalous curves over non prime fields.
-
+A comprehensive guide to the generalization of Smart's attack for anomalous curves over finite fields of non prime order.
 ***
 
 ## Key Takeaways
