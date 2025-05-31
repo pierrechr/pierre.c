@@ -1,5 +1,3 @@
-
-
 ***
 
 _Mathematics, cryptography  mathematics and teaching._ 
@@ -7,7 +5,11 @@ _Mathematics, cryptography  mathematics and teaching._
 ***
 
 I am currently teaching Mathematics in CPGE (undegraduate students) since 2015.
+
 I enjoy playing CTF, you may check my [CryptoHack profile](https://cryptohack.org/user/pierre_c/)
+
+I have also completed a consulting mission with CNES in Toulouse aimed at developing soft decoders of Reed-Solomon codes. 
+I contributed to determining the needs and technical feasibility, conducted the bibliographic study, targeted the most promising algorithms in the context of Ariane laucnher, provided bench tests during the development, and transmitted the conclusions and feedback in a written report.
 
 ## Main topics of interest 
 
@@ -15,8 +17,7 @@ I enjoy playing CTF, you may check my [CryptoHack profile](https://cryptohack.or
     + Pairings
     + Isogeny graphs
     + Safe curves
-+ Algebraic and Algorithmic Number Theory
-+ Algebraic Geometry
++ Algebraic Number Theory and Algebraic Geometry
 
 ## Write-ups
 
