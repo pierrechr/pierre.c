@@ -3,8 +3,8 @@ A comprehensive guide to the generalization of Smart's attack for anomalous curv
 
 ## Key Takeaways
 
-+ To the best of our knowledge, one provides the first implementation of the attack for elliptic curves E/Fq with order q=p^n, n > 1.
-+ One provides a comprehensive introduction to the generalization, giving necessary background material to understand it.
++ To the best of our knowledge, one provides the first SageMath implementation of the attack for elliptic curves E/Fq with order q=p^n, n > 1.
++ One provides a comprehensive introduction, giving necessary background material to understand it.
 
 ## Materials 
 
