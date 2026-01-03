@@ -1,0 +1,1426 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Header and packages 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts,amssymb,amsmath,amsthm}
+\usepackage[a4paper, top=50pt, marginparwidth=25pt, textwidth=510pt, bottom=50pt]{geometry}
+\usepackage[pdftex]{color,graphicx}
+\usepackage{marginnote}
+\usepackage[multiple]{footmisc}
+
+\reversemarginpar
+\theoremstyle{definition}
+\newtheorem{thm}{Théorème}
+\newtheorem{definition}{Définition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remarque}
+\newtheorem*{preuve}{Preuve}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Symbols
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathbb{F}}
+\renewcommand{\L}{\mathbb{L}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\K}{\mathbb{K}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\Pp}{$\mathcal{P}$}
+\newcommand{\ch}{\textrm{ch}}
+\newcommand{\sh}{\textrm{sh}}
+\newcommand{\id}{\textrm{Id}}
+\newcommand{\atan}{\textrm{Arctan}}
+\newcommand{\acos}{\textrm{Arccos}}
+\newcommand{\asin}{\textrm{Arcsin}}
+\newcommand{\Mat}{\textrm{Mat}}
+\newcommand{\Gl}{\textup{Gl}}
+\newcommand{\Ker}{\textup{Ker}}
+\newcommand{\E}{\textrm{E}}
+\newcommand{\Gal}{\textrm{Gal}}
+\newcommand{\Hom}{\textrm{Hom}}
+\newcommand{\card}{\textup{card}}
+\newcommand{\rg}{\textup{rg}}
+\renewcommand{\Im}{\textup{Im}}
+\renewcommand{\Gl}{\textrm{Gl}}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\author{Pierre Chrétien}
+\title{Sur les valeurs du polynôme de Deuring modulo p}
+\date{Janvier 2026}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Body
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Position du problème}
+
+Soit $p \ge 3$ premier.  
+Soit
+\[
+E_{\lambda} : y^2 = x(x-\lambda)(x-1), \qquad \lambda \in \F_p \setminus \{0,1\},
+\]
+une courbe elliptique sous forme de Legendre.
+Il est bien connu (voir \cite{Silverman:EC}, Theorem V.4.1) que $E_{\lambda}$ est supersingulière si $\lambda$ est racine de
+\[
+H_p(x) = \sum_{i=0}^{m} \binom{m}{i}^2 x^i = 0,
+\qquad \text{où } m = \frac{p-1}{2}.
+\]
+
+\noindent Néanmoins, la répartition des valeurs de $H_p(x)$, $x \in \F_p$, est remarquable de symétrie.
+La raison principale est que $H_p(\lambda)$ est intimement lié à la trace du Frobenius de $E_{\lambda}/\F_p$ d'une part et que $|E_{\lambda}(\F_p)| \in 4 \Z$ (voir \cite{Auer-Top}).
+
+\noindent Le but de ces notes personnelles est de clarifier en un seul document ces liens ainsi que d’expliquer certains arguments de \cite{Auer-Top}.
+En particulier on propose des versions complètes des preuves de \cite{Auer-Top} les plus élémentaires possibles, ne faisant pas référence à la $2$-descente et en esquivant le plus possible la cohomologie galoisienne. 
+
+\section{Comptage des points de $E$}
+
+Nous suivrons \cite{Silverman:EC} IV.4.
+Ici $q=p^r$, $p \ge 3$ et $r \ge 1$.
+Soit $E/\F_q : y^2 = f(x) = x^3+ax^2+bx+c$, avec
+\[
+E(\F_q)
+= \{(x,y)\in \F_q^2 \mid y^2 = f(x)\} \cup \{\mathcal{O}\}.
+\]
+
+\noindent Déterminons une expression de $|E(\F_q)|$.
+Soit 
+\begin{align*}
+\chi : \; \F_q &\longrightarrow \{-1,0,1\}\\
+y &\longmapsto
+\begin{cases}
+-1 & \text{si } y \notin (\F_q^\times)^2,\\
+0  & \text{si } y = 0,\\
+1  & \text{si } y \in (\F_q^\times)^2.
+\end{cases}
+\end{align*}
+
+\noindent On en déduit
+\[
+|E(\F_q)| = \sum_{x\in \F_q} \bigl(1 + \chi(f(x))\bigr) + 1.
+\]
+\noindent En effet 
+\begin{itemize}
+  \item $f(x) \notin (\F_q^\times)^2 \iff y^2 = f(x)$ n’a pas de solution sur $\F_q$ ;
+  \item $f(x) = 0 \iff y^2 = f(x)$ a une solution sur $\F_q$ ;
+  \item $f(x) \in (\F_q^\times)^2 \iff y^2 = f(x)$ a deux solutions sur $\F_q$.
+\end{itemize}
+De plus  $\F_q^\times$ est cyclique et
+\begin{align*}
+\psi :  \; \F_q^\times & \longrightarrow (\F_q^\times)^2\\
+ x & \longmapsto x^2
+\end{align*}
+a pour noyau  $\Ker(\psi) = \{x \in \F_q^\times \mid x^2 = 1\} = \{\pm 1\} $ ( car $ q > 2$ ).
+Donc $\left|(\F_q^\times)^2\right| = \frac{q-1}{2}$ et $(\F_q^\times)^2$ est l'unique sous-groupe d'ordre $\frac{q-1}{2}$ de  $\F_q^\times = \langle \alpha \rangle$, donc $(\F_q^\times)^2 = \langle \alpha^2 \rangle$.
+
+\begin{proposition}
+$\forall  y \in \F_q, \chi(y) = y^{\frac{q-1}{2}}.$
+\end{proposition}
+
+\begin{preuve}
+Tout d'abord, $\chi(0) = 0 = 0^{\frac{q-1}{2}}$.
+
+\noindent Soit $y \in \F_q, \; \chi(y)=1 \iff y \in (\F_q^\times)^2
+\iff y = (\alpha^2)^i,\ i \in \mathbb{Z}
+\iff y^{\frac{q-1}{2}} = 1$.  
+Détaillons cette dernière équivalence.
+Soit $y \in \F_q$ tel que $ y = (\alpha^2)^i$, alors $y^{\frac{q-1}{2}} = \alpha^{(q-1)i} = 1$ car $\langle \alpha \rangle = \F_q^\times.$
+Réciproquement,
+\[
+y^{\frac{q-1}{2}} = 1
+\;\Rightarrow\;
+o(y) \mid \frac{q-1}{2},
+\]
+donc $y$ est dans l’unique sous-groupe d’ordre $\frac{q-1}{2}$
+du groupe cyclique $\F_q^\times$, c’est-à-dire $y \in (\F_q^\times)^2.$
+\[\tag*{$\square$}\]
+\end{preuve}
+
+\noindent Ainsi,
+\[
+|E(\F_q)| = \sum_{x \in \F_q} \left(1 + \chi(f(x))\right) + 1
+\qquad  \text{dans } \Z.
+\]
+
+\[
+\boxed{
+|E(\F_q)| = 1 + q + \sum_{x \in \F_q} f(x)^{\frac{q-1}{2}} \;\;\; \;\;\; (\dagger)
+}
+\qquad  \text{dans } \F_q.
+\]
+
+
+\begin{proposition}
+\[
+\sum_{x \in \F_q} x^i =
+\begin{cases}
+-1 & \text{si } q-1 \mid i,\\
+0 & \text{si } q-1 \nmid i.
+\end{cases}
+\]
+\end{proposition}
+
+\begin{preuve}
+Vu que $\F_q^\times$ est cyclique d’ordre $q-1$, il suffit
+d’étudier les cas $0 \le i < q-1$.
+Les polynômes de Newton sont
+$p_k = \sum_{j=1}^{q-1} x_j^k \quad \text{dans } \F_q[x_1,\dots,x_{q-1}]$ et $\sigma_k$ les polynômes symétriques élémentaires dans $\F_q[x_1,\dots,x_{q-1}]$.
+Les relations de Newton donnent (voir \cite{Fresnel-Anneaux})
+\[
+p_d = \sum_{k=1}^{d-1} (-1)^{k-1} \sigma_k p_{d-k}
++ (-1)^{d+1} d \sigma_d.
+\]
+
+\noindent Puisque $\F_q = \{x \in \overline{\F_p} \mid x^q - x = 0\}$,  $\F_q^\times = \{ x \in \F_q \mid x^{q-1} - 1 =0\rbrace$ et $X^{q-1}-1$ a pour fonctions symétriques élémentaires en ses racines valent $\sigma_1 = \cdots = \sigma_{q-2} = 0, \sigma_{q-1} = (-1)^{q-1}.$
+
+\noindent Ici
+\[
+p_1 = \sum_{x \in \F_q} x = \sum_{x \in \F_q^\times} x = \sigma_1 = 0
+\]
+\[
+p_2 = \sigma_1 p_1 - 2\sigma_2 = 0 - 2\sigma_2 = 0
+\]
+\[
+\vdots
+\]
+\[
+p_{q-2}
+= \sum_{k=1}^{q-3} (-1)^{k-1} \sigma_k p_{q-2-k} + (-1)^{q-1}(q-2)\sigma_{q-2} = 0
+\]
+
+et
+$ p_{q-1}
+= \sum_{x \in \F_q} x^{q-1} = 0^{\,q-1} + \sum_{x \in \F_q^\times} x^{q-1} = 0 + \sum_{x \in \F_q^\times} 1
+= q-1 = -1.$ 
+\[\tag*{$\square$}\]
+\end{preuve}
+\vspace*{.6cm}
+
+
+\noindent Donc dans la relation $(\dagger)$ seuls les monômes $f(x)^{\frac{q-1}{2}}$ de degré un multiple de $q-1$ contribuent à la somme.
+Or \(\deg f(x)=3\), donc
+\[
+\deg f(x)^{\frac{q-1}{2}} = \frac{3}{2}(q-1)
+\]
+et les seuls multiples entiers de $q-1$ dans $[ 0;\frac32(q-1)]$ sont $0$ et $q-1$.
+Néanmoins si on note $\alpha$ le coefficient constant de $f(x)^{\frac{q-1}{2}}$ alors $\sum_{x \in \F_q} \alpha = q\alpha = 0$ donc seul le monôme de degré $q-1$ contribue dans la somme $(\dagger)$. 
+Soit \(A_q\) le coefficient de \(x^{q-1}\) dans \(f(x)^{\frac{q-1}{2}}\).
+La discussion précédente fournit
+\[
+\boxed{|E(\F_q)| = 1 - A_q \qquad \text{dans } \F_q }
+\]
+
+\begin{proposition}
+Pour tout \(r \in \mathbb{N}\), en notant \(A_{p^r}\) le coefficient de \(x^{p^r-1}\) dans\(f(x)^{\frac{p^r-1}{2}}\), on a 
+\[
+A_{p^{r+1}} = A_{p^r}\cdot A_p
+\]
+\end{proposition}
+
+\begin{preuve}
+Soit
+\[
+f(x) = x^3 + ax^2 + bx + c,
+\qquad a,b,c \in \F_q.
+\]
+
+\[
+(*)\qquad
+f(x)^{\frac{p^{r+1}-1}{2}}
+= f(x)^{\frac{p^{r+1}-p^r+p^r-1}{2}}
+= f(x)^{\frac{p^r(p-1)}{2}} \cdot f(x)^{\frac{p^r-1}{2}}
+= \bigl(f(x)^{\frac{p-1}{2}}\bigr)^{p^r}
+\cdot f(x)^{\frac{p^r-1}{2}}
+\]
+
+\[
+=
+\left[
+\sum_{i=0}^{\frac{3}{2}(p-1)} \alpha_i x^i
+\right]^{p^r}
+\cdot
+\left[
+\sum_{j=0}^{\frac{3}{2}(p^r-1)} \beta_j x^j
+\right]
+= \sum_{i=0}^{\frac{3}{2}(p-1)} \alpha_i^{p^r} x^{i p^r}
+\cdot
+\sum_{j=0}^{\frac{3}{2}(p^r-1)} \beta_j x^j
+\]
+
+\noindent dont tout monôme est de la forme
+\[
+\gamma_{ij} x^{i p^r + j},
+\qquad
+i \in \Bigl[\mkern-6mu\Bigl[0,\tfrac{3}{2}(p-1) \Bigr]\mkern-6mu\Bigr], \;  
+j \in \Bigl[\mkern-6mu\Bigl[ 0,\frac{3}{2}(p^r-1)\Bigr]\mkern-6mu\Bigr]
+\]
+
+\noindent \'Etudions les solutions \(i,j\) d’une équation de la forme
+\[
+(**)\qquad p^{r+1}-1 = j + i p^r
+\]
+On a 
+\[
+(**) \Rightarrow
+j = p^r(p-i)-1 \;\Rightarrow\; j \equiv -1 \; \mod p^r
+\]
+or
+\[
+0 \le j = k p^r -1 \le \tfrac{3}{2}(p^r-1)
+\Rightarrow
+2k p^r -2 \le 3p^r -3
+\Rightarrow
+1 \le p^r(3-2k)
+\Rightarrow 3-2k \ge 0
+\Rightarrow k \le \tfrac{3}{2}.
+\]
+De plus
+\[
+0 \le j = k p^r -1
+\Rightarrow
+k p^r \ge 1
+\Rightarrow
+k > 0
+\]
+
+\noindent Donc $k=1$, i.e. $j = p^r - 1$.
+L’équation \((**)\) se lit alors
+\[
+p^{r+1}-1 = p^r -1 + i p^r
+\Rightarrow
+p^{r+1} = p^r(i+1)
+\Rightarrow\quad i = p-1.
+\]
+
+\noindent En conclusion, dans le développement \((*)\), le coefficient \(A_{p^{r+1}}\) du monôme de degré \(p^{r+1}-1\) de \(f(x)^{\frac{p^{r+1}-1}{2}}\) ne provient que du produit des monômes de degré $p^r(p-1)$ (resp. $ p^r-1$) de $f(x)^{\frac{p^r(p-1)}{2}}$ (resp. $f(x)^{\frac{p^r-1}{2}}$).
+On a donc
+\[
+A_{p^{r+1}} = A_{p^r}\cdot (A_p)^{p^r}.
+\]
+\[\tag*{$\square$}\]
+\end{preuve}
+
+\vspace*{.2cm}
+
+\begin{proposition}
+Pour \(q=p^n\)
+\[
+A_q = A_p^{\frac{q-1}{p-1}}.
+\]
+\end{proposition}
+\section{Nombre de points rationnels d’une courbe sous forme de Legendre}
+
+\subsection{Le polynôme de Deuring}
+
+Nous nous restreignons désormais au cas \(q=p\) et
+\[
+E_\lambda/\F_p : \quad y^2 = x(x-1)(x-\lambda),
+\qquad \lambda \in \F_p \setminus \{0,1\}.
+\]
+
+\noindent D’après le paragraphe précédent $ |E_\lambda(\F_p)| = 1 - A_p \mod p$ où \(A_p\) est le coefficient de \(x^{p-1}\) de $(x(x-1)(x-\lambda))^{\frac{p-1}{2}}$.
+Posons $m = \frac{p-1}{2}$.
+Le coefficient de \(x^{p-1}\) de $[x(x-1)(x-\lambda)]^m$ est le coefficient de \(x^m\) de $(x-1)^m(x-\lambda)^m$.
+Or
+\[
+(x-1)^m(x-\lambda)^m
+=
+\sum_{i=0}^m \binom{m}{i}(-1)^i x^{m-i}
+\cdot
+\sum_{j=0}^m \binom{m}{j}(-\lambda)^j x^{m-j}.
+\]
+
+\noindent Les monômes de degré \(m\) de ce produit sont obtenus pour \(i\) et \(j\) tels que
+\[
+m-i + m-j = m
+\;\Longleftrightarrow\;
+m = i+j
+\;\Longleftrightarrow\;
+j = m-i.
+\]
+
+\noindent Le coefficient de \(x^m\) dans \((x-1)^m(x-\lambda)^m\) est donc
+\[
+A_p
+=
+\sum_{j=0}^m
+\binom{m}{m-j}(-1)^{m-j}
+\binom{m}{j}(-\lambda)^{j}
+=
+(-1)^m \sum_{j=0}^m \binom{m}{j}^2 \lambda^j.
+\]
+
+\noindent Donc
+\[
+\boxed{
+|E_\lambda(\F_p)| = 1 - (-1)^m H_p(\lambda)
+\mod p }
+\]
+où
+\[
+H_p(X) = \sum_{i=0}^m \binom{m}{i}^2 X^i,
+\qquad m=\frac{p-1}{2}.
+\]
+
+
+\subsection{Cas $\lambda = 0$ et $\lambda = 1$}
+
+La courbe $E_{\lambda}$ décrit une courbe elliptique si et seulement si $\lambda \notin \{0;1\}$. 
+Ces deux valeurs sont donc traitées de manière indépendante dans ce paragraphe.
+On a $\boxed{H_p(0) = 1}$.
+Déterminons
+\[
+H_p(1) = \sum_{i=0}^m \binom{m}{i}^2 \quad \mod p
+\]
+
+\begin{proposition}
+\[
+\sum_{i=0}^m \binom{m}{i}^2
+=
+\binom{2m}{m}
+=
+(-1)^m \mod p
+\]
+\end{proposition}
+
+\begin{preuve}
+Soit $ m \in \mathbb{N}$.
+\[
+(1+x)^m(1+x)^m = (1+x)^{2m}
+\Longleftrightarrow
+\sum_{i=0}^m \binom{m}{i} x^i \cdot \sum_{j=0}^m \binom{m}{j} x^j
+=
+\sum_{k=0}^{2m} \binom{2m}{k} x^k.
+\]
+
+\noindent Le coefficient de \(x^m\) de chaque membre vaut
+\[
+\sum_{\substack{i+j=m \\ 0 \le i,j \le m}}
+\binom{m}{i}\binom{m}{j}
+=
+\binom{2m}{m} \Longleftrightarrow
+\sum_{i=0}^m \binom{m}{i}\binom{m}{m-i}
+=
+\binom{2m}{m}
+\Longleftrightarrow
+\sum_{i=0}^m \binom{m}{i}^2
+=
+\binom{2m}{m}.
+\]
+
+\noindent De plus
+\[
+\binom{p-1}{i} \equiv (-1)^i \quad \mod p,
+\qquad 0 \le i \le p-1.
+\]
+
+\noindent En effet, $\binom{p-1}{0} = 1 \equiv (-1)^0  \mod p$  et $\binom{p-1}{p-1} = 1 \equiv (-1)^{p-1} \mod p$.
+De plus, pour \(0 \le i \le p-2\),
+\[
+\binom{p-1}{i} + \binom{p-1}{i+1}
+=
+\binom{p}{i+1}
+\equiv 0 \mod p
+\]
+
+\noindent D’où $\binom{p-1}{i+1} \equiv -\binom{p-1}{i} \mod p$ qui donne $\binom{p-1}{i} \equiv (-1)^i \mod p$.
+\[\tag*{$\square$}\]
+\end{preuve}
+
+
+\begin{proposition}
+\[\boxed{H_p(1) = (-1)^{\frac{p-1}{2}} \mod p }\]
+
+\noindent On notera
+\[ 
+H_p(1) \equiv 1 \; \mod p
+\iff m \textrm{ est pair}
+\iff (-1)^{\frac{p-1}{2}} = 1
+\iff -1 \in \F_p^2,
+\]
+\[ 
+H_p(1) \equiv -1 \;\mod p
+\iff m \textrm{ est impair}
+\iff (-1)^{\frac{p-1}{2}} = -1
+\iff -1 \notin \F_p^2.
+\]
+\end{proposition}
+
+\section{Courbes de Legendre et isogénies}
+On se limitera désormais au cas  \(p \ge 5\).
+Le comportement remarquable de $\{ H_p(a),\ a \in \F_p \setminus \{0,1\} \}$ et plus précisément de $(H_p(2), H_p(3), \ldots, H_p(p-1))$ provient de \cite{Auer-Top} et des résultats intermédiaires qui y sont exposés.
+On recopie le résultat principal de \cite{Auer-Top}. 
+
+\vspace*{.4cm}
+\begin{thm}
+Soit \(E/\F_q\) une courbe elliptique.
+On note \(q = r^2\), \(r \in \mathbb{N}\), si \(q\) est un carré.
+\[
+E \sim_{\F_q} E_\lambda, \quad \lambda \in \F_q
+\quad \Longleftrightarrow \quad
+|E(\F_q)| \in 4\mathbb{Z} \setminus \{(r+1)^2\}
+\]
+\end{thm}
+
+\noindent D’après le théorème de Tate,
+\[
+E \sim_{\F_q} E_\lambda
+\quad \Longleftrightarrow \quad
+|E(\F_q)| = |E_\lambda(\F_q)|
+\]
+
+\noindent On a donc une description des ordres possibles pour \(|E_\lambda(\F_q)|\) quand \(\lambda\) varie. 
+Nous allons nous contenter de suivre la preuve de \cite{Auer-Top} et d’expliciter les points délicats dans le cas qui nous intéresse, à savoir \(q=p\).
+Nous allons donc prouver le corollaire suivant.
+
+
+\begin{thm}
+Soit \(E/\F_p\) une courbe elliptique.
+\[
+E \sim_{\F_p} E_\lambda, \quad \lambda \in \F_p
+\quad \Longleftrightarrow \quad
+|E(\F_p)| \in 4\mathbb{Z}
+\]
+\end{thm}
+
+\subsection{Classes d’isomorphismes}
+
+Il est bien connu (voir \cite{Silverman:EC} III 1.7 et sa preuve) 
+\[
+E_\lambda : y^2 = x(x-1)(x-\lambda)
+\;\;\sim_{\overline{\F}_p}\;\;
+E_\gamma : y^2 = x(x-1)(x-\gamma)
+\]
+
+\[
+\Longleftrightarrow\quad
+\gamma \in
+\left\{
+\lambda,\;
+1-\lambda,\;
+\frac{1}{\lambda},\;
+1-\frac{1}{\lambda},\;
+\frac{1}{1-\lambda},\;
+1-\frac{1}{1-\lambda}
+\right\}.
+\]
+Ce qui donne une description complète des classes d’isomorphisme des courbes sous forme de Legendre. 
+Néanmoins :
+
+\begin{enumerate}
+\item ce n’est une description que sur $\overline{\F}_p$, donc à isomorphisme géométrique près,
+\item la relation d’isomorphisme (même sur $\F_p$) n’est pas la bonne relation d’équivalence pour étudier $|E(\F_p)|$.
+\end{enumerate}
+
+\begin{thm}[Tate]
+Soient $E_1, E_2$ des courbes elliptiques sur $\F_q$, $q =p^n$.
+Il existe une isogénie $\F_q$-rationnelle $\varphi : E_1 \to E_2
+\iff
+|E_1(\F_q)| = |E_2(\F_q)|$
+\end{thm}
+
+\noindent La bonne relation d’équivalence à considérer pour le sujet qui nous intérese est donc $E_1 \sim_{\F_p} E_2$.
+Nous avons cependant besoin de comprendre un certain nombre de relations provenant d’isomorphismes sur $\F_p$, nous collectons dans ce paragraphe des résultats sur ce sujet.
+À partir de maintenant, $E_1 \simeq E_2:$ signifiera un isomorphisme $\F_p$-rationnel de courbes elliptiques $E_1/\F_p$, $E_2/\F_p$.
+De même, $E_1 \sim E_2:$ signifiera une isogénie $\F_p$-rationnelle de courbes elliptiques $E_1/\F_p$, $E_2/\F_p$ et .
+La courbe
+\[
+E_{\lambda} : y^2 = x(x-1)(x-\lambda), \qquad \lambda \in \F_p \setminus \{0;1\}
+\]
+a toute sa $2$-torsion $\F_p$-rationnelle 
+\[
+E_\lambda[2]
+=
+\{(0,0),(1,0),(\lambda,0),\mathcal{O}\}
+\subset E_\lambda(\F_p).
+\]
+
+\begin{proposition}
+Soit $E/\F_p : y^2 = x(x-\alpha)(x-\beta)$ une courbe elliptique.
+\[
+\exists \lambda \in \F_p \quad / \quad E \simeq E_\lambda 
+\iff
+\{ \pm \alpha,\ \pm \beta,\ \pm(\alpha-\beta)\} \cap \F_p^{\,2} \neq \emptyset
+\]
+\noindent Dans ce cas on dit que $E$ est \emph{Legendre isomorphe}.
+\end{proposition}
+
+\begin{preuve}Remarquons que $E/\F_p$ telle que $E[2]\subset E(\F_p)$
+a un modèle $y^2 = (x-a)(x-b)(x-c), \quad a,b,c \in \F_p$
+et l’automorphisme
+\[
+\begin{cases}
+x \mapsto x+a \\
+y \mapsto y
+\end{cases}
+\]
+ramène au modèle $E : y^2 = x(x-\alpha)(x-\beta), \quad \alpha,\beta \in \F_p$.
+On traite donc dans cet énoncé des courbes elliptiques sur $\F_p$ ayant leur $2$-torsion rationnelle.
+On étudie donc les isomorphismes de courbes elliptiques suivants
+
+\begin{align*}
+ &\quad  y^2 = x(x-\alpha)(x-\beta) \;\simeq\;  y^2 = x(x-1)(x-\lambda)\\
+\Longleftrightarrow & \quad  y^2 = x^3 - (\alpha+\beta)x^2 + \alpha\beta x \;\simeq\; y^2 = x^3 - (1+\lambda)x^2 + \lambda x
+\end{align*}
+
+\noindent Or l'expression d'un isomorphisme de courbes elliptiques sous forme de Weiestrass est bien connue.
+Par exemple \cite{Silverman:EC} III, Table 3. fournit 
+\[
+\Longleftrightarrow (S) :
+\begin{cases}
+-u^2(\alpha+\beta) = -(1+\lambda) + 3R - \lambda s^2, \\
+u^3\cdot 0  = 2t, \\
+u^4 \alpha\beta = \lambda - 2R(1+\lambda) + 3R^2 - 2st, \\
+u^6\cdot 0 =  R\lambda - R^2(1+\lambda) + R^3 - t^2.
+\end{cases}
+ \Longleftrightarrow (S) :
+\begin{cases}
+- u^2(\alpha+\beta) = -(1+\lambda) + 3R, \\
+u^4 \alpha\beta = \lambda - 2R(1+\lambda) + 3R^2, \\
+0 = R(\lambda - (1+\lambda)R + R^2).
+\end{cases}
+\]
+
+\noindent Or $0 = R(\lambda - (1+\lambda)R + R^2) \;\Longleftrightarrow\; R \in \{0,1,\lambda\}.$
+
+\begin{itemize}
+\item Si $R=0$ : 
+\[(S)\Longleftrightarrow
+\begin{cases}
+u^2(\alpha+\beta) = 1+\lambda, \\
+u^4\alpha\beta = \lambda,
+\end{cases}
+\quad\Longleftrightarrow\quad
+\begin{cases}
+\alpha+\beta = \dfrac{1}{u^2} + \dfrac{\lambda}{u^2}, \\
+\alpha\beta = \dfrac{1}{u^2}\cdot\dfrac{\lambda}{u^2}.
+\end{cases}
+\Longleftrightarrow
+\{\alpha,\beta\} = \left\{\dfrac{1}{u^2},\dfrac{\lambda}{u^2}\right\}.
+\]
+
+
+\item Si $R=\lambda$ : 
+\[(S)\Longleftrightarrow
+\begin{cases}
+u^2(\alpha+\beta) = 1-2\lambda, \\
+u^4\alpha\beta = \lambda^2-\lambda,
+\end{cases}
+\quad\Longleftrightarrow\quad
+\begin{cases}
+\alpha+\beta = \dfrac{-\lambda}{u^2} + \dfrac{1-\lambda}{u^2}, \\
+\alpha\beta = \dfrac{-\lambda}{u^2}\cdot\dfrac{1-\lambda}{u^2}.
+\end{cases}
+\Longleftrightarrow
+\{\alpha,\beta\} =
+\left\{\dfrac{-\lambda}{u^2},\dfrac{1-\lambda}{u^2}\right\}.
+\]
+\noindent Auquel cas $\alpha - \beta$ ou $\beta-\alpha$ vaut $\dfrac{1-\lambda}{u^2} - \dfrac{-\lambda}{u^2} = \dfrac{1}{u^2}$.
+
+\item Si $R=1$ : 
+\[ (S)\Longleftrightarrow
+\begin{cases}
+u^2(\alpha+\beta) = \lambda - 2, \\
+u^4\alpha\beta = 1-\lambda,
+\end{cases}
+\quad\Longleftrightarrow\quad
+\begin{cases}
+\alpha+\beta = \dfrac{-1}{u^2} + \dfrac{\lambda-1}{u^2}, \\
+\alpha\beta = \dfrac{1}{u^2}\cdot\dfrac{\lambda-1}{u^2}.
+\end{cases}
+\Longleftrightarrow
+\{\alpha,\beta\}
+=
+\left\{\dfrac{-1}{u^2},\dfrac{\lambda-1}{u^2}\right\}.
+\]
+\noindent Auquel cas $- \alpha$ ou $- \beta$ vaut $\dfrac{1}{u^2}$.
+\end{itemize}
+\[\tag*{$\square$}\]
+\end{preuve}
+
+
+\begin{proposition}\label{2descente}
+Soit $E/\F_p : y^2 = (x-\alpha)(x-\beta)(x-\gamma)$
+une courbe elliptique. Alors
+\[
+(\gamma,0)\in 2E(\F_p)
+\iff
+\gamma-\alpha,\ \gamma-\beta \in (\F_p^\times)^2
+\]
+\end{proposition}
+
+\begin{preuve}
+Il s’agit de caractériser l’image de la multiplication par $2$ de $E(\F_p)$.
+\cite{Auer-Top} renvoit à \cite{Silverman:EC} \S X.1 qui traite de la $2$-descente (dans le cas des corps de nombres donc) ou à \cite{Schaefer} qui n’énonce un résultat que pour les courbes hyperelliptiques.
+L’appendice A à la fin de cette note propose un exposé minimal des notions nécessaires, il s'agit encore de résultats bien connus.
+\[\tag*{$\square$}\]
+\end{preuve}
+
+
+\subsection{Twists quadratiques}
+
+\begin{definition}
+Soit $E/k : y^2 = f(x)$ une courbe elliptique sous forme de Weierstrass.
+Soit $\alpha \in k^\times$ alors
+\[
+E^{(\alpha)} : \alpha y^2 = f(x)
+\]
+est une courbe elliptique appelée \emph{twist quadratique} de $E$ par $\alpha$.
+\end{definition}
+
+\begin{remark}
+\begin{enumerate}
+\item
+$\alpha y^2 = f(x) = x^3 + a x^2 + b x + c
+\simeq
+y^2 = x^3 + \alpha a x^2 + \alpha^2 b x + \alpha^3 c$
+par
+\[
+\varphi(x,y) = \left(\dfrac{x}{\alpha},\dfrac{y}{\alpha^2}\right)
+\]
+Notons que $\varphi$ est un isomorphisme de courbes algébriques mais pas un isomorphisme de courbes elliptiques.
+\item Le twist est trivial si eu seulement si $E \simeq_k E^{(\alpha)}$.
+\item Soit $E/\F_q$ et $\alpha \notin (\F_q^\times)^2$ alors $|E(\F_q)| + |E^{(\alpha)}(\F_q)| = q + 2$.
+\end{enumerate}
+\end{remark}
+
+\begin{proposition}\label{j1728}
+Soit $E/k$ une courbe elliptique et $\alpha \notin (k^\times)^2$.
+\[
+E \simeq E^{(\alpha)} \;\Longrightarrow\;
+j(E)=1728 \quad\text{et}\quad k(\alpha)=k(\sqrt{-1})
+\]
+\end{proposition}
+
+\begin{preuve}
+\noindent On suppose ici que $k=p\ge 5$ bien que le résultat reste vrai pour $p=3$.
+Cette restriction permet de donner un modèle de $E/k$ sous forme de Weierstrass courte, ce qui simplifie l’expression de $j(E)$ et donc la preuve ci-dessous. 
+Les formules pour $p=3$ sont disponibles dans\cite{Silverman:EC} Appendix A.
+
+\noindent Soit
+\[
+E/k : y^2 = x^3 + Ax + B
+\quad\text{alors}\quad
+j(E) = 1728\,\frac{4A^3}{4A^3+27B^2}.
+\]
+
+
+\noindent Si $E \simeq E^{(\alpha)}$, alors $E^{(\alpha)}$ a pour modèles $ y^2 = x^3 + \alpha^2 A x + \alpha^3 B$.
+Un isomorphisme $\varphi : E \longrightarrow E^{(\alpha)}$ est de la forme $\varphi(x,y) = (u^2 x, u^3 y)$ et vérifie
+\[
+\begin{cases}
+\dfrac{A}{u^4} = \alpha^2 A, \\[10pt]
+\dfrac{B}{u^6} = \alpha^3 B.
+\end{cases}
+\]
+\begin{itemize}
+
+\item Si $A\neq 0$ et $B\neq 0$, alors
+\[
+\begin{cases}
+\alpha^2 = \dfrac{1}{u^4}, \\[10pt]
+\alpha^3 = \dfrac{1}{u^6},
+\end{cases}
+\quad\Longrightarrow\quad
+\alpha = \left(\dfrac{1}{u}\right)^2 \in (k^\times)^2.
+\]
+ce qui est absurde.
+
+
+\item Si $A=0$, alors $B\neq 0$ sinon $E$ n’est pas lisse en $(0,0)$.
+On a
+\[
+\alpha^3 = \dfrac{1}{u^6}
+\quad\Longrightarrow\quad
+\alpha = \dfrac{1}{\alpha^2}\cdot\dfrac{1}{u^6}
+= \left(\dfrac{1}{\alpha u^3}\right)^2 \in (k^\times)^2.
+\]
+ce qui est absurde.
+
+\item Donc $B = 0$, d'où $j(E) = 1728$.
+De plus $A \neq 0$, d’où $ \alpha^2 = \frac{1}{u^4} $ donc $ \alpha \in \{ \frac{1}{u^2};  -\frac{1}{u^2} \}$.
+Or  $\alpha \notin (k^\times)^2 \text{ donc } \alpha = -\frac{1}{u^2}$.
+En particulier  $k(\sqrt{\alpha}) = k(\sqrt{-1}).$
+\end{itemize}
+\[\tag*{$\square$}\]
+\end{preuve}
+
+
+\begin{proposition}\label{iso-legendre}
+ $\forall \lambda \in \F_q \setminus \{ 0; 1 \}$
+\[E_\lambda^{(-1)} \simeq E_{1-\lambda}
+\qquad
+E_\lambda^{(\lambda)} \simeq E_{1/\lambda}
+\qquad
+E_\lambda^{(1-\lambda)} \simeq E_{\lambda/(\lambda-1)}
+\]
+\end{proposition}
+
+\begin{preuve}
+\begin{enumerate}
+\item $E_\lambda : y^2 = x(x-1)(x-\lambda) = x^3 - (1+\lambda)x^2 + \lambda x$.
+Donc
+\[
+E_\lambda^{(-1)} :
+y^2 = x^3 + (1+\lambda)x^2 + \lambda x
+= x(x+1)(x+\lambda).
+\]
+
+\noindent Et $\varphi(x,y) = (x-1,\, y)$ fournit un isomorphisme $E_\lambda^{(-1)} \simeq E_{1-\lambda}$.
+\item $E_\lambda^{(\lambda)} : y^2 = x^3 - (1+\lambda)\lambda x^2 + \lambda^3 x= x(x-\lambda)(x-\lambda^2)$ et $E_{1/\lambda} : 
+y^2 = x(x-1)\left(x-\frac{1}{\lambda}\right)$.
+Donc
+$\varphi(x,y) = (\lambda^2 x,\, \lambda^3 y)$ fournit $E_\lambda^{(\lambda)} \simeq E_{1/\lambda}$.
+
+\item $E_\lambda^{(1-\lambda)} : y^2 = x^3 - (1+\lambda)(1-\lambda)x^2 + \lambda(1-\lambda)^2 x= x(x-(1-\lambda))(x-\lambda(1-\lambda))$.
+
+On vérifie que $\varphi(x,y) = \bigl((1-\lambda)^2 x + \lambda(1-\lambda),\; (1-\lambda)^3 y \bigr)$ fournit $E_\lambda^{(1-\lambda)} \simeq E_{\lambda/(\lambda-1)}$.
+En effet 
+\begin{align*}
+&\varphi(y^2) = \varphi(x)\,\varphi(x-(1-\lambda))\,\varphi(x-\lambda(1-\lambda))\\
+\Leftrightarrow \quad &
+(1-\lambda)^6 y^2 = \bigl[(1-\lambda)^2 x + \lambda(1-\lambda)\bigr]\bigl[(1-\lambda)^2 x + \lambda(1-\lambda)-(1-\lambda)\bigr] \bigl[(1-\lambda)^2 x\bigr]\\
+\Leftrightarrow\quad &
+y^2 =\left(x+\frac{\lambda}{1-\lambda}\right)\left(x+\frac{\lambda}{1-\lambda}-\frac{1}{1-\lambda}\right)x
+= x(x-1)\left(x-\frac{\lambda}{\lambda-1}\right).
+\end{align*}
+\end{enumerate}
+\[\tag*{$\square$}\]
+\end{preuve}
+
+
+\begin{proposition}\label{carac-legendre}
+Soit $\lambda \in \F_q \setminus \{0,1,-1,2,\tfrac12\}$.
+Les assertions suivantes sont équivalentes :
+\begin{enumerate}
+\item[(a)]
+\(
+E_\lambda \simeq E_\mu
+\)
+pour tout $\mu \in \left\{\lambda,\; 1-\lambda,\;\frac{1}{\lambda},\;1-\frac{1}{\lambda},\;\frac{1}{1-\lambda},\;\frac{\lambda}{\lambda-1} \right\}$.
+\item[(b)]
+\(
+-1,\ \lambda,\ 1-\lambda \in (\F_q^\times)^2.
+\)
+
+\item[(c)]
+\(
+E_\lambda[4](\F_q)
+\simeq \mathbb{Z}/4\mathbb{Z} \times \mathbb{Z}/4\mathbb{Z}.
+\)
+\end{enumerate}
+Si \(E_\lambda^{(\alpha)}/\F_q\) n’est pas Legendre isomorphe pour un \(\alpha \in \F_q^\times\), alors les assertions précédentes sont satisfaites.
+\end{proposition}
+
+\begin{preuve}
+L’hypothèse sur \( \lambda \) assure que $-1 \notin \left\{ \lambda,\ldots,\frac{\lambda}{\lambda-1}\right\}$, donc $j(E_\lambda) \neq 1728$, (voir \cite{Silverman:EC} III 1.7).
+\begin{enumerate}
+\item[(a) $\Rightarrow$ (b)]
+Supposons que $-1$ ou $\lambda$ ou $1-\lambda \notin (\F_q^\times)^2$.
+D’après la proposition \ref{j1728}, comme $j(E_\lambda) \neq 1728$ 
+\[
+E_\lambda^{(-1)} \not\simeq E_\lambda
+\ \text{ou}\
+E_\lambda^{(\lambda)} \not\simeq E_\lambda
+\ \text{ou}\
+E_\lambda^{(1-\lambda)} \not\simeq E_\lambda.
+\]
+\noindent Ce qui, avec la Proposition \ref{iso-legendre} contredit (a). 
+Donc $-1,\ \lambda,\ 1-\lambda \in (\F_q^\times)^2$.
+
+\item[(b) $\Rightarrow$ (a)]
+Si $\alpha \in (k^\times)^2$, alors $E^{(\alpha)} \simeq_k E$.
+Donc si $-1,\ \lambda,\ 1-\lambda \in (\F_q^\times)^2$, alors
+\[
+E_\lambda^{(-1)} \simeq E_\lambda,
+\qquad
+E_\lambda^{(\lambda)} \simeq E_\lambda,
+\qquad
+E_\lambda^{(1-\lambda)} \simeq E_\lambda.
+\]
+
+\noindent Or
+\[
+E_\lambda^{(-1)} \simeq E_{1-\lambda},
+\qquad
+E_\lambda^{(\lambda)} \simeq E_{1/\lambda},
+\qquad
+E_\lambda^{(1-\lambda)} \simeq E_{\lambda/(\lambda-1)}.
+\]
+
+\noindent De plus $\frac{\lambda}{\lambda-1} = \frac{-\lambda}{1-\lambda} \in (\F_q^\times)^2$, donc
+\[
+E_{\lambda/(\lambda-1)}
+\simeq
+E_{\lambda/(\lambda-1)}^{\lambda/ (\lambda-1)}
+\simeq
+E_{(\lambda-1)/\lambda}
+\simeq
+E_{1-1/\lambda}.
+\]
+\noindent Enfin, $\ 1-\lambda \in (\F_q^\times)^2 \Rightarrow E_{1-\lambda}^{(1-\lambda)} \simeq E_{1-\lambda}$.
+Or $E_{1-\lambda}^{(1-\lambda)} \simeq E_{1/(1-\lambda)}$.
+\item[(b) $\Rightarrow$ (c)]
+On a
+\[
+0-1,\; 0-\lambda,\; 1-\lambda,\; 1-0,\; \lambda-0,\; \lambda-1
+\in (\F_q^\times)^2.
+\]
+
+D'après la Proposition \ref{2descente}, $(0,0),\ (1,0),\ (\lambda,0) \in [2]E_\lambda(\F_q)$.
+Par exemple,
+\[
+(0,0) = 2P_0,
+\qquad
+P_0 \in E_\lambda(\F_q),
+\]
+et $-P_0 \in E_\lambda(\F_q)$.
+Or $P_0 \neq -P_0$, sinon $2P_0 = \mathcal{O}$, ce qui est absurde.
+Donc, $P_0 \in E_\lambda[4](\F_q)$ et $P_0, -P_0, 2P_0$ sont trois éléments distincts de $ E_\lambda[4](\F_q)$.
+De même avec les points suivants
+\[
+(1,0) = 2P_1, \; (\lambda,0) = 2P_\lambda, \qquad P_1, P_\lambda \in E_\lambda[4](\F_q).
+\]
+
+Donc $|E_\lambda[4](\F_q| > 10)$ et est un sous-groupe de $E_\lambda[4](\overline{\F}_q) \simeq \mathbb{Z}/4\mathbb{Z} \times \mathbb{Z}/4\mathbb{Z}$.
+Par conséquent
+\[
+E_\lambda[4](\F_q)
+\simeq
+\mathbb{Z}/4\mathbb{Z} \times \mathbb{Z}/4\mathbb{Z}.
+\]
+
+\item[(c) $\Rightarrow$ (b)]
+On a $E_\lambda[4](\F_q) = E_\lambda[4](\overline{\F}_q)$.
+De plus $[2] : E_\lambda(\overline{\F}_q) \rightarrow E_\lambda(\overline{\F}_q)$ est surjective. 
+Ainsi,
+\[
+\forall P \in E_\lambda[2](\overline{\F}_q), \quad
+\exists Q \in E_\lambda(\overline{\F}_q) \; / \; 2Q = P
+\]
+
+\noindent Or $2P = \mathcal{O}$, d'où $ Q \in E_\lambda[4](\overline{\F}_q) = E_\lambda[4](\F_q)$ i.e. toute la \(2\)-torsion est dans \(2E_\lambda(\F_q)\).
+La proposition \ref{2descente} assure
+\[
+0-1,\; 0-\lambda,\; 1-0,\; 1-\lambda,\; \lambda-0,\; \lambda-1
+\in (\F_q^\times)^2,
+\]
+i.e. \[
+-1,\ \lambda,\ 1-\lambda \in (\F_q^\times)^2.\]
+\end{enumerate}
+
+
+\noindent Nous avons prouvé que les assertions (a), (b) et (c) sont équivalentes.
+Si \(\alpha \in (\F_q^\times)^2,\) alors \( E_\lambda^{(\alpha)} \simeq E_\lambda \) donc \(E_\lambda^{(\alpha)}\) est Legendre isomorphe.
+Supposons donc que \(E_\lambda^{(\alpha)}\) ne soit pas Legendre isomorphe, en particulier $\alpha \notin (\F_q^\times)^2$.
+Supposons par l'absurde que  $-1 \notin (\F_q^\times)^2$.
+\[
+\left| \F_q^\times / (\F_q^\times)^2 \right| = 2 \; \Rightarrow  \; \frac{\alpha}{-1} \in (\F_q^\times)^2,
+\]
+
+\noindent En notant $\delta^2 = -\alpha, \; \delta \in \F_q^\times$, on a un isomorphisme 
+\begin{align*}
+\varphi : E_\lambda^{(-1)}& \xrightarrow{\sim} E_\lambda^{(\alpha)}\\
+ (x,y) &\mapsto \left(\frac{x}{\delta^2}, \frac{y}{\delta^3}\right),
+\end{align*}
+
+\noindent On en déduit $E_\lambda^{(\alpha)} \simeq   E_\lambda^{(-1)} \simeq E_{1-\lambda}$, ce qui est absurde car $E_\lambda^{(\alpha)}$ n'est pas Legendre isomorphe.
+Donc $-1 \in (\F_q^\times)^2$.
+De même $\lambda, 1-\lambda \in (\F_q^\times)^2$.
+\[\tag*{$\square$}\]
+\end{preuve}
+
+
+\subsection{Preuve du résultat principal}
+
+\begin{preuve}
+Supposons que $E/\F_p \sim E_\lambda/\F_p$,  avec $\lambda \in \F_p$.
+Alors $|E(\F_p)| = |E_\lambda(\F_p)|$.
+Or $E_\lambda[2](\F_p) \simeq \mathbb{Z}/2\mathbb{Z} \times \mathbb{Z}/2\mathbb{Z}$, donc
+\[
+|E(\F_p)| \in 4\Z
+\]
+
+\noindent Inversement, supposons que $|E(\F_p)| \in 4\mathbb{Z}$.
+Si $E[2](\F_p) \neq E[2](\overline{\F}_p)$, alors \(E[2](\F_p)\) ne contient pas de sous-groupe isomorphe à \(\mathbb{Z}/2\mathbb{Z} \times \mathbb{Z}/2\mathbb{Z}\).
+Or
+\[
+E(\F_p) \simeq \mathbb{Z}/n_1\mathbb{Z} \times \mathbb{Z}/n_2\mathbb{Z},
+\quad n_1 \mid n_2.
+\]
+Si $2 \mid n_1$, alors $2 \mid n_2$ et $\mathbb{Z}/2\mathbb{Z} \times \mathbb{Z}/2\mathbb{Z} \subset E(\F_p)$, c'est absurde, d'où $ 2 \nmid n_1$ et $4 \mid n_2$.
+Ainsi, $E(\F_p)$ contient un élément \(P\) d’ordre \(4\), en particulier $2P \in E[2](\F_p) \subsetneq E[2](\overline{\F}_p)$.
+Soit $Q \in E[2](\overline{\F}_p) \setminus E[2](\F_p)$ et \[
+\varphi : E \longrightarrow E/\langle 2P \rangle = \widetilde{E}
+\]
+l'isogénie quotient.
+Notons pour plus tard que $\varphi$ et \(\widetilde{E}\) sont définies sur \(\F_p\).
+Montrons que $\widetilde{E}[2](\F_p) \simeq \mathbb{Z}/2\mathbb{Z} \times \mathbb{Z}/2\mathbb{Z}$.
+
+\begin{itemize}
+\item D'abord 
+\[
+\begin{cases}
+ 2\varphi(P) = \varphi(2P) = \mathcal{O} \\
+\varphi(P) \neq \mathcal{O} \quad\text{car}\quad P \notin \langle 2P \rangle.
+\end{cases}\quad\Rightarrow\quad \circ(\varphi(P)) = 2.
+\]
+
+\item
+Ensuite 
+\[ 
+\begin{cases}
+2\varphi(Q) = \varphi(2Q) = \varphi(\mathcal{O}) = \mathcal{O} \quad \text{car } Q \in  E[2]\\
+\varphi(Q) \neq \mathcal{O}
+\quad \text{car } Q \notin \langle 2P \rangle.
+\end{cases}\quad \Rightarrow \quad \circ(\varphi(Q)) = 2.
+\]
+
+
+\item Soit \( n \in \mathbb{N} \) tel que $E[2](\F_{p^n}) = E[2](\overline{\F}_p)$, et soit $ \sigma$ un générateur de $ \Gal(\F_{p^n}/\F_p)$.
+Puisque $Q \notin \langle 2P \rangle$ on a \[E[2](\F_{p^n}) = \langle 2P, Q \rangle\]
+De plus 
+\[
+\sigma(Q) = Q + 2P,
+\]
+(si \( \sigma(Q) = Q \), alors \( Q \in E(\F_p) \), et si \( \sigma(Q) = 2P \), alors \( Q = \sigma^{-1}(2P) \in E(\F_p) \)).
+
+D’où
+\begin{align*}
+\sigma(\varphi(Q))& = \varphi(\sigma(Q)) &\quad \text{car } \varphi \text{ est } \F_p\text{-rationnelle}\\
+&= \varphi(Q + 2P)
+= \varphi(Q) + \varphi(2P) = \varphi(Q) + \mathcal{O}= \varphi(Q)
+\end{align*}
+
+Donc $\varphi(Q) \in \widetilde{E}(\F_p)$.
+Par conséquent,
+\[
+\widetilde{E}[2](\F_p)
+= \langle \varphi(P), \varphi(Q) \rangle
+\simeq
+\mathbb{Z}/2\mathbb{Z} \times \mathbb{Z}/2\mathbb{Z}.
+\]
+
+En effet,
+\[
+\langle \varphi(P) \rangle =  \langle \varphi(Q) \rangle
+\;\Longleftrightarrow\;
+\varphi(P) = \varphi(Q)
+\;\Longleftrightarrow\;
+P - Q \in \langle 2P \rangle
+\Longleftrightarrow\;
+Q = P \ \text{ou}\ Q = 3P,
+\]
+ce qui est absurde.
+\end{itemize}
+
+
+\noindent Ainsi, l’isogénie $\varphi : E \longrightarrow \widetilde{E}$ permet de supposer qu'à \(\F_p\)-isogénie près
+\[
+E[2](\F_p)
+\simeq
+\mathbb{Z}/2\mathbb{Z} \times \mathbb{Z}/2\mathbb{Z}.
+\]
+\noindent On peut écrire un modèle $E: y^2 = (x-a)(x-b)(x-c),
+\, a,b,c \in \F_p $ puis  appliquer l’automorphisme $(x,y) \longmapsto (x+a,\, y)$ pour obtenir le modèle
+\[
+E/\F_p : \quad
+y^2 = x(x-\alpha)(x-\beta),
+\qquad \alpha,\beta \in \F_p.
+\]
+
+\noindent De plus,
+\begin{align*}
+E^{(\alpha)} : \quad
+y^2 = x^3 - \alpha(\alpha+\beta)x^2 + \alpha^2\beta x \;&\simeq\; E_{\beta/\alpha} :\;
+y^2 = x^3 - \left(1+\frac{\beta}{\alpha}\right)x^2 + \frac{\beta}{\alpha}x\\
+(x,y)& \longmapsto (\alpha^2 x,\ \alpha^3 y).
+\end{align*}
+
+\noindent Donc $ E^{(\alpha)} \simeq E_\lambda, \; \lambda = \frac{\beta}{\alpha} \in \F_p$.
+Si $\alpha \in (\F_p^{\times})^2$ alors $E \simeq E^{(\alpha)} \simeq E_\lambda$ et la preuve est complète.
+On suppose à partir de maintenant que  $\alpha \notin (\F_p^{\times})^2$.
+On examine les cas supersinguliers et ordinaires séparément.
+\begin{itemize}
+\item
+Si \(E\) est supersingulière, alors
+\[
+|E(\F_p)| = p + 1 - t
+\quad \text{et} \quad
+p \mid t.
+\]
+Or
+\[
+\begin{cases}
+|t| \le 2\sqrt{p}\\
+t = kp,
+\end{cases}
+\Rightarrow
+k^2 p^2 \le 4p \;\Rightarrow\; k^2 p \le 4.
+\]
+
+Si \(p \ge 5\), alors \(k = 0\), i.e. $|E(\F_p)| = p + 1$.
+Si \(p \le 3\), alors \(k \in \{-1,0,1\}\), cependant
+\[
+\begin{cases}
+k = 1 \Rightarrow t = p \Rightarrow |E(\F_p)| = 1 \notin 4\mathbb{Z},\\
+k = -1 \Rightarrow |E(\F_p)| = 2p + 1 \notin 4\mathbb{Z}.
+\end{cases}
+\]
+
+Donc $k = 0$ i.e. $|E(\F_p)| = p + 1$.
+Or $\alpha \notin (\F_p^{\times})^2$, d'où $ |E^{(\alpha)}(\F_p)| + |E(\F_p)| = 2p + 2$, i.e.
+\[
+|E^{(\alpha)}(\F_p)| = p + 1 = |E(\F_p)|.
+\]
+
+D’après le théorème de Tate, $E \sim E^{(\alpha)}$.
+On a donc $E \sim E^{(\alpha)} \sim E_\lambda$,
+i.e. \(E\) est Legendre isogène sur \(\F_p\).
+
+\item
+Si \(E\) est ordinaire.
+On distingue deux cas
+
+\begin{enumerate}
+\item[(a)] Si \(E_\lambda^{(\alpha)}\) est isogène de Legendre, c'-à-d $E_\lambda^{(\alpha)} \sim E_\mu, \, \mu \in \F_p$.
+En notant \(\operatorname{Tr}_{\F_p}(E)\) la trace du Frobenius de \(E/\F_p\), si
+\(
+E \not\sim E^{(\alpha)}
+\),
+alors
+\[
+\operatorname{Tr}_{\F_p}(E)
+= -\operatorname{Tr}_{\F_p}(E^{(\alpha)})
+= -\operatorname{Tr}_{\F_p}(E_\lambda)
+= +\operatorname{Tr}_{\F_p}(E_\lambda^{(\alpha)}),
+\]
+car $E^{(\alpha)} \simeq E_\lambda$ et $ \alpha \notin (\F_p^\times)^2$.
+Donc, d'après le théorème de Tate $ E \sim E_\lambda^{(\alpha)}$ d'où $E \sim E_\lambda^{(\alpha)} \sim E_\mu$.
+Si au contraire $E \sim E^{(\alpha)}$, alors $E \sim E^{(\alpha)} \sim E_\lambda$. 
+Dans tous les cas \(E\) est Legendre isogène sur \(\F_p\).
+\item[(b)]Si \(E_\lambda^{(\alpha)}\) n’est pas  Legendre isogène, alors la proposition \ref{carac-legendre}  assure que
+\[
+\begin{cases}
+E_\lambda[4](\F_p) \simeq \mathbb{Z}/4\mathbb{Z} \times \mathbb{Z}/4\mathbb{Z},\\
+-1 \in (\F_p^\times)^2.
+\end{cases}
+\]
+
+De plus,
+\[
+|E_\lambda(\F_p)|
+= 2^\alpha \cdot \prod_{p_i \text{ premier } \geq 3} p_i^{m_i},
+\qquad
+\alpha \ge 4,
+\]
+Alors le théorème de Rück \cite{Ruck} donne l’existence d’une courbe $E'/\F_p$ telle que
+\[
+\begin{cases}
+E_\lambda \sim E', \\
+E'[4](\F_p) \simeq \mathbb{Z}/4\mathbb{Z} \times \mathbb{Z}/2\mathbb{Z}.
+\end{cases}
+\]
+
+En effet, \(a = 1\) vérifie $ 0 \le a \le \min\bigl(v_2(p-1), \lfloor \alpha/2 \rfloor \bigr)$, d’où l’existence de \(E'\) telle que
+\[
+E'[2^a](\F_p) \simeq \mathbb{Z}/2\mathbb{Z} \times \mathbb{Z}/2^{\alpha-1}\mathbb{Z}.
+\]
+Donc
+\[
+E'[4](\F_p)
+\simeq
+\mathbb{Z}/2\mathbb{Z} \times \mathbb{Z}/4\mathbb{Z}.
+\]
+
+Soit $P \in E'(\F_p)$ d’ordre \(4\), et $Q = 2P$ , i.e. $Q \in E'[2](\F_p)$.
+Quitte à effectuer $(x,y) \mapsto (x+s, y)$, on peut supposer qu'on a un modèle  \(E' : y^2 = x(x-\alpha')(x-\beta'), \; \alpha', \beta' \in \F_p\),  avec $(0,0) \in 2E'(\F_p)$.
+La proposition \ref{2descente} assure alors 
+\[
+0-\alpha' \in (\F_p^\times)^2.
+\]
+
+Donc
+\[
+\frac{-\alpha'}{-1} =  \alpha' \in (\F_p^\times)^2,
+\quad \text{i.e.} \quad
+\alpha' = \delta^2,
+\ \delta \in \F_p.
+\]
+
+On a alors avec $\lambda' = \frac{\beta'}{\alpha'}$
+\begin{align*}
+E' : \ y^2 = x^3 - (\alpha' + \beta')x^2 + \alpha'\beta' x &\;\simeq\; E_{\lambda'} :\;
+y^2 = x^3 - \left(1+\frac{\beta'}{\alpha'}\right)x^2 + \frac{\beta'}{\alpha'}x\\
+ (x,y)& \longmapsto (\delta^2 x,\ \delta^3 y).
+\end{align*}
+Or
+\[
+E_{\lambda'}[4](\F_p)
+\simeq
+E'[4](\F_p)
+\simeq
+\mathbb{Z}/2\mathbb{Z} \times \mathbb{Z}/4\mathbb{Z}.
+\]
+Donc la proposition \ref{carac-legendre} donne
+\[
+\forall \gamma \in \F_p^\times,
+\quad
+E_{\lambda'}^{(\gamma)} \text{ est Legendre isomorphe}.
+\]
+En particulier, $E_{\lambda'}^{(\alpha)}$ est Legendre isomorphe, i.e $E'^{(\alpha)} \simeq E_\mu$.
+Enfin, on récapitule 
+\[
+E^{(\alpha)} \sim E_\lambda \sim E \sim E_{\lambda'},
+\qquad
+\alpha \notin (\F_p^\times)^2.
+\]
+D'où
+\[
+\operatorname{Tr}_{\F_p}(E)
+=
+-\operatorname{Tr}_{\F_p}(E^{(\alpha)})
+=
+-\operatorname{Tr}_{\F_p}(E_{\lambda'})
+=
++\operatorname{Tr}_{\F_p}(E_{\lambda'}^{(\alpha)})
+\]
+
+Donc $E \sim E_{\lambda'}^{(\alpha)} \sim E_\mu$, i.e. \(E\) est Legendre isogène sur \(\F_p\).
+\end{enumerate}
+\end{itemize}
+\[\tag*{$\square$}\]
+\end{preuve}
+
+
+\section{Remarques finales}
+
+Les paragraphes précédents nous ont appris
+\[
+\begin{cases}
+|E_\lambda(\F_p)|= 1 - (-1)^m H_p(\lambda) \mod p\\
+|E_\lambda(\F_p)|\in 4\mathbb{Z}.
+\end{cases}
+\]
+\begin{enumerate}
+\item En notant $t$ la trace du Frobenius de $E_\lambda/\F_p$, on a $|E_\lambda(\F_p)|= p+1-t$, d’où $t = p+1+4k$.
+La borne de Hasse donne $|t|\le 2\sqrt{p}$.
+
+\begin{align*}
+|t|\le 2\sqrt{p}
+\iff & t^2 \le 4p
+\iff (p+1+4k)^2 \le (2\sqrt{p})^2\\
+\iff &(p+1+4k+2\sqrt{p})(p+1+4k-2\sqrt{p}) \le 0\\
+\iff &(4k+(\sqrt{p}+1)^2)(4k+(\sqrt{p}-1)^2)\le 0\\
+\iff & k \in \mathbb{Z} \cap \left[-\frac{(\sqrt{p}+1)^2}{4}\,;\,-\frac{(\sqrt{p}-1)^2}{4}\right]\\
+\iff & k \in \left[\mkern-6mu\left[\left\lceil -\frac{(\sqrt{p}+1)^2}{4} \right\rceil \,; \left\lfloor -\frac{(\sqrt{p}-1)^2}{4} \right\rfloor\right]\mkern-6mu\right].
+\end{align*}
+
+D’où
+\[
+|E_\lambda(\F_p)|\in
+\left[\mkern-6mu\left[
+-4\left\lceil -\frac{(\sqrt{p}-1)^2}{4}\right\rceil\,;\,
+-4\left\lfloor -\frac{(\sqrt{p}+1)^2}{4}\right\rfloor
+\right]\mkern-6mu\right].
+\]
+\item De plus les valeurs apparaissant dans $\bigl(H_p(\lambda) \bmod p \,;\, \lambda \in \F_p^2\setminus\{0,1\}\bigr)$ se comprennent grâce à
+\[ m \textrm{ est pair }
+\iff \frac{p-1}{2} = 2\ell
+\iff p = 4\ell+1
+\iff p+1-t = 4\ell+2-t
+\iff t \equiv 2 \mod 4.
+\]
+
+De même $m$ est impair $ \iff t \equiv 0 \mod 4$.
+\item 
+\[
+\bigl(H_p(\lambda) \bmod p \,;\, \lambda \in \F_p^2\setminus\{0,1\}\bigr)
+\text{ est un palyndrôme } \iff m \text{ est pair}.
+\]
+
+En effet
+\[
+m \textrm{ est pair } \iff 
+(-1) \in (\F_p^\times)^2
+\Rightarrow E_\lambda \simeq E_\lambda^{(-1)} \simeq E_{1-\lambda}
+\Rightarrow H_p(1-\lambda)=H_p(\lambda).
+\]
+
+De même, on a le résultat 
+\[
+m \textrm{ est impair }
+\iff
+(-1) \notin (\F_p^\times)^2
+\Rightarrow
+\operatorname{Tr}_{\F_p}(E_\lambda)
+= -\operatorname{Tr}_{\F_p}(E_\lambda^{(-1)})
+=- \operatorname{Tr}_{\F_p}(E_{1-\lambda})
+\Rightarrow H_p(\lambda) = -H_p(1-\lambda).
+\]
+\end{enumerate}
+
+\appendix
+\section{Couplages de Weil, de Kummer et conséquences}
+
+
+Soit $m \in \mathbb{N}$, $m \ge 2$, $(m,p)=1$ où $p = \mathrm{car}\,K$.
+Soit $E/K$ une courbe elliptique, on a $ E[m] = E[m](\overline{K}) \simeq (\mathbb{Z}/m\mathbb{Z})^2$.
+
+\begin{proposition}
+Le couplage de Weil
+\[ e_m : E[m] \times E[m] \longrightarrow \mu_m \]
+est bilinéaire, alterné, non dégénéré et invariant sous l’action de Galois.
+En particulier 
+\[
+\begin{cases}
+\forall S \in E[m],\ e_m(S,T)=1 \Rightarrow T=\mathcal{O}, \\
+\forall \sigma \in \Gal(\overline{K}/K),\, e_m(S,T)^\sigma = e_m(S^\sigma, T^\sigma).
+\end{cases}
+\]
+\end{proposition}
+
+\begin{proposition}
+Le couplage de Kummer
+\begin{align*}
+\kappa : E(K) \times \Gal(\overline{K}/K) &\longrightarrow E[m]\\
+ (P,\sigma) & \longmapsto Q^\sigma - Q, \qquad \textrm{où }\; Q \in E(\overline{K}) \; /\;  [m]Q = P 
+\end{align*}
+est bilinéaire, son noyau à gauche est $mE(K)$ et induit
+\begin{align*}
+\delta_E : E(K)/mE(K) &\longrightarrow \Hom(\Gal(\overline{K}/K), E[m])\\
+P &\longmapsto  \delta_E(P) :
+\begin{cases}
+\Gal(\overline{K}/K) \longrightarrow E[m], \\
+\sigma \longmapsto \kappa(P,\sigma).
+\end{cases}
+\end{align*}
+\end{proposition}
+
+\begin{thm}[Hilbert 90]
+Supposons que $\mu_m \subset K$.
+Alors
+\begin{align*}
+\delta_K : K^\times/(K^\times)^m &\xrightarrow{\ \sim\ } \Hom(\Gal(\overline{K}/K), \mu_m)\\
+b & \longmapsto \delta_K(b) :
+\begin{cases}
+\Gal(\overline{K}/K) \longrightarrow \mu_m, \\
+\sigma \longmapsto \dfrac{\sigma(\beta)}{\beta}, \quad \text{où } \beta^m = b.
+\end{cases}
+\end{align*}
+\end{thm}
+
+\noindent Des trois résultats précédents, on en déduit la construction suivante.
+Soient $P \in E(K)$ et $T \in E[m]$, alors
+\begin{align*}
+\Gal(\overline{K}/K) & \longrightarrow \mu_m\\
+\sigma &\longmapsto e_m\bigl(\delta_E(P)(\sigma), T\bigr)
+\end{align*}
+définit un élément de $\Hom\bigl(\Gal(\overline{K}/K), \mu_m\bigr)$, le théorème 90 de Hilbert assure l’existence d’un unique
+$b = b(P,T)$ tel que $ e_m\bigl(\delta_E(P)(\sigma), T\bigr) = \delta_K\bigl(b(P,T)\bigr)(\sigma)$.
+
+\begin{thm}
+Il existe une application bilinéaire
+\[ b : \frac{E(K)}{mE(K)} \times E[m] \longrightarrow \frac{K^\times}{(K^\times)^m} \]
+tel que $b(P,T)$ soit l’unique classe vérifiant
+\[ \forall \sigma \in \Gal(\overline{K}/K), \quad e_m\bigl(\delta_E(P)(\sigma), T\bigr) = \delta_K\bigl(b(P,T)\bigr)(\sigma) \]
+Le noyau de $b$ à gauche est trivial.
+Pour $T \in E[m]$, soient $f_T, g_T \in K(E)$ tels que
+\[
+\begin{cases}
+\mathrm{div}(f_T) = m(T) - m(\mathcal{O}), \\
+f_T \circ [m] = g_T^m.
+\end{cases}
+\]
+Alors, pour tout $P \neq T$,
+\[b(P,T) \equiv f_T(P) \mod{(K^\times)^m}\]
+\end{thm}
+
+
+\begin{remark}
+\begin{enumerate}
+\item Si $\Gal(\overline{K}/K)$ agit trivialement sur le $\Gal(\overline{K}/K)$-module $M$, alors
+\[
+\begin{cases}
+H^0\bigl(\Gal(\overline{K}/K), M\bigr) = M, \\
+H^1\bigl(\Gal(\overline{K}/K), M\bigr) =  \Hom_{\mathrm{cont}}\bigl(\Gal(\overline{K}/K), M\bigr).
+\end{cases}
+\]
+L’hypothèse $\mu_m \subset K$ de la proposition provient de cette remarque.
+
+\item Notons la mention de morphismes de groupes continus ci-dessus.
+Le groupe $\Gal(\overline{K}/K)$ est profini et les groupes $E[m]$, $\mu_m$ sont finis, donc 
+\[
+\begin{cases}
+\Hom\bigl(\Gal(\overline{K}/K), \mu_m\bigr) = \Hom_{\mathrm{cont}}\bigl(\Gal(\overline{K}/K), \mu_m\bigr), \\[0.3em]
+\Hom\bigl(\Gal(\overline{K}/K), E[m]\bigr) = \Hom_{\mathrm{cont}}\bigl(\Gal(\overline{K}/K), E[m]\bigr).
+\end{cases}
+\]
+\end{enumerate}
+\end{remark}
+
+
+Revenons à la preuve de la proposition.
+Soient $m=2$, $p \ge 3$ premier et
+\[
+E/\mathbb{F}_p : y^2 = (x-\alpha)(x-\beta)(x-\gamma), \quad \alpha,\beta,\gamma \in \mathbb{F}_p.
+\]
+Alors $f_{P_\alpha} = x-\alpha \in \mathbb{F}_p(E)$ a pour diviseur $\mathrm{div}(f_{P_\alpha}) = 2(P_\alpha) - 2(O)$, où $P_\alpha = (\alpha,0) \in E(\mathbb{F}_p)$.
+De plus, en notant
+\[
+\begin{cases}
+S_1 &= \alpha + \beta + \gamma, \\
+S_2 &= \alpha\beta + \alpha\gamma + \beta\gamma,
+\end{cases}
+\]
+on a par un long calcul à partir des règles de calcul de l'addition sur $E$ 
+\[ f_{P_\alpha} \circ [2](x,y)
+= \left[\frac{x^2 - \alpha x - 2x^2 + 2S_1 x - S_2}{2y}\right]^2
+= g_{P_\alpha}^2(x,y).
+\]
+
+\noindent Donc, pour tout $Q \neq P_\alpha,\; b(Q,P_\alpha) \equiv f_{P_\alpha}(Q) \mod{(\mathbb{F}_p^\times)^2}$.
+De même pour $P_\beta$ et $P_\gamma$.
+On a donc la caractérisation
+\[Q \in 2E(\mathbb{F}_p) \Leftrightarrow \forall P \in E[2], \quad b(Q,P) \equiv 0\]
+
+
+Ainsi,
+\[
+P_\gamma = (\gamma,0) \in 2E(\mathbb{F}_p)
+\iff
+\begin{cases}
+b(P_\gamma,P_\alpha) \equiv 0, \\
+b(P_\gamma,P_\beta) \equiv 0, \\
+b(P_\gamma,P_\gamma) \equiv 0.
+\end{cases}
+\]
+
+Or :
+\begin{itemize}
+\item $b(P_\gamma,P_\alpha) = f_{P_\alpha}(P_\gamma) = \gamma - \alpha$.
+\item $b(P_\gamma,P_\beta) = f_{P_\beta}(P_\gamma) = \gamma - \beta$.
+\item $b(P_\gamma,P_\gamma) = b(P_\gamma,P_\gamma + P_\alpha - P_\alpha) = b(P_\gamma,P_\gamma + P_\alpha)\, b(P_\gamma ,P_\alpha)^{-1} = b(P_\gamma,P_\beta)\, b(P_\gamma,P_\alpha)^{-1} = \frac{\gamma - \beta}{\gamma - \alpha}$
+\end{itemize}
+
+Ainsi
+\[P_\gamma = (\gamma,0) \in 2E(\mathbb{F}_p) \iff \gamma - \alpha,\ \gamma - \beta \in (\mathbb{F}_p^\times)^2. \]
+
+
+
+\bibliographystyle{alpha}
+\bibliography{refs}
+
+\end{document}
