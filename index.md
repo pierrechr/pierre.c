@@ -21,8 +21,9 @@ I contributed to determining the needs and technical feasibility, conducted the 
 
 ## Write-ups
 
-+ _Practical Invalid Curve Attack Using Quadratic Twist_ [Available at FastInvalidCurveAttack](https://github.com/pierrechr/pierre.c/tree/main/FastInvalidCurve)
-+ _Smart's Attack Over Non Prime Field_ [Available at NonPrimeSmart](https://github.com/pierrechr/pierre.c/tree/main/NonPrimeSmart)
++ _Legendre Elliptic Curves over Fp_ [Notes personnelles en français](https://github.com/pierrechr/pierre.c/tree/main/Legendre)
++ _Smart's Attack Over Non Prime Field_ [Available at ](https://github.com/pierrechr/pierre.c/tree/main/NonPrimeSmart)
++ _Practical Invalid Curve Attack Using Quadratic Twist_ [Available at ](https://github.com/pierrechr/pierre.c/tree/main/FastInvalidCurve)
 
 ## Education 
 
