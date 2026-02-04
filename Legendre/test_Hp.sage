@@ -1,6 +1,6 @@
 P = Primes()
 
-for i in range(2,11):
+for i in range(2,20):
     p = P.unrank(i)
     m = (p-1)//2
     k = GF(p)
@@ -18,6 +18,6 @@ for i in range(2,11):
     mE  = -4*M
     ME = -4*m
     print(mE,ME,Lt)
-    print(all([ a in list(range(mE,ME+1)) for  a in Lt]))
+    assert all([ a in list(range(mE,ME+1)) for  a in Lt]) == True
 
 

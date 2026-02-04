@@ -8,8 +8,9 @@ I teach mathematics in CPGE (undegraduate students) since 2015.
 
 I enjoy playing CTF, you may check my [CryptoHack profile](https://cryptohack.org/user/pierre_c/)
 
+I am TOSA Python 3 certified with score **1000/1000**.
+
 I have also completed a consulting mission with CNES in Toulouse aimed at developing soft decoders of Reed-Solomon codes. 
-I contributed to determining the needs and technical feasibility, conducted the bibliographic study, targeted the most promising algorithms in the context of Ariane launcher, provided bench tests during the development, and transmitted the conclusions and feedback in a written report.
 
 ## Main topics of interest 
 
@@ -18,7 +19,8 @@ I contributed to determining the needs and technical feasibility, conducted the 
     + Isogeny graphs
     + Safe curves
 + Algebraic Number Theory and Algebraic Geometry
-
+    + Class group computations
+    
 ## Write-ups
 
 + _Legendre Elliptic Curves over Fp_ [Notes personnelles en français](https://github.com/pierrechr/pierre.c/tree/main/Legendre)
