@@ -4,7 +4,8 @@ title: "Non commuting endomorphisms"
 date: 2026-03-28
 ---
 
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
 
 Andrew Sutherland [Problem Set 6](https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/resources/mit18_783s21_ps6/) starts with a nice exercice.
 Let $p = 7$, $k = \mathbb{F}_{p^2}$ and let $E/k : y^2 = x^3 + (1 + i)x$ where $i^2 = -1$.
@@ -38,7 +39,7 @@ E0.trace_of_frobenius()
 
 ```
 
-shows that the characteristic polynomial of the $p^2$-th power Frobenius is $X^2 - 14 X + 49 = (X - 7) ^2$.
+shows that the characteristic polynomial of the $p^2$-th power Frobenius is $X^2 - 14 X + 49 = (X - 7)^2$.
 So $\pi_{E} = [7]$.
 
 
