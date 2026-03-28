@@ -2,6 +2,7 @@ theme: minima
 title: Dr. Pierre Chrétien
 description: "Mathematics and Cryptography"
 author: Pierre Chrétien
+layout: page
 plugins:
   - jekyll-feed
 
