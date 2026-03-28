@@ -1,3 +1,9 @@
+---
+layout: home
+title: Welcome
+---
+
+
 ***
 
 _Mathematics, cryptography  mathematics and teaching._ 
