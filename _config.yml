@@ -5,5 +5,5 @@ author : Pierre Chrétien
 plugins:
 	- jekyll-feed
 
-header_pages:
+nav_pages:
 	- about.md
