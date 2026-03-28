@@ -3,7 +3,7 @@ title : Dr. Pierre Chrétien
 description : "Mathematics and Cryptography"
 author : Pierre Chrétien
 plugins:
-	- jekyll-feed
+  - jekyll-feed
 
 header_pages:
-	- about.md
+  - about.md
