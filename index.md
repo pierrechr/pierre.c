@@ -1,14 +1,7 @@
 ---
 layout: page
-title: Welcome
+title: Mathematics and cryptography
 ---
-
-
-***
-
-_Mathematics, cryptography and teaching._ 
-
-***
 
 I teach mathematics in CPGE (undegraduate students) since 2015.
 
