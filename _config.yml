@@ -9,5 +9,6 @@ plugins:
 header_pages:
   - blog.md
   - about.md
+markdown: kramdown
 kramdown:
   math_engine: mathjax

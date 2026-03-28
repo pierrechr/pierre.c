@@ -6,7 +6,7 @@ date: 2026-03-28
 
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-
+TEST
 Andrew Sutherland [Problem Set 6](https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/resources/mit18_783s21_ps6/) starts with a nice exercice.
 Let $p = 7$, $k = \mathbb{F}_{p^2}$ and let $E/k : y^2 = x^3 + (1 + i)x$ where $i^2 = -1$.
 
