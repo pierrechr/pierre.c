@@ -1,4 +1,8 @@
-theme: jekyll-theme-minimal
+theme: minima
 title : Dr. Pierre Chrétien
 description : "Mathematics and Cryptography"
 author : Pierre Chrétien
+
+
+plugins:
+- jekyll-feed
