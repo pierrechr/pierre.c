@@ -46,27 +46,31 @@ This shows that the characteristic polynomial of the Frobenius is
 $$X^2 - 14 X + 49 = (X - 7)^2 \, \Rightarrow \,\pi_{E} = [7].$$
 
 
-## Non ordinary curve
+## Frobenius :heart: 
 
 The easiest path for this question is to take random points $P$ on $E$ and try to apply $pi_p$.
 
 ```
 while True:
-    P = E_0.random_point()
+    P = E0.random_point()
     x, y, _= P
     try:
-        E_.lift_x(x**7)
+        E0.lift_x(x**7)
     except:
         print("pi_p not an endomorphism of E")
         break
 ```
 
 
+## Let's twist again :notes:
 
+Since the polynomial in x defining E has no constant term in short Weierstrass form, one has 
+$$ j(E) = 1728 $$
+and it is isomorphic (over the algebraic closure thought) to 
+$$ E2/k : y^2 = x^3 + x$$
+Actually, E and E2 are quadratic twists, so isomorphic over a quadratic extension of the base field.
 
-Then one can write the curves.
-A first sanity check shows that $j(E) = 1728$, thus we introduce $E2 : y^2 = x^3 + x$.
-
+Thus, one has the following three curves
 
 ```
 E0 = EllipticCurve(k, [1+i, 0])
@@ -77,16 +81,20 @@ E.j_invariant()
 E2.j_invariant()
 ```
 
+Something nice with E2 is that it DOES have an isogeny of degree 7.
+This allows to get an endomorphism of E with the desired property
 
 ```
 psi = E.base_extend(k2).isomorphism_to(E2)
 piE2 = E2.frobenius_isogeny()
 
 tau = psi**(-1)*piE2*psi
+
 (tau**2).rational_maps()
 E.multiplication_by_m(-7)
+```
 
-
+```
 coef1 = tau.rational_maps()[0].subs(x=1)
 assert coef1**49 == coef1
 r1 = phi_kp_to_k(coef1)
