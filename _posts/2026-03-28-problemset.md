@@ -104,6 +104,7 @@ r2**8
 ```
 
 The endomorphism $$\alpha$$ of $$E$$ is $$\alpha(x; y) = (r_1 x^7; r_2  y^7) = ((5i+5)x^7; (4i+5)y^7)$$.
+An explicit computation shows that $$\alpha$$ is indeed an endomorphism of $$E$$ (the key point is that $$r_1^2(1+i)^6 = 1$$).
 
 ## Square root of minus one as endomorphism
 
@@ -114,5 +115,5 @@ $$ \alpha(\beta(x; y))= \alpha(-x; iy) = (-r_1x^7; -ir_2y^7)$$
 
 and 
 
-$$ \beta(\alpha(x; y))= \beta(r_1x^7; r2y^7) = (-r_1x^7; ir_2y^7)$$
+$$ \beta(\alpha(x; y))= \beta(r_1x^7; r_2y^7) = (-r_1x^7; ir_2y^7)$$
 
