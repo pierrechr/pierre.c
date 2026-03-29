@@ -6,7 +6,7 @@ date: 2026-03-28
 
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-In Andrew Sutherland's [Problem Set 6](https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/resources/mit18_783s21_ps6/) starts with a nice exercice.
+Andrew Sutherland's [Problem Set 6](https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/resources/mit18_783s21_ps6/) starts with a nice exercice.
 Let $$k = \mathbb{F}_{7^2}$$ and $$ E/k : y^2 = x^3 + (1 + i)x$$ with $$i^2 = -1$$.
 The goal is to give the explicit structure of $$\mathop{End}(E)$$ as a quaternion algebra.
 
