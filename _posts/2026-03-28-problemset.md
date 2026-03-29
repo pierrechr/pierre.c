@@ -6,17 +6,15 @@ date: 2026-03-28
 
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-TEST
-Andrew Sutherland [Problem Set 6](https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/resources/mit18_783s21_ps6/) starts with a nice exercice.
-Let $$k = \mathbb{F}_{7^2}i$$ and $$ E/k : y^2 = x^3 + (1 + i)x$$ with $$i^2 = -1$$.
-
+In Andrew Sutherland's [Problem Set 6](https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/resources/mit18_783s21_ps6/) starts with a nice exercice.
+Let $$k = \mathbb{F}_{7^2}$$ and $$ E/k : y^2 = x^3 + (1 + i)x$$ with $$i^2 = -1$$.
 The goal is to give the explicit structure of $$\mathop{End}(E)$$ as a quaternion algebra.
 
 ## Defining finite fields
 
 First of all we will need to define the base field and its quadratic extension (see below why one needs this extension).
 Thus one constructs those fields, but we have no guarantee that such a naive method allows to coerce elements from one to another.
-That's why one constructs an isomorphism between fields of order $$p^2$$.
+That's why one constructs an isomorphism between fields of order $$7^2$$.
 
 
 ```
@@ -45,8 +43,8 @@ $$X^2 - 14 X + 49 = (X - 7)^2$$ so $$\pi_{E} = [7]$$.
 
 ## Frobenius, isn't it ?  
 
-The easiest path for this question is to take random points $$P$$ on $$E$$ and try to apply $$pi_p$$, the $p$-th power Frobenius.
-If one fails, it means that $$(x; y)$$ is on $$E$$ but not $$(x^7; y^7)$$ : $$pi_p$$ won't be an endomorphism of $E$.
+The easiest path for this question is to take random points $$P$$ on $$E$$ and try to apply $$\pi_7$$, the $$7$$-th power Frobenius.
+If one fails, it means that $$(x; y)$$ is on $$E$$ but not $$(x^7; y^7)$$ : $$\pi_7$$ won't be an endomorphism of $$E$$.
 
 ```
 while True:
@@ -63,7 +61,7 @@ while True:
 ## Let's twist again 
 
 Since the polynomial in x defining E has no constant term in short Weierstrass form, one has $$ j(E) = 1728 $$ and it is isomorphic (over the algebraic closure thought) to $$ E_2/k : y^2 = x^3 + x$$.
-Actually, $$E$$ and $$E2$$ are quadratic twists, so isomorphic over a quadratic extension of the base field.
+Actually, $$E$$ and $$E_2$$ are quadratic twists, so isomorphic over a quadratic extension of the base field.
 
 Thus, one has the following three curves
 
@@ -76,7 +74,7 @@ E.j_invariant()
 E2.j_invariant()
 ```
 
-Something nice with $$E_2$$ is that it DOES have an isogeny of degree $$7$$.
+Something nice with $$E_2$$ is that it DOES have an isogeny of degree $$7$$ : the $$7$$-th power Frobenius since $$E_2$$ is defined over $$\mathbb{F}_7$$.
 This allows to get an endomorphism $$\tau$$ of $$E$$ such that $$\tau^2 = [-7]$$
 
 ```
@@ -89,7 +87,7 @@ tau = psi**(-1)*piE2*psi
 E.multiplication_by_m(-7)
 ```
 
-It remains to pull back these coefficient to the proper base field
+It remains to pull back these coefficients to the proper base field
 ```
 coef1 = tau.rational_maps()[0].subs(x=1)
 assert coef1**49 == coef1
@@ -105,13 +103,13 @@ r1**8
 r2**8
 ```
 
-The endomorphism $$\alpha$$ of $$E$$ is $$\alpha(x; y) = (r1 * x^7; r2 * y^7) = ((5i+5)x^7; (4i+5)y^7)$$.
+The endomorphism $$\alpha$$ of $$E$$ is $$\alpha(x; y) = (r_1 x^7; r_2  y^7) = ((5i+5)x^7; (4i+5)y^7)$$.
 
 ## Square root of minus one as endomorphism
 
 One easily checks that $$\beta(x; y) = (-x; iy)$$ is in $$\mathop{End}(E)$$ and satisfies $$\beta^2 = [-1]$$.
 The last question is a direct computation 
-$$ \alpha(\beta(x; y))= \alpha(-x; iy) = (-r1x^7; -ir2y^7)$$
+$$ \alpha(\beta(x; y))= \alpha(-x; iy) = (-r_1x^7; -ir_2y^7)$$
 and 
-$$ \beta(\alpha(x; y))= \beta(r1x^7; r2y^7) = (-r1x^7; ir2y^7)$$
+$$ \beta(\alpha(x; y))= \beta(r1x^7; r2y^7) = (-r_1x^7; ir_2y^7)$$
 
