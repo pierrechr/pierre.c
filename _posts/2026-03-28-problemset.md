@@ -108,8 +108,11 @@ The endomorphism $$\alpha$$ of $$E$$ is $$\alpha(x; y) = (r_1 x^7; r_2  y^7) = (
 ## Square root of minus one as endomorphism
 
 One easily checks that $$\beta(x; y) = (-x; iy)$$ is in $$\mathop{End}(E)$$ and satisfies $$\beta^2 = [-1]$$.
-The last question is a direct computation 
+The last question is a direct computation
+ 
 $$ \alpha(\beta(x; y))= \alpha(-x; iy) = (-r_1x^7; -ir_2y^7)$$
+
 and 
-$$ \beta(\alpha(x; y))= \beta(r1x^7; r2y^7) = (-r_1x^7; ir_2y^7)$$
+
+$$ \beta(\alpha(x; y))= \beta(r_1x^7; r2y^7) = (-r_1x^7; ir_2y^7)$$
 
