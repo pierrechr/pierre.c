@@ -9,7 +9,7 @@ date: 2026-03-28
 TEST
 Andrew Sutherland [Problem Set 6](https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/resources/mit18_783s21_ps6/) starts with a nice exercice.
 Let 
-$$p = 7,\quad  k = \mathbb{F}_{p^2}, \qquad E/k : y^2 = x^3 + (1 + i)x, \quad i^2 = -1.$$
+$$p = 7,\quad  k = \mathbb{F}_{p^2}$ and $$ E/k : y^2 = x^3 + (1 + i)x$$ with $$i^2 = -1$$.
 
 The goal is to give the explicit structure of 
 $$\mathop{End}(E)$$
@@ -18,8 +18,8 @@ $$\mathop{End}(E)$$
 # Defining finite fields
 
 First of all we will need to define the base field and its quadratic extension (see below why one needs this extension).
-Thus one constructs those fields, but we have no guarantee that such a naive method allows to coerce elements from one to another..
-That's why one constructs an isomorphism between field of of the same order.
+Thus one constructs those fields, but we have no guarantee that such a naive method allows to coerce elements from one to another.
+That's why one constructs an isomorphism between fields of order $$p^2$$.
 
 
 ```
@@ -29,6 +29,7 @@ k.<i> = GF(7**2, modulus = x**2 + 1)
 k2 = GF(7**4)
 kp = k2.subfields()[1][0]
 
+phi_kp_to_k =  FiniteFieldHomomorphism_generic(Hom(kp, k))
 phi_k_to_kp =  FiniteFieldHomomorphism_generic(Hom(k, kp))
 ```
 
@@ -39,16 +40,16 @@ phi_k_to_kp =  FiniteFieldHomomorphism_generic(Hom(k, kp))
 ```
 E0 = EllipticCurve(k, [1+i, 0])
 E0.trace_of_frobenius()
-
 ```
 
 This shows that the characteristic polynomial of the Frobenius is 
-$$X^2 - 14 X + 49 = (X - 7)^2 \, \Rightarrow \,\pi_{E} = [7].$$
+$$X^2 - 14 X + 49 = (X - 7)^2$$ so $$\pi_{E} = [7]$$.
 
 
-## Frobenius :heart: 
+## Frobenius, isn't it ?  
 
-The easiest path for this question is to take random points $P$ on $E$ and try to apply $pi_p$.
+The easiest path for this question is to take random points $$P$$ on $$E$$ and try to apply $$pi_p$$, the $p$-th power Frobenius.
+If one fails, it means that $$(x; y)$$ is on $$E$$ but not $$(x^7; y^7)$$ : $$pi_p$$ won't be an endomorphism of $E$.
 
 ```
 while True:
@@ -62,13 +63,10 @@ while True:
 ```
 
 
-## Let's twist again :notes:
+## Let's twist again 
 
-Since the polynomial in x defining E has no constant term in short Weierstrass form, one has 
-$$ j(E) = 1728 $$
-and it is isomorphic (over the algebraic closure thought) to 
-$$ E2/k : y^2 = x^3 + x$$
-Actually, E and E2 are quadratic twists, so isomorphic over a quadratic extension of the base field.
+Since the polynomial in x defining E has no constant term in short Weierstrass form, one has $$ j(E) = 1728 $$ and it is isomorphic (over the algebraic closure thought) to $$ E_2/k : y^2 = x^3 + x$$.
+Actually, $$E$$ and $$E2$$ are quadratic twists, so isomorphic over a quadratic extension of the base field.
 
 Thus, one has the following three curves
 
@@ -81,8 +79,8 @@ E.j_invariant()
 E2.j_invariant()
 ```
 
-Something nice with E2 is that it DOES have an isogeny of degree 7.
-This allows to get an endomorphism of E with the desired property
+Something nice with $$E2$$ is that it DOES have an isogeny of degree $$7$$.
+This allows to get an endomorphism $$\tau$$ of $$E$$ such that $$\tau^2 = [-7]$$
 
 ```
 psi = E.base_extend(k2).isomorphism_to(E2)
