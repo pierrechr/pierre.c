@@ -79,7 +79,7 @@ E.j_invariant()
 E2.j_invariant()
 ```
 
-Something nice with $$E2$$ is that it DOES have an isogeny of degree $$7$$.
+Something nice with $$E_2$$ is that it DOES have an isogeny of degree $$7$$.
 This allows to get an endomorphism $$\tau$$ of $$E$$ such that $$\tau^2 = [-7]$$
 
 ```
@@ -92,6 +92,7 @@ tau = psi**(-1)*piE2*psi
 E.multiplication_by_m(-7)
 ```
 
+It remains to pull back these coefficient to the proper base field
 ```
 coef1 = tau.rational_maps()[0].subs(x=1)
 assert coef1**49 == coef1
@@ -100,8 +101,20 @@ r1 = phi_kp_to_k(coef1)
 coef2 = tau.rational_maps()[1].subs(y=1)
 assert coef2**49 == coef2
 r2 = phi_kp_to_k(coef2)
-
-
+```
+and give a quick sanity check 
+```
 r1**8
 r2**8
 ```
+
+The endomorphism $$\alpha$$ of $$E$$ is $$\alpha(x; y) = (r1 * x^7; r2 * y^7) = ((5i+5)x^7; (4i+5)y^7)$$.
+
+## Square root of minus one as endomorphism
+
+One easily checks that $$\beta(x; y) = (-x; iy)$$ is in $$\mathop{End}(E)$$ and $$\satisfies $$\beta^2 = [-1]$$.
+The last question is a direct computation 
+$$ \alpha(\beta(x; y))= \alpha(-x; iy) = (-r1x^7; -ir2y^7)$$
+and 
+$$ \beta(\alpha(x; y))= \beta(r1x^7; r2y^7) = (-r1x^7; ir2y^7)$$
+
