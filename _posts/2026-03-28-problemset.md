@@ -8,14 +8,11 @@ date: 2026-03-28
 
 TEST
 Andrew Sutherland [Problem Set 6](https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/resources/mit18_783s21_ps6/) starts with a nice exercice.
-Let 
-$$p = 7,\quad  k = \mathbb{F}_{p^2}$ and $$ E/k : y^2 = x^3 + (1 + i)x$$ with $$i^2 = -1$$.
+Let $$k = \mathbb{F}_{7^2}i$$ and $$ E/k : y^2 = x^3 + (1 + i)x$$ with $$i^2 = -1$$.
 
-The goal is to give the explicit structure of 
-$$\mathop{End}(E)$$
- as a quaternion algebra.
+The goal is to give the explicit structure of $$\mathop{End}(E)$$ as a quaternion algebra.
 
-# Defining finite fields
+## Defining finite fields
 
 First of all we will need to define the base field and its quadratic extension (see below why one needs this extension).
 Thus one constructs those fields, but we have no guarantee that such a naive method allows to coerce elements from one to another.
@@ -112,7 +109,7 @@ The endomorphism $$\alpha$$ of $$E$$ is $$\alpha(x; y) = (r1 * x^7; r2 * y^7) = 
 
 ## Square root of minus one as endomorphism
 
-One easily checks that $$\beta(x; y) = (-x; iy)$$ is in $$\mathop{End}(E)$$ and $$\satisfies $$\beta^2 = [-1]$$.
+One easily checks that $$\beta(x; y) = (-x; iy)$$ is in $$\mathop{End}(E)$$ and satisfies $$\beta^2 = [-1]$$.
 The last question is a direct computation 
 $$ \alpha(\beta(x; y))= \alpha(-x; iy) = (-r1x^7; -ir2y^7)$$
 and 
