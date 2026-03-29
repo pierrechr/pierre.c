@@ -8,15 +8,18 @@ date: 2026-03-28
 
 TEST
 Andrew Sutherland [Problem Set 6](https://ocw.mit.edu/courses/18-783-elliptic-curves-spring-2021/resources/mit18_783s21_ps6/) starts with a nice exercice.
-Let $p = 7$, $k = \mathbb{F}_{p^2}$ and let $E/k : y^2 = x^3 + (1 + i)x$ where $i^2 = -1$.
+Let 
+$$p = 7,\quad  k = \mathbb{F}_{p^2}, \qquad E/k : y^2 = x^3 + (1 + i)x, \quad i^2 = -1.$$
 
-The goal is to give the explicit structure of $\mathop{End}(E)$ as a quaternion algebra.
+The goal is to give the explicit structure of 
+$$\mathop{End}(E)$$
+ as a quaternion algebra.
 
 # Defining finite fields
 
-First of all we will need to define $k$ and its quadratic extension $k_2$ (see below why one needs this extension).
-Thus one constructs those fields, but we have no guarantee that such a naive method allows to coerce elements from $k$ to $k_2$.
-That's why one constructs an isomorphism between $k$ and the unique subfield of order $p^2$ of $k_2$.
+First of all we will need to define the base field and its quadratic extension (see below why one needs this extension).
+Thus one constructs those fields, but we have no guarantee that such a naive method allows to coerce elements from one to another..
+That's why one constructs an isomorphism between field of of the same order.
 
 
 ```
@@ -39,19 +42,26 @@ E0.trace_of_frobenius()
 
 ```
 
-shows that the characteristic polynomial of the $p^2$-th power Frobenius is $X^2 - 14 X + 49 = (X - 7)^2$.
-So $\pi_{E} = [7]$.
+This shows that the characteristic polynomial of the Frobenius is 
+$$X^2 - 14 X + 49 = (X - 7)^2 \, \Rightarrow \,\pi_{E} = [7].$$
 
 
 ## Non ordinary curve
 
-The next question ...
-
-This is confirmed by and (reference)
+The easiest path for this question is to take random points $P$ on $E$ and try to apply $pi_p$.
 
 ```
-E0.is_supersingular()
+while True:
+    P = E_0.random_point()
+    x, y, _= P
+    try:
+        E_.lift_x(x**7)
+    except:
+        print("pi_p not an endomorphism of E")
+        break
 ```
+
+
 
 
 Then one can write the curves.
